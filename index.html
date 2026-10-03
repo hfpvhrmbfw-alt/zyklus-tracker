@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#E3DAD3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1D1916" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Zyklus-Tracker: Tage, Gefühle und Muster erfassen. Alle Daten bleiben auf diesem Gerät.">
+<title>Zyklus-Tracker</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Zyklus">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="runhead"><div class="wrap cap"><span>Zyklus · Tracker</span><span id="headDate"></span></div></header>
+
+<main class="wrap">
+  <section class="hero" aria-live="polite">
+    <h1 id="heroTitle">Zyklus</h1>
+    <div class="subtitle cap" id="heroSub">Tage<span class="sep">·</span>Gefühle<span class="sep">·</span>Muster</div>
+    <p class="lede" id="heroLede"></p>
+  </section>
+  <hr class="rule-heavy">
+
+  <div class="tabs">
+    <div role="tablist" aria-label="Bereiche">
+      <button role="tab" id="tab-heute" aria-controls="p-heute" aria-selected="true">Eintrag</button>
+      <button role="tab" id="tab-kal" aria-controls="p-kal" aria-selected="false" tabindex="-1">Kalender</button>
+      <button role="tab" id="tab-ana" aria-controls="p-ana" aria-selected="false" tabindex="-1">Analyse</button>
+      <button role="tab" id="tab-daten" aria-controls="p-daten" aria-selected="false" tabindex="-1">Daten</button>
+    </div>
+
+    <!-- EINTRAG -->
+    <div role="tabpanel" id="p-heute" aria-labelledby="tab-heute">
+      <div id="demoNote" class="note info" hidden><span class="cap">Demo</span>Gerade sind Beispieldaten geladen. Unter „Daten“ kannst du sie wieder entfernen.</div>
+      <section class="section">
+        <h2 class="label"><span class="no">№ 01</span> — Tag erfassen</h2>
+        <div class="daynav">
+          <button class="btn" id="prevDay" aria-label="Vorheriger Tag">←</button>
+          <div class="field"><label for="dayDate" class="cap">Datum</label><input type="date" id="dayDate"></div>
+          <button class="btn" id="nextDay" aria-label="Nächster Tag">→</button>
+          <button class="btn" id="todayBtn">Heute</button>
+        </div>
+        <h3 class="daytitle" id="dayTitle"></h3>
+        <div class="dayphase" id="dayPhase"></div>
+
+        <form id="dayForm" onsubmit="return false">
+          <fieldset class="group"><legend class="cap">Blutung</legend><div class="chips" id="flowChips"></div></fieldset>
+          <fieldset class="group"><legend class="cap">Gefühle</legend><div class="chips" id="moodChips"></div></fieldset>
+          <fieldset class="group"><legend class="cap">Energie</legend><div class="chips" id="energyChips"></div></fieldset>
+          <fieldset class="group"><legend class="cap">Körper</legend><div class="chips" id="symChips"></div></fieldset>
+          <div class="group field" style="padding:var(--s4) 0;border-top:1px solid var(--line)">
+            <label for="note" class="cap">Notiz</label>
+            <textarea id="note" maxlength="2000" placeholder="Was war heute los?"></textarea>
+          </div>
+          <div class="saverow">
+            <span class="cap" id="saveState" aria-live="polite">Änderungen werden automatisch gespeichert</span>
+            <button type="button" class="btn" id="clearDay">Tag leeren</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="section">
+        <h2 class="label"><span class="no">№ 02</span> — Ausblick</h2>
+        <div class="grid kpis" id="outlook"></div>
+        <div class="note warn"><span class="cap">Hinweis</span>Alle Vorhersagen sind Schätzungen aus deinen bisherigen Einträgen. Sie sind kein medizinischer Rat und nicht zur Verhütung geeignet.</div>
+      </section>
+    </div>
+
+    <!-- KALENDER -->
+    <div role="tabpanel" id="p-kal" aria-labelledby="tab-kal" hidden>
+      <section class="section">
+        <h2 class="label"><span class="no">№ 03</span> — Kalender</h2>
+        <div class="calhead">
+          <button class="btn" id="prevMonth" aria-label="Vorheriger Monat">←</button>
+          <h3 id="monthTitle" aria-live="polite"></h3>
+          <button class="btn" id="nextMonth" aria-label="Nächster Monat">→</button>
+        </div>
+        <div class="cal" id="cal" role="grid" aria-label="Monatskalender"></div>
+        <div class="legend">
+          <div class="row"><span class="sw period">P</span><span><b>P</b> — Periode (eingetragen)</span></div>
+          <div class="row"><span class="sw spot">·</span><span><b>·</b> — Schmierblutung</span></div>
+          <div class="row"><span class="sw pred">p</span><span><b>p</b> — Periode erwartet (Schätzung)</span></div>
+          <div class="row"><span class="sw fertile">F</span><span><b>F</b> — fruchtbares Fenster, <b>E</b> — Eisprung (Schätzung)</span></div>
+          <div class="row"><span class="sw">•</span><span><b>•</b> — Gefühle, Körper oder Notiz eingetragen</span></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ANALYSE -->
+    <div role="tabpanel" id="p-ana" aria-labelledby="tab-ana" hidden>
+      <div id="anaEmpty" class="note info" hidden><span class="cap">Noch zu wenig Daten</span>Für die Analyse braucht es mindestens zwei eingetragene Periodenstarts. Trag dazu im Eintrag die Blutung ein (ab „Leicht“).</div>
+      <section class="section">
+        <h2 class="label"><span class="no">№ 04</span> — Überblick</h2>
+        <div class="grid kpis" id="anaKpis"></div>
+      </section>
+      <section class="section">
+        <h2 class="label"><span class="no">№ 05</span> — Zykluslängen</h2>
+        <p class="cap" id="chartCap" style="color:var(--muted);margin:0">Tage pro Zyklus</p>
+        <div id="cycleChart"></div>
+        <details><summary>Als Tabelle</summary><div class="table-scroll" id="cycleTable"></div></details>
+      </section>
+      <section class="section">
+        <h2 class="label"><span class="no">№ 06</span> — Gefühle je Phase</h2>
+        <p style="color:var(--muted);margin:0 0 var(--s3)">Anteil der eingetragenen Tage einer Phase, an denen ein Gefühl vorkam.</p>
+        <div class="table-scroll" id="moodTable"></div>
+      </section>
+      <section class="section">
+        <h2 class="label"><span class="no">№ 07</span> — Muster</h2>
+        <div id="insights"></div>
+      </section>
+    </div>
+
+    <!-- DATEN -->
+    <div role="tabpanel" id="p-daten" aria-labelledby="tab-daten" hidden>
+      <section class="section">
+        <h2 class="label"><span class="no">№ 08</span> — Speicher</h2>
+        <div class="note ok"><span class="cap">Lokal</span>Alle Einträge liegen nur in diesem Browser auf diesem Gerät. Es gibt keinen Server und kein Konto. Mach ab und zu ein Backup.</div>
+        <div class="row"><span id="storeInfo"></span></div>
+        <div class="actions">
+          <button class="btn primary" id="exportBtn">Backup exportieren</button>
+          <button class="btn" id="importBtn">Backup importieren</button>
+          <input type="file" id="importFile" accept="application/json,.json" hidden>
+          <button class="btn" id="installBtn" hidden>Als App installieren</button>
+        </div>
+      </section>
+      <section class="section">
+        <h2 class="label"><span class="no">№ 09</span> — Einstellungen</h2>
+        <p style="color:var(--muted);margin:0">Die Standardwerte gelten, solange es noch zu wenige eigene Zyklen gibt.</p>
+        <div class="settings">
+          <div class="field"><label for="setCycle" class="cap">Zykluslänge (Tage)</label><input type="number" id="setCycle" min="15" max="60" inputmode="numeric"></div>
+          <div class="field"><label for="setPeriod" class="cap">Periodendauer (Tage)</label><input type="number" id="setPeriod" min="1" max="12" inputmode="numeric"></div>
+          <div class="field"><label for="setLuteal" class="cap">Lutealphase (Tage)</label><input type="number" id="setLuteal" min="8" max="18" inputmode="numeric"></div>
+          <div class="field"><label for="setTheme" class="cap">Darstellung</label>
+            <select id="setTheme"><option value="auto">Wie System</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
+        </div>
+      </section>
+      <section class="section">
+        <h2 class="label"><span class="no">№ 10</span> — Ausprobieren und löschen</h2>
+        <div class="actions">
+          <button class="btn" id="demoBtn">Demodaten laden</button>
+          <button class="btn" id="wipeBtn">Alle Daten löschen</button>
+        </div>
+        <p style="color:var(--muted);margin:0">Demodaten sind erfundene Beispielwerte über sechs Monate. Sie ersetzen vorhandene Einträge erst nach Rückfrage.</p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap cap"><span>Zyklus-Tracker · offline · lokal</span><span id="footVer">v1.0</span></div></footer>
+<div class="tip" id="tip" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
