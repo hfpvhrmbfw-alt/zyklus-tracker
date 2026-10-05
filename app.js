@@ -5,6 +5,9 @@
 const FLOW = [[0, 'Keine'], [1, 'Schmierblutung'], [2, 'Leicht'], [3, 'Mittel'], [4, 'Stark']];
 const MOODS = [
   ['gluecklich', 'Glücklich'], ['ruhig', 'Ruhig'], ['energiegeladen', 'Energiegeladen'], ['selbstbewusst', 'Selbstbewusst'],
+  ['gut', 'Gut'], ['zufrieden', 'Zufrieden'], ['dankbar', 'Dankbar'], ['entspannt', 'Entspannt'],
+  ['ausgeglichen', 'Ausgeglichen'], ['motiviert', 'Motiviert'], ['kreativ', 'Kreativ'], ['optimistisch', 'Optimistisch'],
+  ['verliebt', 'Verliebt'], ['gesellig', 'Gesellig'],
   ['sensibel', 'Sensibel'], ['gereizt', 'Gereizt'], ['traurig', 'Traurig'], ['aengstlich', 'Ängstlich'],
   ['gestresst', 'Gestresst'], ['muede', 'Müde'], ['lustlos', 'Lustlos'],
 ];
