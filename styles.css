@@ -107,6 +107,12 @@ details > div { padding:0 var(--s1) var(--s4); }
 footer { border-top:2px solid var(--accent); margin-top:var(--s8); padding:18px 0 40px; color:var(--muted); }
 footer .wrap { display:flex; justify-content:space-between; flex-wrap:wrap; gap:var(--s3); }
 
+/* Farbschema-Umschalter in der Kopfzeile (aus .btn abgeleitet) */
+.headr { display:flex; align-items:center; gap:var(--s3); }
+.themebtn { font:600 12px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; padding:8px 10px; min-height:36px; border:1px solid var(--ink); background:transparent; color:var(--ink); cursor:pointer; border-radius:var(--r); white-space:nowrap; }
+.themebtn:hover { background:var(--ink); color:var(--bg); }
+@media (max-width:420px) { #headDate { display:none; } }
+
 /* ---------- App-Erweiterungen (aus Tag, Feld, Tabelle abgeleitet) ---------- */
 .daynav { display:flex; gap:var(--s2); align-items:end; flex-wrap:wrap; margin:var(--s2) 0 var(--s4); }
 .daynav .field { flex:1 1 180px; }

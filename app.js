@@ -432,9 +432,19 @@ function showTab(name, focus) {
 }
 
 // ---------- Theme ----------
+const THEME_LABEL = { auto: 'System', light: 'Hell', dark: 'Dunkel' };
+const THEME_NEXT = { auto: 'dark', dark: 'light', light: 'auto' };
 function applyTheme() {
   const t = state.settings.theme;
   if (t === 'auto') delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('zyklus-theme', t); } catch { /* egal */ }
+  // Statusleiste am Handy passend einfärben
+  const forced = { light: '#E3DAD3', dark: '#1D1916' }[t];
+  $('tcLight').content = forced || '#E3DAD3';
+  $('tcDark').content = forced || '#1D1916';
+  $('themeBtn').textContent = 'Farbe: ' + THEME_LABEL[t];
+  $('themeBtn').setAttribute('aria-label', `Farbschema: ${THEME_LABEL[t]}. Wechseln zu ${THEME_LABEL[THEME_NEXT[t]]}`);
+  $('setTheme').value = t;
 }
 
 // ---------- Persistenz-Wunsch ----------
@@ -558,6 +568,9 @@ function bind() {
   $('cycleChart').addEventListener('focusin', e => { const c = e.target.closest('.col'); if (c) showTip(c); });
   $('cycleChart').addEventListener('focusout', hideTip);
 
+  $('themeBtn').onclick = async () => {
+    await saveSettings({ ...state.settings, theme: THEME_NEXT[state.settings.theme] });
+  };
   $('exportBtn').onclick = exportData;
   $('importBtn').onclick = () => $('importFile').click();
   $('importFile').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) importData(f); };
@@ -603,5 +616,11 @@ function bind() {
   let tab = 'heute';
   try { tab = localStorage.getItem('zyklus-tab') || 'heute'; } catch { /* egal */ }
   showTab(['heute', 'kal', 'ana', 'daten'].includes(tab) ? tab : 'heute');
-  if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    // Neue Version übernommen → einmal neu laden, damit alle Dateien zusammenpassen
+    const hadController = !!navigator.serviceWorker.controller;
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController && !reloaded) { reloaded = true; location.reload(); } });
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
 })();
