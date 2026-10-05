@@ -16,6 +16,13 @@ const SYMPTOMS = [
   ['rueckenschmerzen', 'Rückenschmerzen'], ['unreine_haut', 'Unreine Haut'], ['heisshunger', 'Heißhunger'],
   ['schlafprobleme', 'Schlafprobleme'], ['uebelkeit', 'Übelkeit'],
 ];
+// Stimmung des Tages, im Kalender als farbiger Punkt: grün gut, gelb ok, rot schlecht, lila nur abends
+const STIMMUNG = [['gut', 'Gut'], ['ok', 'Ist ok'], ['schlecht', 'Schlecht'], ['abends', 'Nur abends']];
+// Ohne eigene Stimmungsangabe wird der Punkt aus den Gefühlen abgeleitet
+const MOOD_TONE = {
+  sensibel: 'ok', muede: 'ok', lustlos: 'ok',
+  gereizt: 'schlecht', traurig: 'schlecht', aengstlich: 'schlecht', gestresst: 'schlecht',
+};
 const ENERGY = [[0, 'Nicht erfasst'], [1, 'Sehr niedrig'], [2, 'Niedrig'], [3, 'Mittel'], [4, 'Hoch'], [5, 'Sehr hoch']];
 const PHASES = [['men', 'Menstruation'], ['fol', 'Follikelphase'], ['ovu', 'Eisprungphase'], ['lut', 'Lutealphase']];
 const PHASE_NAME = Object.fromEntries(PHASES);
@@ -96,17 +103,23 @@ const state = {
   sel: todayNum(), month: null, an: null, tab: 'heute',
 };
 
-const blank = date => ({ date, flow: 0, moods: [], symptoms: [], energy: 0, note: '' });
-const isEmpty = e => !e.flow && !e.moods.length && !e.symptoms.length && !e.energy && !e.note.trim();
-const hasDetail = e => e.moods.length || e.symptoms.length || e.energy || e.note.trim();
+const blank = date => ({ date, flow: 0, stimmung: [], moods: [], symptoms: [], energy: 0, note: '' });
+const isEmpty = e => !e.flow && !e.stimmung.length && !e.moods.length && !e.symptoms.length && !e.energy && !e.note.trim();
+const hasDetail = e => e.stimmung.length || e.moods.length || e.symptoms.length || e.energy || e.note.trim();
+// Farbpunkte für den Kalender: eigene Stimmungsangabe, sonst aus den Gefühlen
+function moodDots(e) {
+  const set = new Set(e.stimmung.length ? e.stimmung : e.moods.map(m => MOOD_TONE[m] || 'gut'));
+  return STIMMUNG.map(s => s[0]).filter(k => set.has(k));
+}
 
 function sanitize(raw) {
   if (!raw || typeof raw.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(raw.date) || isNaN(toNum(raw.date))) return null;
-  const okMood = new Set(MOODS.map(m => m[0])), okSym = new Set(SYMPTOMS.map(s => s[0]));
+  const okMood = new Set(MOODS.map(m => m[0])), okStim = new Set(STIMMUNG.map(s => s[0])), okSym = new Set(SYMPTOMS.map(s => s[0]));
   const int = (v, lo, hi) => Math.min(hi, Math.max(lo, Math.round(Number(v) || 0)));
   return {
     date: raw.date,
     flow: int(raw.flow, 0, 4),
+    stimmung: Array.isArray(raw.stimmung) ? [...new Set(raw.stimmung.filter(m => okStim.has(m)))] : [],
     moods: Array.isArray(raw.moods) ? [...new Set(raw.moods.filter(m => okMood.has(m)))] : [],
     symptoms: Array.isArray(raw.symptoms) ? [...new Set(raw.symptoms.filter(s => okSym.has(s)))] : [],
     energy: int(raw.energy, 0, 5),
@@ -233,6 +246,7 @@ function renderDay() {
   $('dayDate').value = date;
   $('dayTitle').textContent = fmtLong(state.sel) + (state.sel === todayNum() ? ' · heute' : '');
   $('flowChips').innerHTML = FLOW.map(([v, l]) => chip('flow', 'radio', v, l, e.flow === v, v >= 2 ? 'flow' : '')).join('');
+  $('stimChips').innerHTML = STIMMUNG.map(([v, l]) => chip('stim', 'checkbox', v, l, e.stimmung.includes(v), 'stim ' + v)).join('');
   $('moodChips').innerHTML = MOODS.map(([v, l]) => chip('mood', 'checkbox', v, l, e.moods.includes(v))).join('');
   $('energyChips').innerHTML = ENERGY.map(([v, l]) => chip('energy', 'radio', v, l, e.energy === v)).join('');
   $('symChips').innerHTML = SYMPTOMS.map(([v, l]) => chip('sym', 'checkbox', v, l, e.symptoms.includes(v))).join('');
@@ -248,6 +262,7 @@ function readForm() {
   return {
     date: toStr(state.sel),
     flow: Number((f.querySelector('input[name=flow]:checked') || {}).value || 0),
+    stimmung: [...f.querySelectorAll('input[name=stim]:checked')].map(i => i.value),
     moods: [...f.querySelectorAll('input[name=mood]:checked')].map(i => i.value),
     symptoms: [...f.querySelectorAll('input[name=sym]:checked')].map(i => i.value),
     energy: Number((f.querySelector('input[name=energy]:checked') || {}).value || 0),
@@ -326,10 +341,12 @@ function renderCalendar() {
     else if (e && e.flow === 1) { cls.push('spot'); marks.push('·'); aria.push('Schmierblutung'); }
     else if (ph && ph.phase === 'men' && n > t) { cls.push('pred'); marks.push('p'); aria.push('Periode erwartet'); }
     if (ph && ph.fertile && !(e && e.flow >= 2)) { cls.push('fertile'); marks.push(ph.ovu ? 'E' : 'F'); aria.push(ph.ovu ? 'Eisprung geschätzt' : 'fruchtbar geschätzt'); }
+    const dots = e ? moodDots(e) : [];
+    if (dots.length) aria.push('Stimmung ' + dots.map(k => STIMMUNG.find(s => s[0] === k)[1]).join(', '));
     if (e && hasDetail(e)) { marks.push('•'); aria.push('Einträge vorhanden'); }
     if (n === t) { cls.push('today'); aria.push('heute'); }
     if (n === state.sel) cls.push('sel');
-    html += `<button class="${cls.join(' ')}" data-n="${n}" aria-label="${esc(aria.join(', '))}"><span>${new Date(n * DAY).getUTCDate()}</span><span class="marks" aria-hidden="true">${marks.join(' ')}</span></button>`;
+    html += `<button class="${cls.join(' ')}" data-n="${n}" aria-label="${esc(aria.join(', '))}"><span>${new Date(n * DAY).getUTCDate()}</span>${dots.length ? `<span class="dots" aria-hidden="true">${dots.map(k => `<i class="dot ${k}"></i>`).join('')}</span>` : ''}<span class="marks" aria-hidden="true">${marks.join(' ')}</span></button>`;
   }
   $('cal').innerHTML = html;
 }
@@ -481,6 +498,7 @@ function makeDemo(today) {
         else if (n > start + len - 6) { moods = pick(['gereizt', 'traurig', 'sensibel', 'gestresst', 'muede'], 0.45); syms = pick(['brustspannen', 'heisshunger', 'blaehungen', 'unreine_haut'], 0.45); energy = 1 + Math.round(rnd() * 2); }
         else { moods = pick(['ruhig', 'muede', 'gestresst', 'gluecklich'], 0.35); syms = pick(['blaehungen'], 0.2); energy = 2 + Math.round(rnd() * 2); }
         e.moods = moods; e.symptoms = syms; e.energy = energy;
+        if (rnd() < 0.25) e.stimmung = [rnd() < 0.5 ? 'abends' : 'ok'];
       }
       if (!isEmpty(e)) out.push(e);
     }

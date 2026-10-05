@@ -4,6 +4,7 @@
   --accent:#E8451C; --accent-text:#AA310D; --accent-hover:#C9380F; --accent-tint:#F5CEC2; --accent-ink:#111111;
   --ok:#2B6B3A; --ok-tint:#DCE8DA; --warn:#7A5200; --warn-tint:#F1E3C4;
   --err:#A3182B; --err-tint:#F2D3D3; --info:#1F4E8C; --info-tint:#D6E0EC;
+  --m-gut:#2E8B47; --m-ok:#D9A300; --m-schlecht:#C8283C; --m-abends:#7B4FC2;
   --serif:"Source Serif 4",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px;
   --r:2px; --maxw:960px; --gutter:clamp(16px,4vw,40px); color-scheme:light;
@@ -12,13 +13,15 @@
   --bg:#1D1916; --surface:#27211D; --sunken:#332B26; --line:#463C35; --ink:#EFE6DE; --muted:#B7ABA1; --faint:#7F746B;
   --accent:#E8451C; --accent-text:#F0896F; --accent-hover:#EB603C; --accent-tint:#4E281D; --accent-ink:#111111;
   --ok:#7FC48F; --ok-tint:#233226; --warn:#E0B25A; --warn-tint:#352B17;
-  --err:#F08A8F; --err-tint:#3A2123; --info:#8DB4EA; --info-tint:#1E2A3A; color-scheme:dark;
+  --err:#F08A8F; --err-tint:#3A2123; --info:#8DB4EA; --info-tint:#1E2A3A;
+  --m-gut:#6FCB85; --m-ok:#EBC84B; --m-schlecht:#F0707A; --m-abends:#B596EE; color-scheme:dark;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg:#1D1916; --surface:#27211D; --sunken:#332B26; --line:#463C35; --ink:#EFE6DE; --muted:#B7ABA1; --faint:#7F746B;
   --accent:#E8451C; --accent-text:#F0896F; --accent-hover:#EB603C; --accent-tint:#4E281D; --accent-ink:#111111;
   --ok:#7FC48F; --ok-tint:#233226; --warn:#E0B25A; --warn-tint:#352B17;
-  --err:#F08A8F; --err-tint:#3A2123; --info:#8DB4EA; --info-tint:#1E2A3A; color-scheme:dark; } }
+  --err:#F08A8F; --err-tint:#3A2123; --info:#8DB4EA; --info-tint:#1E2A3A;
+  --m-gut:#6FCB85; --m-ok:#EBC84B; --m-schlecht:#F0707A; --m-abends:#B596EE; color-scheme:dark; } }
 
 * { box-sizing:border-box; }
 html { background:var(--bg); }
@@ -156,6 +159,14 @@ fieldset.group legend { padding:0 0 var(--s3); color:var(--muted); float:left; w
 .legend .sw.fertile { background:var(--sunken); box-shadow:inset 0 -4px 0 var(--ink); }
 .legend .sw.spot { box-shadow:inset 0 -4px 0 var(--accent); }
 .legend .row::before { display:none; }
+/* Stimmungspunkte: Ecke oben rechts, bis zu vier als 2×2 */
+.dot { display:block; width:7px; height:7px; border-radius:50%; box-shadow:0 0 0 1.5px var(--surface); }
+.dot.gut { background:var(--m-gut); } .dot.ok { background:var(--m-ok); } .dot.schlecht { background:var(--m-schlecht); } .dot.abends { background:var(--m-abends); }
+.cal .day .dots { position:absolute; top:5px; right:5px; display:grid; grid-template-columns:repeat(2,7px); gap:3px; }
+.legend .sw.dots { display:grid; grid-template-columns:repeat(2,7px); gap:3px; place-content:center; }
+.dot.il { display:inline-block; margin:0 2px 0 4px; vertical-align:middle; }
+.chip.stim span::before { content:""; width:9px; height:9px; border-radius:50%; margin-right:8px; background:var(--dc); }
+.chip.gut { --dc:var(--m-gut); } .chip.ok { --dc:var(--m-ok); } .chip.schlecht { --dc:var(--m-schlecht); } .chip.abends { --dc:var(--m-abends); }
 
 /* Balkendiagramm Zykluslängen */
 .bars { position:relative; display:flex; align-items:flex-end; gap:6px; height:220px; padding:22px 0 0; border-bottom:2px solid var(--ink); margin:var(--s3) 0 0; }
