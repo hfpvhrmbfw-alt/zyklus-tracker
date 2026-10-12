@@ -1,24 +1,24 @@
-/* Hausstil Web v1.2 (Anna) */
+/* Stil Salbei v1.0 (Castra-Designsystem, auf Basis Hausstil Web) */
 :root {
-  --bg:#E3DAD3; --surface:#F2EBE6; --sunken:#D8CDC5; --line:#C8BBB1; --ink:#111111; --muted:#5C524D; --faint:#8D837C;
-  --accent:#E8451C; --accent-text:#AA310D; --accent-hover:#C9380F; --accent-tint:#F5CEC2; --accent-ink:#111111;
+  --bg:#DCE2D6; --surface:#F0F3EC; --sunken:#CDD5C6; --line:#B9C3B1; --ink:#16201A; --muted:#4A574D; --faint:#87918A;
+  --accent:#2F7A55; --accent-text:#21603F; --accent-hover:#276A49; --accent-tint:#CFE3D3; --accent-ink:#FFFFFF; --label-no:#CFE3D3;
   --ok:#2B6B3A; --ok-tint:#DCE8DA; --warn:#7A5200; --warn-tint:#F1E3C4;
   --err:#A3182B; --err-tint:#F2D3D3; --info:#1F4E8C; --info-tint:#D6E0EC;
   --m-gut:#2E8B47; --m-ok:#D9A300; --m-schlecht:#C8283C; --m-abends:#7B4FC2;
-  --serif:"Source Serif 4",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --serif:"Fraunces",Georgia,serif; --sans:"DM Sans",system-ui,sans-serif; --mono:"DM Mono",ui-monospace,monospace;
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px;
   --r:2px; --maxw:960px; --gutter:clamp(16px,4vw,40px); color-scheme:light;
 }
 [data-theme="dark"] {
-  --bg:#1D1916; --surface:#27211D; --sunken:#332B26; --line:#463C35; --ink:#EFE6DE; --muted:#B7ABA1; --faint:#7F746B;
-  --accent:#E8451C; --accent-text:#F0896F; --accent-hover:#EB603C; --accent-tint:#4E281D; --accent-ink:#111111;
+  --bg:#151A16; --surface:#1E2520; --sunken:#28312A; --line:#3A463B; --ink:#E4ECE2; --muted:#A8B6A9; --faint:#6E7A6F;
+  --accent:#58AC7D; --accent-text:#8CD3A8; --accent-hover:#6BBB8E; --accent-tint:#1F3A2A; --accent-ink:#0D140F; --label-no:#0D140F;
   --ok:#7FC48F; --ok-tint:#233226; --warn:#E0B25A; --warn-tint:#352B17;
   --err:#F08A8F; --err-tint:#3A2123; --info:#8DB4EA; --info-tint:#1E2A3A;
   --m-gut:#6FCB85; --m-ok:#EBC84B; --m-schlecht:#F0707A; --m-abends:#B596EE; color-scheme:dark;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg:#1D1916; --surface:#27211D; --sunken:#332B26; --line:#463C35; --ink:#EFE6DE; --muted:#B7ABA1; --faint:#7F746B;
-  --accent:#E8451C; --accent-text:#F0896F; --accent-hover:#EB603C; --accent-tint:#4E281D; --accent-ink:#111111;
+  --bg:#151A16; --surface:#1E2520; --sunken:#28312A; --line:#3A463B; --ink:#E4ECE2; --muted:#A8B6A9; --faint:#6E7A6F;
+  --accent:#58AC7D; --accent-text:#8CD3A8; --accent-hover:#6BBB8E; --accent-tint:#1F3A2A; --accent-ink:#0D140F; --label-no:#0D140F;
   --ok:#7FC48F; --ok-tint:#233226; --warn:#E0B25A; --warn-tint:#352B17;
   --err:#F08A8F; --err-tint:#3A2123; --info:#8DB4EA; --info-tint:#1E2A3A;
   --m-gut:#6FCB85; --m-ok:#EBC84B; --m-schlecht:#F0707A; --m-abends:#B596EE; color-scheme:dark; } }
@@ -47,7 +47,7 @@ code { font:14px var(--mono); background:var(--sunken); padding:1px 5px; }
 
 .section { border-bottom:2px solid var(--ink); padding-bottom:var(--s4); margin:0 0 var(--s7); }
 .label { display:inline-block; background:var(--accent); color:var(--accent-ink); font:600 16px/1.2 var(--mono); letter-spacing:.04em; padding:9px 14px; margin:0 0 var(--s3); }
-.label .no { color:#fff; }
+.label .no { color:var(--label-no); }
 .section h2 { margin:0; }
 
 .row { display:flex; gap:var(--s3); align-items:baseline; padding:var(--s3) var(--s1); border-bottom:1px solid var(--line); }
@@ -202,3 +202,15 @@ table.data td.mood { font-weight:600; min-width:120px; }
   table.ph th, table.ph td { padding:10px 8px; }
   .ph td.cell { min-width:72px; }
 }
+
+/* Stil Salbei v1.0 (Castra-Designsystem): Form und Linien */
+:root { --r:8px; }
+.card { border-radius:10px; border-top-width:2px; }
+.note { border-radius:0 10px 10px 0; }
+.label, .tag { border-radius:6px; }
+.field input, .field select, .field textarea { border-radius:6px 6px 0 0; }
+.rule-heavy, .part { border-top-width:2px; }
+.section, table.data th, .tabs [role="tablist"] { border-bottom-width:1px; }
+.hero h1, .label, .card h3, .kpi .v, blockquote p { font-weight:600; }
+.label { font-weight:500; }
+.chip span, .themebtn { border-radius:6px; }
