@@ -1,0 +1,104 @@
+[
+ {
+  "name": "nackte Liste",
+  "input": [
+   {
+    "date": "2026-01-02",
+    "flow": 3
+   }
+  ],
+  "expected": {
+   "ok": true,
+   "days": [
+    {
+     "date": "2026-01-02",
+     "flow": 3,
+     "stimmung": [],
+     "moods": [],
+     "symptoms": [],
+     "energy": 0,
+     "note": ""
+    }
+   ],
+   "settings": null
+  }
+ },
+ {
+  "name": "Version 1 mit Einstellungen",
+  "input": {
+   "app": "zyklus-tracker",
+   "version": 1,
+   "settings": {
+    "cycleLen": 99,
+    "periodLen": 4,
+    "luteal": 13,
+    "theme": "dark"
+   },
+   "days": [
+    {
+     "date": "2026-01-02",
+     "flow": 2
+    },
+    {
+     "date": "kaputt"
+    }
+   ]
+  },
+  "expected": {
+   "ok": true,
+   "days": [
+    {
+     "date": "2026-01-02",
+     "flow": 2,
+     "stimmung": [],
+     "moods": [],
+     "symptoms": [],
+     "energy": 0,
+     "note": ""
+    }
+   ],
+   "settings": {
+    "cycleLen": 60,
+    "periodLen": 4,
+    "luteal": 13,
+    "theme": "dark"
+   }
+  }
+ },
+ {
+  "name": "neuere Version",
+  "input": {
+   "app": "zyklus-tracker",
+   "version": 2,
+   "days": [
+    {
+     "date": "2026-01-02",
+     "flow": 2
+    }
+   ]
+  },
+  "expected": {
+   "ok": false,
+   "error": "newer_version"
+  }
+ },
+ {
+  "name": "keine Einträge",
+  "input": {
+   "version": 1,
+   "days": []
+  },
+  "expected": {
+   "ok": false,
+   "error": "no_entries"
+  }
+ },
+ {
+  "name": "kein Objekt",
+  "input": null,
+  "expected": {
+   "ok": false,
+   "error": "no_entries"
+  }
+ }
+]

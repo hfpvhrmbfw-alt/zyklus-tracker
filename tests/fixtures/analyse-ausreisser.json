@@ -1,0 +1,1264 @@
+{
+ "beschreibung": "Ein Zyklus außerhalb 15–60 Tage wird ausgeschlossen",
+ "input": {
+  "today": "2026-10-12",
+  "settings": {
+   "cycleLen": 30,
+   "periodLen": 5,
+   "luteal": 14,
+   "theme": "auto"
+  },
+  "days": [
+   {
+    "date": "2026-03-01",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-03-10",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-05-20",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-06-18",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-07-16",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   }
+  ]
+ },
+ "expected": {
+  "analyze": {
+   "today": 20738,
+   "periods": [
+    {
+     "start": 20513,
+     "end": 20513,
+     "len": 1
+    },
+    {
+     "start": 20522,
+     "end": 20522,
+     "len": 1
+    },
+    {
+     "start": 20593,
+     "end": 20593,
+     "len": 1
+    },
+    {
+     "start": 20622,
+     "end": 20622,
+     "len": 1
+    },
+    {
+     "start": 20650,
+     "end": 20650,
+     "len": 1
+    }
+   ],
+   "cycles": [
+    {
+     "start": 20513,
+     "len": 9,
+     "periodLen": 1,
+     "ok": false
+    },
+    {
+     "start": 20522,
+     "len": 71,
+     "periodLen": 1,
+     "ok": false
+    },
+    {
+     "start": 20593,
+     "len": 29,
+     "periodLen": 1,
+     "ok": true
+    },
+    {
+     "start": 20622,
+     "len": 28,
+     "periodLen": 1,
+     "ok": true
+    }
+   ],
+   "recent": [
+    {
+     "start": 20593,
+     "len": 29,
+     "periodLen": 1,
+     "ok": true
+    },
+    {
+     "start": 20622,
+     "len": 28,
+     "periodLen": 1,
+     "ok": true
+    }
+   ],
+   "avgCycle": 28.5,
+   "avgPeriod": 1,
+   "sd": 0.5,
+   "C": 29,
+   "P": 1,
+   "L": 14,
+   "current": {
+    "start": 20650,
+    "day": 89,
+    "next": 20679,
+    "overdue": 59,
+    "ov": 20665,
+    "fs": 20660,
+    "fe": 20666,
+    "inPeriod": false
+   }
+  },
+  "phases": {
+   "2026-07-14": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 27,
+    "next": 20650
+   },
+   "2026-07-15": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 28,
+    "next": 20650
+   },
+   "2026-07-16": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20679
+   },
+   "2026-07-17": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20679
+   },
+   "2026-07-18": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20679
+   },
+   "2026-07-19": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20679
+   },
+   "2026-07-20": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20679
+   },
+   "2026-07-21": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20679
+   },
+   "2026-07-22": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20679
+   },
+   "2026-07-23": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20679
+   },
+   "2026-07-24": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20679
+   },
+   "2026-07-25": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20679
+   },
+   "2026-07-26": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20679
+   },
+   "2026-07-27": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20679
+   },
+   "2026-07-28": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20679
+   },
+   "2026-07-29": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20679
+   },
+   "2026-07-30": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 15,
+    "next": 20679
+   },
+   "2026-07-31": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 16,
+    "next": 20679
+   },
+   "2026-08-01": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 17,
+    "next": 20679
+   },
+   "2026-08-02": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20679
+   },
+   "2026-08-03": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 19,
+    "next": 20679
+   },
+   "2026-08-04": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 20,
+    "next": 20679
+   },
+   "2026-08-05": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 21,
+    "next": 20679
+   },
+   "2026-08-06": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 22,
+    "next": 20679
+   },
+   "2026-08-07": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 23,
+    "next": 20679
+   },
+   "2026-08-08": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 24,
+    "next": 20679
+   },
+   "2026-08-09": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 25,
+    "next": 20679
+   },
+   "2026-08-10": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 26,
+    "next": 20679
+   },
+   "2026-08-11": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 27,
+    "next": 20679
+   },
+   "2026-08-12": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 28,
+    "next": 20679
+   },
+   "2026-08-13": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 29,
+    "next": 20679
+   },
+   "2026-08-14": {
+    "phase": "men",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20708
+   },
+   "2026-08-15": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20708
+   },
+   "2026-08-16": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20708
+   },
+   "2026-08-17": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20708
+   },
+   "2026-08-18": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20708
+   },
+   "2026-08-19": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20708
+   },
+   "2026-08-20": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20708
+   },
+   "2026-08-21": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20708
+   },
+   "2026-08-22": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20708
+   },
+   "2026-08-23": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20708
+   },
+   "2026-08-24": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20708
+   },
+   "2026-08-25": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20708
+   },
+   "2026-08-26": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20708
+   },
+   "2026-08-27": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20708
+   },
+   "2026-08-28": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 15,
+    "next": 20708
+   },
+   "2026-08-29": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 16,
+    "next": 20708
+   },
+   "2026-08-30": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 17,
+    "next": 20708
+   },
+   "2026-08-31": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20708
+   },
+   "2026-09-01": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 19,
+    "next": 20708
+   },
+   "2026-09-02": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 20,
+    "next": 20708
+   },
+   "2026-09-03": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 21,
+    "next": 20708
+   },
+   "2026-09-04": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 22,
+    "next": 20708
+   },
+   "2026-09-05": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 23,
+    "next": 20708
+   },
+   "2026-09-06": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 24,
+    "next": 20708
+   },
+   "2026-09-07": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 25,
+    "next": 20708
+   },
+   "2026-09-08": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 26,
+    "next": 20708
+   },
+   "2026-09-09": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 27,
+    "next": 20708
+   },
+   "2026-09-10": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 28,
+    "next": 20708
+   },
+   "2026-09-11": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 29,
+    "next": 20708
+   },
+   "2026-09-12": {
+    "phase": "men",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20737
+   },
+   "2026-09-13": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20737
+   },
+   "2026-09-14": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20737
+   },
+   "2026-09-15": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20737
+   },
+   "2026-09-16": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20737
+   },
+   "2026-09-17": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20737
+   },
+   "2026-09-18": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20737
+   },
+   "2026-09-19": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20737
+   },
+   "2026-09-20": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20737
+   },
+   "2026-09-21": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20737
+   },
+   "2026-09-22": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20737
+   },
+   "2026-09-23": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20737
+   },
+   "2026-09-24": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20737
+   },
+   "2026-09-25": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20737
+   },
+   "2026-09-26": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 15,
+    "next": 20737
+   },
+   "2026-09-27": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 16,
+    "next": 20737
+   },
+   "2026-09-28": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 17,
+    "next": 20737
+   },
+   "2026-09-29": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20737
+   },
+   "2026-09-30": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 19,
+    "next": 20737
+   },
+   "2026-10-01": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 20,
+    "next": 20737
+   },
+   "2026-10-02": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 21,
+    "next": 20737
+   },
+   "2026-10-03": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 22,
+    "next": 20737
+   },
+   "2026-10-04": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 23,
+    "next": 20737
+   },
+   "2026-10-05": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 24,
+    "next": 20737
+   },
+   "2026-10-06": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 25,
+    "next": 20737
+   },
+   "2026-10-07": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 26,
+    "next": 20737
+   },
+   "2026-10-08": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 27,
+    "next": 20737
+   },
+   "2026-10-09": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 28,
+    "next": 20737
+   },
+   "2026-10-10": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 29,
+    "next": 20737
+   },
+   "2026-10-11": {
+    "phase": "men",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20766
+   },
+   "2026-10-12": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20766
+   },
+   "2026-10-13": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20766
+   },
+   "2026-10-14": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20766
+   },
+   "2026-10-15": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20766
+   },
+   "2026-10-16": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20766
+   },
+   "2026-10-17": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20766
+   },
+   "2026-10-18": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20766
+   },
+   "2026-10-19": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20766
+   },
+   "2026-10-20": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20766
+   },
+   "2026-10-21": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20766
+   },
+   "2026-10-22": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20766
+   },
+   "2026-10-23": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20766
+   },
+   "2026-10-24": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20766
+   },
+   "2026-10-25": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 15,
+    "next": 20766
+   },
+   "2026-10-26": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 16,
+    "next": 20766
+   },
+   "2026-10-27": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 17,
+    "next": 20766
+   },
+   "2026-10-28": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20766
+   },
+   "2026-10-29": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 19,
+    "next": 20766
+   },
+   "2026-10-30": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 20,
+    "next": 20766
+   },
+   "2026-10-31": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 21,
+    "next": 20766
+   },
+   "2026-11-01": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 22,
+    "next": 20766
+   },
+   "2026-11-02": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 23,
+    "next": 20766
+   },
+   "2026-11-03": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 24,
+    "next": 20766
+   },
+   "2026-11-04": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 25,
+    "next": 20766
+   },
+   "2026-11-05": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 26,
+    "next": 20766
+   },
+   "2026-11-06": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 27,
+    "next": 20766
+   },
+   "2026-11-07": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 28,
+    "next": 20766
+   },
+   "2026-11-08": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 29,
+    "next": 20766
+   },
+   "2026-11-09": {
+    "phase": "men",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20795
+   },
+   "2026-11-10": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20795
+   },
+   "2026-11-11": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20795
+   },
+   "2026-11-12": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20795
+   },
+   "2026-11-13": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20795
+   },
+   "2026-11-14": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20795
+   },
+   "2026-11-15": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20795
+   },
+   "2026-11-16": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20795
+   },
+   "2026-11-17": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20795
+   },
+   "2026-11-18": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20795
+   },
+   "2026-11-19": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20795
+   },
+   "2026-11-20": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20795
+   },
+   "2026-11-21": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20795
+   },
+   "2026-11-22": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20795
+   },
+   "2026-11-23": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 15,
+    "next": 20795
+   },
+   "2026-11-24": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 16,
+    "next": 20795
+   },
+   "2026-11-25": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 17,
+    "next": 20795
+   },
+   "2026-11-26": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20795
+   }
+  },
+  "moodStats": {
+   "men": {
+    "n": 0,
+    "moods": {},
+    "syms": {},
+    "energy": []
+   },
+   "fol": {
+    "n": 0,
+    "moods": {},
+    "syms": {},
+    "energy": []
+   },
+   "ovu": {
+    "n": 0,
+    "moods": {},
+    "syms": {},
+    "energy": []
+   },
+   "lut": {
+    "n": 0,
+    "moods": {},
+    "syms": {},
+    "energy": []
+   }
+  },
+  "patterns": []
+ }
+}

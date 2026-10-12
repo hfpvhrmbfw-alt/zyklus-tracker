@@ -1,0 +1,3153 @@
+{
+ "beschreibung": "Demodaten (makeDemo) über sieben Zyklen",
+ "input": {
+  "today": "2026-10-12",
+  "settings": {
+   "cycleLen": 28,
+   "periodLen": 5,
+   "luteal": 14,
+   "theme": "auto"
+  },
+  "days": [
+   {
+    "date": "2026-04-19",
+    "flow": 3,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "sensibel",
+     "lustlos",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-04-20",
+    "flow": 4,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-04-21",
+    "flow": 2,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "muede",
+     "sensibel",
+     "lustlos",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-04-22",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [
+     "kraempfe",
+     "rueckenschmerzen",
+     "kopfschmerzen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-04-23",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-04-24",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "energiegeladen",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-04-25",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-04-27",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-04-29",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-04-30",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-05-02",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-05-03",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-05-04",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst",
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-05-05",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-05-06",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [
+     "blaehungen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-05-07",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "ruhig"
+    ],
+    "symptoms": [
+     "blaehungen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-05-08",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "ruhig",
+     "gestresst"
+    ],
+    "symptoms": [],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-05-09",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "ruhig",
+     "gestresst"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-05-10",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-05-11",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-05-12",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gestresst"
+    ],
+    "symptoms": [
+     "blaehungen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-05-13",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gereizt",
+     "sensibel"
+    ],
+    "symptoms": [
+     "blaehungen"
+    ],
+    "energy": 1,
+    "note": ""
+   },
+   {
+    "date": "2026-05-16",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gestresst"
+    ],
+    "symptoms": [
+     "blaehungen",
+     "unreine_haut"
+    ],
+    "energy": 1,
+    "note": ""
+   },
+   {
+    "date": "2026-05-17",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "traurig",
+     "gestresst",
+     "muede"
+    ],
+    "symptoms": [
+     "brustspannen",
+     "blaehungen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-05-18",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-05-19",
+    "flow": 4,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "sensibel",
+     "ruhig"
+    ],
+    "symptoms": [
+     "kopfschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-05-20",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [
+     "sensibel"
+    ],
+    "symptoms": [
+     "kraempfe",
+     "kopfschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-05-21",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-05-22",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [
+     "muede",
+     "lustlos"
+    ],
+    "symptoms": [
+     "kraempfe",
+     "rueckenschmerzen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-05-23",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-05-25",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-05-26",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-05-27",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-05-30",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-05-31",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-06-01",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "selbstbewusst",
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-06-04",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-06-05",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "muede",
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-06-06",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-06-09",
+    "flow": 0,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "gereizt",
+     "sensibel",
+     "gestresst",
+     "muede"
+    ],
+    "symptoms": [
+     "brustspannen",
+     "heisshunger",
+     "blaehungen"
+    ],
+    "energy": 1,
+    "note": ""
+   },
+   {
+    "date": "2026-06-11",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [],
+    "symptoms": [
+     "brustspannen",
+     "blaehungen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-06-12",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "traurig",
+     "gestresst"
+    ],
+    "symptoms": [
+     "heisshunger"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-06-13",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gereizt",
+     "traurig",
+     "sensibel"
+    ],
+    "symptoms": [
+     "unreine_haut"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-06-14",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-06-15",
+    "flow": 4,
+    "stimmung": [],
+    "moods": [
+     "muede",
+     "sensibel",
+     "lustlos",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-06-16",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [
+     "sensibel"
+    ],
+    "symptoms": [
+     "kraempfe",
+     "rueckenschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-06-17",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-06-18",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-06-19",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "energiegeladen",
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-06-21",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-06-22",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-06-23",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "gluecklich",
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-06-24",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-06-25",
+    "flow": 0,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-06-26",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-06-27",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "energiegeladen",
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-06-29",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-06-30",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-07-03",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "muede",
+     "gestresst"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-07-05",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gestresst",
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-07-07",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-07-08",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-07-10",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "traurig",
+     "gestresst",
+     "muede"
+    ],
+    "symptoms": [
+     "brustspannen",
+     "unreine_haut"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-07-11",
+    "flow": 0,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "traurig",
+     "muede"
+    ],
+    "symptoms": [
+     "unreine_haut"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-07-12",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gestresst",
+     "muede"
+    ],
+    "symptoms": [
+     "blaehungen",
+     "unreine_haut"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-07-15",
+    "flow": 3,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "sensibel",
+     "lustlos",
+     "ruhig"
+    ],
+    "symptoms": [
+     "kraempfe",
+     "rueckenschmerzen",
+     "kopfschmerzen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-07-16",
+    "flow": 4,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "ruhig"
+    ],
+    "symptoms": [
+     "kraempfe",
+     "rueckenschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-07-17",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-07-18",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [
+     "muede",
+     "sensibel",
+     "lustlos"
+    ],
+    "symptoms": [
+     "kraempfe",
+     "kopfschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-07-20",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-07-21",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "energiegeladen",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-07-23",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-07-24",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-07-28",
+    "flow": 0,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-07-29",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-08-01",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-08-05",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "ruhig",
+     "muede",
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-08-06",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-08-09",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "traurig",
+     "gestresst",
+     "muede"
+    ],
+    "symptoms": [],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-08-10",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gereizt",
+     "traurig",
+     "sensibel",
+     "gestresst"
+    ],
+    "symptoms": [
+     "brustspannen",
+     "unreine_haut"
+    ],
+    "energy": 1,
+    "note": ""
+   },
+   {
+    "date": "2026-08-12",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [
+     "muede"
+    ],
+    "symptoms": [
+     "rueckenschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-08-13",
+    "flow": 4,
+    "stimmung": [],
+    "moods": [
+     "muede",
+     "sensibel",
+     "ruhig"
+    ],
+    "symptoms": [
+     "rueckenschmerzen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-08-14",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-08-15",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [
+     "ruhig"
+    ],
+    "symptoms": [
+     "rueckenschmerzen",
+     "kopfschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-08-16",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [
+     "muede",
+     "lustlos",
+     "ruhig"
+    ],
+    "symptoms": [
+     "kraempfe",
+     "rueckenschmerzen",
+     "kopfschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-08-17",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-08-18",
+    "flow": 0,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-08-19",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-08-20",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen",
+     "selbstbewusst",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-08-21",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen",
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-08-23",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen",
+     "selbstbewusst",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-08-25",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-08-26",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-08-27",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst",
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-08-29",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "selbstbewusst",
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-08-30",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich"
+    ],
+    "symptoms": [
+     "blaehungen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-08-31",
+    "flow": 0,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-09-01",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "gestresst"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-09-02",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "ruhig",
+     "gestresst"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-09-05",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "muede",
+     "gestresst",
+     "gluecklich"
+    ],
+    "symptoms": [
+     "blaehungen"
+    ],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-09-06",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "traurig",
+     "gestresst",
+     "muede"
+    ],
+    "symptoms": [
+     "brustspannen",
+     "heisshunger",
+     "blaehungen",
+     "unreine_haut"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-09-09",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gereizt",
+     "sensibel",
+     "muede"
+    ],
+    "symptoms": [
+     "heisshunger",
+     "blaehungen"
+    ],
+    "energy": 1,
+    "note": ""
+   },
+   {
+    "date": "2026-09-10",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "gereizt",
+     "traurig",
+     "sensibel"
+    ],
+    "symptoms": [
+     "brustspannen",
+     "blaehungen",
+     "unreine_haut"
+    ],
+    "energy": 1,
+    "note": ""
+   },
+   {
+    "date": "2026-09-11",
+    "flow": 3,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "lustlos",
+     "ruhig"
+    ],
+    "symptoms": [
+     "rueckenschmerzen",
+     "kopfschmerzen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-09-12",
+    "flow": 4,
+    "stimmung": [],
+    "moods": [
+     "sensibel",
+     "lustlos",
+     "ruhig"
+    ],
+    "symptoms": [
+     "kraempfe",
+     "rueckenschmerzen",
+     "kopfschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-09-13",
+    "flow": 2,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "muede",
+     "sensibel",
+     "ruhig"
+    ],
+    "symptoms": [
+     "kopfschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-09-14",
+    "flow": 3,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "muede"
+    ],
+    "symptoms": [
+     "kopfschmerzen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-09-15",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [
+     "muede",
+     "sensibel"
+    ],
+    "symptoms": [
+     "rueckenschmerzen",
+     "kopfschmerzen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-09-16",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-09-17",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "selbstbewusst",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-09-18",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "gluecklich",
+     "selbstbewusst",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-09-19",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "energiegeladen",
+     "ruhig"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-09-20",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-09-21",
+    "flow": 0,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "energiegeladen",
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-09-22",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-09-25",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "gluecklich",
+     "selbstbewusst"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-09-26",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "gluecklich",
+     "energiegeladen"
+    ],
+    "symptoms": [],
+    "energy": 5,
+    "note": ""
+   },
+   {
+    "date": "2026-09-27",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "ruhig",
+     "muede",
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-09-28",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [
+     "muede",
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-09-29",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-10-01",
+    "flow": 0,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [],
+    "symptoms": [],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-10-03",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "ruhig",
+     "gluecklich"
+    ],
+    "symptoms": [],
+    "energy": 4,
+    "note": ""
+   },
+   {
+    "date": "2026-10-04",
+    "flow": 0,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "gereizt",
+     "traurig",
+     "sensibel",
+     "gestresst",
+     "muede"
+    ],
+    "symptoms": [
+     "brustspannen",
+     "blaehungen",
+     "unreine_haut"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-10-05",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "traurig",
+     "gestresst",
+     "muede"
+    ],
+    "symptoms": [
+     "blaehungen"
+    ],
+    "energy": 1,
+    "note": ""
+   },
+   {
+    "date": "2026-10-07",
+    "flow": 0,
+    "stimmung": [
+     "ok"
+    ],
+    "moods": [
+     "gereizt",
+     "sensibel"
+    ],
+    "symptoms": [
+     "heisshunger",
+     "unreine_haut"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-10-08",
+    "flow": 0,
+    "stimmung": [],
+    "moods": [
+     "sensibel",
+     "gestresst",
+     "muede"
+    ],
+    "symptoms": [
+     "brustspannen",
+     "heisshunger",
+     "blaehungen",
+     "unreine_haut"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-10-09",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [
+     "muede",
+     "ruhig"
+    ],
+    "symptoms": [
+     "kraempfe",
+     "rueckenschmerzen",
+     "kopfschmerzen"
+    ],
+    "energy": 3,
+    "note": ""
+   },
+   {
+    "date": "2026-10-10",
+    "flow": 4,
+    "stimmung": [
+     "abends"
+    ],
+    "moods": [],
+    "symptoms": [
+     "kraempfe",
+     "rueckenschmerzen",
+     "kopfschmerzen"
+    ],
+    "energy": 2,
+    "note": ""
+   },
+   {
+    "date": "2026-10-11",
+    "flow": 2,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   },
+   {
+    "date": "2026-10-12",
+    "flow": 3,
+    "stimmung": [],
+    "moods": [],
+    "symptoms": [],
+    "energy": 0,
+    "note": ""
+   }
+  ]
+ },
+ "expected": {
+  "analyze": {
+   "today": 20738,
+   "periods": [
+    {
+     "start": 20562,
+     "end": 20565,
+     "len": 4
+    },
+    {
+     "start": 20591,
+     "end": 20595,
+     "len": 5
+    },
+    {
+     "start": 20618,
+     "end": 20621,
+     "len": 4
+    },
+    {
+     "start": 20649,
+     "end": 20652,
+     "len": 4
+    },
+    {
+     "start": 20677,
+     "end": 20681,
+     "len": 5
+    },
+    {
+     "start": 20707,
+     "end": 20712,
+     "len": 6
+    },
+    {
+     "start": 20735,
+     "end": 20738,
+     "len": 4
+    }
+   ],
+   "cycles": [
+    {
+     "start": 20562,
+     "len": 29,
+     "periodLen": 4,
+     "ok": true
+    },
+    {
+     "start": 20591,
+     "len": 27,
+     "periodLen": 5,
+     "ok": true
+    },
+    {
+     "start": 20618,
+     "len": 31,
+     "periodLen": 4,
+     "ok": true
+    },
+    {
+     "start": 20649,
+     "len": 28,
+     "periodLen": 4,
+     "ok": true
+    },
+    {
+     "start": 20677,
+     "len": 30,
+     "periodLen": 5,
+     "ok": true
+    },
+    {
+     "start": 20707,
+     "len": 28,
+     "periodLen": 6,
+     "ok": true
+    }
+   ],
+   "recent": [
+    {
+     "start": 20562,
+     "len": 29,
+     "periodLen": 4,
+     "ok": true
+    },
+    {
+     "start": 20591,
+     "len": 27,
+     "periodLen": 5,
+     "ok": true
+    },
+    {
+     "start": 20618,
+     "len": 31,
+     "periodLen": 4,
+     "ok": true
+    },
+    {
+     "start": 20649,
+     "len": 28,
+     "periodLen": 4,
+     "ok": true
+    },
+    {
+     "start": 20677,
+     "len": 30,
+     "periodLen": 5,
+     "ok": true
+    },
+    {
+     "start": 20707,
+     "len": 28,
+     "periodLen": 6,
+     "ok": true
+    }
+   ],
+   "avgCycle": 28.833333,
+   "avgPeriod": 4.666667,
+   "sd": 1.34371,
+   "C": 29,
+   "P": 5,
+   "L": 14,
+   "current": {
+    "start": 20735,
+    "day": 4,
+    "next": 20764,
+    "overdue": 0,
+    "ov": 20750,
+    "fs": 20745,
+    "fe": 20751,
+    "inPeriod": true
+   }
+  },
+  "phases": {
+   "2026-07-14": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 31,
+    "next": 20649
+   },
+   "2026-07-15": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20677
+   },
+   "2026-07-16": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20677
+   },
+   "2026-07-17": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20677
+   },
+   "2026-07-18": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20677
+   },
+   "2026-07-19": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20677
+   },
+   "2026-07-20": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20677
+   },
+   "2026-07-21": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20677
+   },
+   "2026-07-22": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20677
+   },
+   "2026-07-23": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20677
+   },
+   "2026-07-24": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20677
+   },
+   "2026-07-25": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20677
+   },
+   "2026-07-26": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20677
+   },
+   "2026-07-27": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20677
+   },
+   "2026-07-28": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20677
+   },
+   "2026-07-29": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 15,
+    "next": 20677
+   },
+   "2026-07-30": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 16,
+    "next": 20677
+   },
+   "2026-07-31": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 17,
+    "next": 20677
+   },
+   "2026-08-01": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20677
+   },
+   "2026-08-02": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 19,
+    "next": 20677
+   },
+   "2026-08-03": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 20,
+    "next": 20677
+   },
+   "2026-08-04": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 21,
+    "next": 20677
+   },
+   "2026-08-05": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 22,
+    "next": 20677
+   },
+   "2026-08-06": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 23,
+    "next": 20677
+   },
+   "2026-08-07": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 24,
+    "next": 20677
+   },
+   "2026-08-08": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 25,
+    "next": 20677
+   },
+   "2026-08-09": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 26,
+    "next": 20677
+   },
+   "2026-08-10": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 27,
+    "next": 20677
+   },
+   "2026-08-11": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 28,
+    "next": 20677
+   },
+   "2026-08-12": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20707
+   },
+   "2026-08-13": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20707
+   },
+   "2026-08-14": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20707
+   },
+   "2026-08-15": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20707
+   },
+   "2026-08-16": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20707
+   },
+   "2026-08-17": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20707
+   },
+   "2026-08-18": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20707
+   },
+   "2026-08-19": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20707
+   },
+   "2026-08-20": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20707
+   },
+   "2026-08-21": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20707
+   },
+   "2026-08-22": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20707
+   },
+   "2026-08-23": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20707
+   },
+   "2026-08-24": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20707
+   },
+   "2026-08-25": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20707
+   },
+   "2026-08-26": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 15,
+    "next": 20707
+   },
+   "2026-08-27": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 16,
+    "next": 20707
+   },
+   "2026-08-28": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 17,
+    "next": 20707
+   },
+   "2026-08-29": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20707
+   },
+   "2026-08-30": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 19,
+    "next": 20707
+   },
+   "2026-08-31": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 20,
+    "next": 20707
+   },
+   "2026-09-01": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 21,
+    "next": 20707
+   },
+   "2026-09-02": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 22,
+    "next": 20707
+   },
+   "2026-09-03": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 23,
+    "next": 20707
+   },
+   "2026-09-04": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 24,
+    "next": 20707
+   },
+   "2026-09-05": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 25,
+    "next": 20707
+   },
+   "2026-09-06": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 26,
+    "next": 20707
+   },
+   "2026-09-07": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 27,
+    "next": 20707
+   },
+   "2026-09-08": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 28,
+    "next": 20707
+   },
+   "2026-09-09": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 29,
+    "next": 20707
+   },
+   "2026-09-10": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 30,
+    "next": 20707
+   },
+   "2026-09-11": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20735
+   },
+   "2026-09-12": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20735
+   },
+   "2026-09-13": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20735
+   },
+   "2026-09-14": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20735
+   },
+   "2026-09-15": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20735
+   },
+   "2026-09-16": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20735
+   },
+   "2026-09-17": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20735
+   },
+   "2026-09-18": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20735
+   },
+   "2026-09-19": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20735
+   },
+   "2026-09-20": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20735
+   },
+   "2026-09-21": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20735
+   },
+   "2026-09-22": {
+    "phase": "fol",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20735
+   },
+   "2026-09-23": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20735
+   },
+   "2026-09-24": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20735
+   },
+   "2026-09-25": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 15,
+    "next": 20735
+   },
+   "2026-09-26": {
+    "phase": "ovu",
+    "predicted": false,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 16,
+    "next": 20735
+   },
+   "2026-09-27": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 17,
+    "next": 20735
+   },
+   "2026-09-28": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20735
+   },
+   "2026-09-29": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 19,
+    "next": 20735
+   },
+   "2026-09-30": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 20,
+    "next": 20735
+   },
+   "2026-10-01": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 21,
+    "next": 20735
+   },
+   "2026-10-02": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 22,
+    "next": 20735
+   },
+   "2026-10-03": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 23,
+    "next": 20735
+   },
+   "2026-10-04": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 24,
+    "next": 20735
+   },
+   "2026-10-05": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 25,
+    "next": 20735
+   },
+   "2026-10-06": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 26,
+    "next": 20735
+   },
+   "2026-10-07": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 27,
+    "next": 20735
+   },
+   "2026-10-08": {
+    "phase": "lut",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 28,
+    "next": 20735
+   },
+   "2026-10-09": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20764
+   },
+   "2026-10-10": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20764
+   },
+   "2026-10-11": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20764
+   },
+   "2026-10-12": {
+    "phase": "men",
+    "predicted": false,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20764
+   },
+   "2026-10-13": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20764
+   },
+   "2026-10-14": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20764
+   },
+   "2026-10-15": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20764
+   },
+   "2026-10-16": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20764
+   },
+   "2026-10-17": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20764
+   },
+   "2026-10-18": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20764
+   },
+   "2026-10-19": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20764
+   },
+   "2026-10-20": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20764
+   },
+   "2026-10-21": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20764
+   },
+   "2026-10-22": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20764
+   },
+   "2026-10-23": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 15,
+    "next": 20764
+   },
+   "2026-10-24": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 16,
+    "next": 20764
+   },
+   "2026-10-25": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 17,
+    "next": 20764
+   },
+   "2026-10-26": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20764
+   },
+   "2026-10-27": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 19,
+    "next": 20764
+   },
+   "2026-10-28": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 20,
+    "next": 20764
+   },
+   "2026-10-29": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 21,
+    "next": 20764
+   },
+   "2026-10-30": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 22,
+    "next": 20764
+   },
+   "2026-10-31": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 23,
+    "next": 20764
+   },
+   "2026-11-01": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 24,
+    "next": 20764
+   },
+   "2026-11-02": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 25,
+    "next": 20764
+   },
+   "2026-11-03": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 26,
+    "next": 20764
+   },
+   "2026-11-04": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 27,
+    "next": 20764
+   },
+   "2026-11-05": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 28,
+    "next": 20764
+   },
+   "2026-11-06": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 29,
+    "next": 20764
+   },
+   "2026-11-07": {
+    "phase": "men",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 1,
+    "next": 20793
+   },
+   "2026-11-08": {
+    "phase": "men",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 2,
+    "next": 20793
+   },
+   "2026-11-09": {
+    "phase": "men",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 3,
+    "next": 20793
+   },
+   "2026-11-10": {
+    "phase": "men",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 4,
+    "next": 20793
+   },
+   "2026-11-11": {
+    "phase": "men",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 5,
+    "next": 20793
+   },
+   "2026-11-12": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 6,
+    "next": 20793
+   },
+   "2026-11-13": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 7,
+    "next": 20793
+   },
+   "2026-11-14": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 8,
+    "next": 20793
+   },
+   "2026-11-15": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 9,
+    "next": 20793
+   },
+   "2026-11-16": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 10,
+    "next": 20793
+   },
+   "2026-11-17": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 11,
+    "next": 20793
+   },
+   "2026-11-18": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 12,
+    "next": 20793
+   },
+   "2026-11-19": {
+    "phase": "fol",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 13,
+    "next": 20793
+   },
+   "2026-11-20": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 14,
+    "next": 20793
+   },
+   "2026-11-21": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 15,
+    "next": 20793
+   },
+   "2026-11-22": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": true,
+    "cycleDay": 16,
+    "next": 20793
+   },
+   "2026-11-23": {
+    "phase": "ovu",
+    "predicted": true,
+    "fertile": true,
+    "ovu": false,
+    "cycleDay": 17,
+    "next": 20793
+   },
+   "2026-11-24": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 18,
+    "next": 20793
+   },
+   "2026-11-25": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 19,
+    "next": 20793
+   },
+   "2026-11-26": {
+    "phase": "lut",
+    "predicted": true,
+    "fertile": false,
+    "ovu": false,
+    "cycleDay": 20,
+    "next": 20793
+   }
+  },
+  "moodStats": {
+   "men": {
+    "n": 22,
+    "moods": {
+     "sensibel": 12,
+     "lustlos": 9,
+     "ruhig": 13,
+     "muede": 11
+    },
+    "syms": {
+     "kraempfe": 11,
+     "rueckenschmerzen": 14,
+     "kopfschmerzen": 14
+    },
+    "energy": [
+     2,
+     3,
+     3,
+     2,
+     2,
+     3,
+     3,
+     2,
+     3,
+     2,
+     2,
+     2,
+     3,
+     2,
+     2,
+     3,
+     2,
+     2,
+     3,
+     3,
+     3,
+     2
+    ]
+   },
+   "fol": {
+    "n": 36,
+    "moods": {
+     "selbstbewusst": 15,
+     "ruhig": 20,
+     "gluecklich": 15,
+     "energiegeladen": 18
+    },
+    "syms": {},
+    "energy": [
+     4,
+     4,
+     5,
+     4,
+     3,
+     5,
+     4,
+     5,
+     4,
+     3,
+     5,
+     5,
+     4,
+     4,
+     4,
+     4,
+     3,
+     5,
+     3,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     5,
+     4,
+     4,
+     5,
+     4,
+     4
+    ]
+   },
+   "ovu": {
+    "n": 16,
+    "moods": {
+     "energiegeladen": 8,
+     "selbstbewusst": 10,
+     "gluecklich": 5
+    },
+    "syms": {},
+    "energy": [
+     4,
+     5,
+     4,
+     4,
+     4,
+     5,
+     4,
+     4,
+     5,
+     4,
+     5,
+     5,
+     5,
+     5,
+     4,
+     5
+    ]
+   },
+   "lut": {
+    "n": 46,
+    "moods": {
+     "ruhig": 10,
+     "gestresst": 20,
+     "gluecklich": 11,
+     "gereizt": 8,
+     "sensibel": 9,
+     "traurig": 11,
+     "muede": 17
+    },
+    "syms": {
+     "blaehungen": 17,
+     "unreine_haut": 11,
+     "brustspannen": 9,
+     "heisshunger": 6
+    },
+    "energy": [
+     3,
+     3,
+     2,
+     3,
+     2,
+     3,
+     3,
+     1,
+     1,
+     2,
+     4,
+     2,
+     2,
+     1,
+     2,
+     3,
+     3,
+     4,
+     2,
+     3,
+     4,
+     3,
+     2,
+     2,
+     3,
+     3,
+     4,
+     2,
+     1,
+     2,
+     2,
+     3,
+     4,
+     4,
+     3,
+     1,
+     1,
+     2,
+     3,
+     3,
+     3,
+     4,
+     3,
+     1,
+     2,
+     2
+    ]
+   }
+  },
+  "patterns": [
+   {
+    "kind": "symptom",
+    "id": "kopfschmerzen",
+    "phase": "men",
+    "share": 0.636364,
+    "otherShare": 0
+   },
+   {
+    "kind": "symptom",
+    "id": "rueckenschmerzen",
+    "phase": "men",
+    "share": 0.636364,
+    "otherShare": 0
+   },
+   {
+    "kind": "symptom",
+    "id": "kraempfe",
+    "phase": "men",
+    "share": 0.5,
+    "otherShare": 0
+   },
+   {
+    "kind": "mood",
+    "id": "selbstbewusst",
+    "phase": "ovu",
+    "share": 0.625,
+    "otherShare": 0.144231
+   },
+   {
+    "kind": "mood",
+    "id": "sensibel",
+    "phase": "men",
+    "share": 0.545455,
+    "otherShare": 0.091837
+   },
+   {
+    "kind": "energy",
+    "high": {
+     "phase": "ovu",
+     "avg": 4.5
+    },
+    "low": {
+     "phase": "men",
+     "avg": 2.454545
+    }
+   }
+  ]
+ }
+}
