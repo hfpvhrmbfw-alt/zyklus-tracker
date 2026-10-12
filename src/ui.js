@@ -251,9 +251,9 @@ export function applyTheme() {
   if (t === 'auto') delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = t;
   try { localStorage.setItem('zyklus-theme', t); } catch { /* egal */ }
   // Statusleiste am Handy passend einfärben
-  const forced = { light: '#E3DAD3', dark: '#1D1916' }[t];
-  $('tcLight').content = forced || '#E3DAD3';
-  $('tcDark').content = forced || '#1D1916';
+  const forced = { light: '#DCE2D6', dark: '#151A16' }[t];
+  $('tcLight').content = forced || '#DCE2D6';
+  $('tcDark').content = forced || '#151A16';
   $('themeBtn').textContent = 'Farbe: ' + THEME_LABEL[t];
   $('themeBtn').setAttribute('aria-label', `Farbschema: ${THEME_LABEL[t]}. Wechseln zu ${THEME_LABEL[THEME_NEXT[t]]}`);
   $('setTheme').value = t;
