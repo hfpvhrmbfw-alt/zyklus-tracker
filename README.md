@@ -15,7 +15,7 @@ Reine Frontend-PWA ohne Backend und ohne Build-Schritt. Alle Einträge liegen nu
 - Alles sind Schätzungen, kein medizinischer Rat und nicht zur Verhütung geeignet.
 
 ## Starten
-Service Worker brauchen `https://` oder `localhost`:
+Die App nutzt ES-Module und braucht deshalb einen kleinen Server (`https://` oder `localhost`, nicht `file://`):
 
 ```
 cd zyklus-tracker
@@ -24,7 +24,28 @@ npx serve .        # oder: python3 -m http.server 8000
 
 Zum Installieren auf dem Handy den Ordner auf einen HTTPS-Host legen (z. B. GitHub Pages, Netlify), Seite öffnen und „Zum Home-Bildschirm“ bzw. „App installieren“ wählen. Danach läuft die App offline.
 
-## Dateien
-`index.html` · `styles.css` (Hausstil Web v1.2) · `app.js` · `sw.js` · `manifest.webmanifest` · `icons/`
+## Aufbau
+Vier Schichten, Abhängigkeiten nur in eine Richtung (Oberfläche → Logik → Modell, Oberfläche → Speicher → Modell):
 
-Nach Änderungen an App-Dateien `VERSION` in `sw.js` hochzählen, damit installierte Apps das Update laden.
+| Datei | Schicht |
+|---|---|
+| `src/model.js` | Modell: Stammdaten-IDs, Einträge, Validierung, Import/Export, Schema-Version |
+| `src/logic.js` | Logik: reine Funktionen (Zyklen, Phasen, Muster, Demodaten), ohne DOM, Speicher oder Uhrzeit |
+| `src/storage.js` | Speicher: IndexedDB mit localStorage-Fallback |
+| `src/texts.js` | Beschriftungen und Meldungen der Oberfläche |
+| `src/ui.js` | Oberfläche: Rendering, Formatierung, Theme |
+| `src/main.js` | Start, Aktionen, Ereignisse |
+
+Weitere Dateien: `index.html` · `styles.css` (Hausstil Web v1.2) · `sw.js` · `manifest.webmanifest` · `icons/` · `docs/SWIFT.md` (Übertragung nach Swift)
+
+## Tests
+Die Logik läuft ohne Browser und wird mit Node getestet (keine Abhängigkeiten):
+
+```
+npm test
+```
+
+Die Testfälle liegen als JSON in `tests/fixtures/` und sind für spätere Swift-Tests wiederverwendbar.
+
+## Nach Änderungen
+`VERSION` in `sw.js` hochzählen und neue Dateien in die `SHELL`-Liste eintragen, damit installierte Apps das Update laden.
