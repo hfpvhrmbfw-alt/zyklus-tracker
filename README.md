@@ -4,6 +4,7 @@ Reine Frontend-PWA ohne Backend und ohne Build-Schritt. Alle Einträge liegen nu
 
 ## Funktionen
 - **Eintrag:** pro Tag Blutung (keine bis stark), Gefühle, Energie (1–5), Körpersymptome, Notiz. Speichert automatisch.
+- **Heute:** Zykluskarte mit Bild je Phase, Stimmungswoche (Sonne, Wolke, Regen, Mond), Ausblick-Kacheln.
 - **Kalender:** eingetragene Perioden (P), Schmierblutung (·), erwartete Periode (p), fruchtbares Fenster (F) und Eisprung (E) als Schätzung.
 - **Analyse:** Ø Zykluslänge und Periodendauer (letzte 6 plausiblen Zyklen, 15–60 Tage), Spanne und Schwankung, Balken je Zyklus, Gefühle je Zyklusphase, automatisch erkannte Muster.
 - **Daten:** JSON-Backup exportieren/importieren, Standardwerte (Zykluslänge, Periodendauer, Lutealphase), Hell/Dunkel, Demodaten, alles löschen.
@@ -34,9 +35,10 @@ Vier Schichten, Abhängigkeiten nur in eine Richtung (Oberfläche → Logik → 
 | `src/storage.js` | Speicher: IndexedDB mit localStorage-Fallback |
 | `src/texts.js` | Beschriftungen und Meldungen der Oberfläche |
 | `src/ui.js` | Oberfläche: Rendering, Formatierung, Theme |
+| `src/art.js` | Oberfläche: Illustrationen und Symbole als Inline-SVG |
 | `src/main.js` | Start, Aktionen, Ereignisse |
 
-Weitere Dateien: `index.html` · `styles.css` (Hausstil Web v1.2) · `sw.js` · `manifest.webmanifest` · `icons/` · `docs/SWIFT.md` (Übertragung nach Swift)
+Weitere Dateien: `index.html` · `styles.css` (Stil „Beet“ v2.0, mobil zuerst) · `sw.js` · `manifest.webmanifest` · `icons/` · `docs/SWIFT.md` (Übertragung nach Swift)
 
 ## Tests
 Die Logik läuft ohne Browser und wird mit Node getestet (keine Abhängigkeiten):

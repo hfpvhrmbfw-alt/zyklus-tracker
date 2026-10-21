@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" id="tcLight" content="#DCE2D6" media="(prefers-color-scheme: light)">
-<meta name="theme-color" id="tcDark" content="#151A16" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" id="tcLight" content="#EADFCC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" id="tcDark" content="#1C1B1A" media="(prefers-color-scheme: dark)">
 <meta name="description" content="Zyklus-Tracker: Tage, Gefühle und Muster erfassen. Alle Daten bleiben auf diesem Gerät.">
 <title>Zyklus-Tracker</title>
 <script>try{var t=localStorage.getItem('zyklus-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
@@ -16,148 +16,207 @@
 <meta name="apple-mobile-web-app-title" content="Zyklus">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,600&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="runhead"><div class="wrap cap"><span>Zyklus · Tracker</span><span class="headr"><span id="headDate"></span><button type="button" class="themebtn" id="themeBtn">Farbe: System</button></span></div></header>
+<!-- Zweige in den oberen Ecken -->
+<div class="sprigs" aria-hidden="true">
+  <svg class="sprig l" viewBox="0 0 120 110"><use href="#sprig"/></svg>
+  <svg class="sprig r" viewBox="0 0 120 110"><use href="#sprig"/></svg>
+</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <path id="lf" d="M0 0 C6 -8 20 -8 26 0 C20 8 6 8 0 0Z"/>
+    <g id="sprig">
+      <path d="M-6 -6 C24 14 52 40 78 100" stroke="#2F6F5E" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <use href="#lf" transform="translate(8 5) rotate(-12)" fill="#86B98A"/>
+      <use href="#lf" transform="translate(16 10) rotate(98) scale(.95)" fill="#5E9C6C"/>
+      <use href="#lf" transform="translate(28 20) rotate(-6) scale(1.05)" fill="#5E9C6C"/>
+      <use href="#lf" transform="translate(36 28) rotate(110)" fill="#86B98A"/>
+      <use href="#lf" transform="translate(46 40) rotate(4) scale(.95)" fill="#86B98A"/>
+      <use href="#lf" transform="translate(54 52) rotate(118) scale(.9)" fill="#5E9C6C"/>
+      <use href="#lf" transform="translate(62 64) rotate(14) scale(.8)" fill="#5E9C6C"/>
+      <use href="#lf" transform="translate(68 76) rotate(124) scale(.7)" fill="#86B98A"/>
+      <circle cx="92" cy="30" r="1.8" fill="var(--sparkle)"/><circle cx="104" cy="54" r="1.4" fill="#F47A4B"/>
+      <circle cx="30" cy="62" r="1.6" fill="var(--sparkle)"/><circle cx="96" cy="86" r="1.2" fill="var(--sparkle)"/>
+      <circle cx="80" cy="12" r="1.2" fill="#F47A4B"/>
+    </g>
+  </defs>
+</svg>
+
+<header class="top wrap">
+  <div>
+    <h1 id="greet">Hallo!</h1>
+    <p class="hello-sub" id="headDate"></p>
+  </div>
+  <div class="topbtns">
+    <button type="button" class="iconbtn" id="themeBtn">Farbe: System</button>
+    <button type="button" class="iconbtn" id="setBtn" aria-label="Einstellungen und Daten" title="Einstellungen"></button>
+  </div>
+</header>
 
 <main class="wrap">
-  <section class="hero" aria-live="polite">
-    <h1 id="heroTitle">Zyklus</h1>
-    <div class="subtitle cap" id="heroSub">Tage<span class="sep">·</span>Gefühle<span class="sep">·</span>Muster</div>
-    <p class="lede" id="heroLede"></p>
-  </section>
-  <hr class="rule-heavy">
+  <!-- HEUTE -->
+  <div role="tabpanel" id="p-heute" aria-labelledby="tab-heute">
+    <div id="demoNote" class="note info" hidden><b>Demo</b> Gerade sind Beispieldaten geladen. Unter „Daten“ kannst du sie wieder entfernen.</div>
 
-  <div class="tabs">
-    <div role="tablist" aria-label="Bereiche">
-      <button role="tab" id="tab-heute" aria-controls="p-heute" aria-selected="true">Eintrag</button>
-      <button role="tab" id="tab-kal" aria-controls="p-kal" aria-selected="false" tabindex="-1">Kalender</button>
-      <button role="tab" id="tab-ana" aria-controls="p-ana" aria-selected="false" tabindex="-1">Analyse</button>
-      <button role="tab" id="tab-daten" aria-controls="p-daten" aria-selected="false" tabindex="-1">Daten</button>
-    </div>
+    <section class="card hero" aria-live="polite">
+      <div class="hero-text">
+        <p class="hero-sub" id="heroSub">Tage<span class="sep">·</span>Gefühle<span class="sep">·</span>Muster</p>
+        <h2 id="heroTitle">Zyklus</h2>
+        <button type="button" class="pill" id="goEntry">Tag eintragen <span aria-hidden="true">→</span></button>
+      </div>
+      <div class="hero-art" id="heroArt"></div>
+      <p class="hero-lede" id="heroLede"></p>
+    </section>
 
-    <!-- EINTRAG -->
-    <div role="tabpanel" id="p-heute" aria-labelledby="tab-heute">
-      <div id="demoNote" class="note info" hidden><span class="cap">Demo</span>Gerade sind Beispieldaten geladen. Unter „Daten“ kannst du sie wieder entfernen.</div>
-      <section class="section">
-        <h2 class="label"><span class="no">№ 01</span> — Tag erfassen</h2>
+    <section class="section">
+      <div class="sechead"><h2>Stimmungswoche</h2><button type="button" class="more" id="seeMonth">Ganzer Monat</button></div>
+      <div class="week" id="moodWeek"></div>
+    </section>
+
+    <section class="section">
+      <div class="sechead"><h2>Ausblick</h2></div>
+      <div class="tiles" id="outlook"></div>
+    </section>
+
+    <section class="section" id="entry">
+      <div class="sechead"><h2>Tag erfassen</h2></div>
+      <div class="card daycard">
         <div class="daynav">
-          <button class="btn" id="prevDay" aria-label="Vorheriger Tag">←</button>
-          <div class="field"><label for="dayDate" class="cap">Datum</label><input type="date" id="dayDate"></div>
-          <button class="btn" id="nextDay" aria-label="Nächster Tag">→</button>
-          <button class="btn" id="todayBtn">Heute</button>
+          <button class="roundbtn" id="prevDay" aria-label="Vorheriger Tag">←</button>
+          <div class="field"><label for="dayDate" class="sr">Datum</label><input type="date" id="dayDate"></div>
+          <button class="roundbtn" id="nextDay" aria-label="Nächster Tag">→</button>
         </div>
         <h3 class="daytitle" id="dayTitle"></h3>
         <div class="dayphase" id="dayPhase"></div>
+        <button class="pill ghost small" id="todayBtn">Zu heute</button>
+      </div>
 
-        <form id="dayForm" onsubmit="return false">
-          <fieldset class="group"><legend class="cap">Blutung</legend><div class="chips" id="flowChips"></div></fieldset>
-          <fieldset class="group"><legend class="cap">Stimmung</legend><div class="chips" id="stimChips"></div></fieldset>
-          <fieldset class="group"><legend class="cap">Gefühle</legend><div class="chips" id="moodChips"></div></fieldset>
-          <fieldset class="group"><legend class="cap">Energie</legend><div class="chips" id="energyChips"></div></fieldset>
-          <fieldset class="group"><legend class="cap">Körper</legend><div class="chips" id="symChips"></div></fieldset>
-          <div class="group field" style="padding:var(--s4) 0;border-top:1px solid var(--line)">
-            <label for="note" class="cap">Notiz</label>
-            <textarea id="note" maxlength="2000" placeholder="Was war heute los?"></textarea>
-          </div>
-          <div class="saverow">
-            <span class="cap" id="saveState" aria-live="polite">Änderungen werden automatisch gespeichert</span>
-            <button type="button" class="btn" id="clearDay">Tag leeren</button>
-          </div>
-        </form>
-      </section>
+      <form id="dayForm" onsubmit="return false">
+        <fieldset class="card group"><legend>Blutung</legend><div class="chips" id="flowChips"></div></fieldset>
+        <fieldset class="card group"><legend>Stimmung</legend><div class="chips" id="stimChips"></div></fieldset>
+        <fieldset class="card group"><legend>Gefühle</legend><div class="chips" id="moodChips"></div></fieldset>
+        <fieldset class="card group"><legend>Energie</legend><div class="chips" id="energyChips"></div></fieldset>
+        <fieldset class="card group"><legend>Körper</legend><div class="chips" id="symChips"></div></fieldset>
+        <div class="card group notecard field">
+          <label for="note">Notiz</label>
+          <textarea id="note" maxlength="2000" placeholder="Was war heute los?"></textarea>
+        </div>
+        <div class="saverow">
+          <span class="small muted" id="saveState" aria-live="polite">Änderungen werden automatisch gespeichert</span>
+          <button type="button" class="pill ghost small" id="clearDay">Tag leeren</button>
+        </div>
+      </form>
+    </section>
 
-      <section class="section">
-        <h2 class="label"><span class="no">№ 02</span> — Ausblick</h2>
-        <div class="grid kpis" id="outlook"></div>
-        <div class="note warn"><span class="cap">Hinweis</span>Alle Vorhersagen sind Schätzungen aus deinen bisherigen Einträgen. Sie sind kein medizinischer Rat und nicht zur Verhütung geeignet.</div>
-      </section>
-    </div>
+    <div class="note warn"><b>Hinweis</b> Alle Vorhersagen sind Schätzungen aus deinen bisherigen Einträgen. Sie sind kein medizinischer Rat und nicht zur Verhütung geeignet.</div>
+  </div>
 
-    <!-- KALENDER -->
-    <div role="tabpanel" id="p-kal" aria-labelledby="tab-kal" hidden>
-      <section class="section">
-        <h2 class="label"><span class="no">№ 03</span> — Kalender</h2>
+  <!-- KALENDER -->
+  <div role="tabpanel" id="p-kal" aria-labelledby="tab-kal" hidden>
+    <section class="section first">
+      <div class="card calcard">
         <div class="calhead">
-          <button class="btn" id="prevMonth" aria-label="Vorheriger Monat">←</button>
+          <button class="roundbtn" id="prevMonth" aria-label="Vorheriger Monat">←</button>
           <h3 id="monthTitle" aria-live="polite"></h3>
-          <button class="btn" id="nextMonth" aria-label="Nächster Monat">→</button>
+          <button class="roundbtn" id="nextMonth" aria-label="Nächster Monat">→</button>
         </div>
         <div class="cal" id="cal" role="grid" aria-label="Monatskalender"></div>
-        <div class="legend">
-          <div class="row"><span class="sw period">P</span><span><b>P</b> — Periode (eingetragen)</span></div>
-          <div class="row"><span class="sw spot">·</span><span><b>·</b> — Schmierblutung</span></div>
-          <div class="row"><span class="sw pred">p</span><span><b>p</b> — Periode erwartet (Schätzung)</span></div>
-          <div class="row"><span class="sw fertile">F</span><span><b>F</b> — fruchtbares Fenster, <b>E</b> — Eisprung (Schätzung)</span></div>
-          <div class="row"><span class="sw">•</span><span><b>•</b> — Gefühle, Körper oder Notiz eingetragen</span></div>
-          <div class="row"><span class="sw dots"><i class="dot gut"></i><i class="dot ok"></i><i class="dot schlecht"></i><i class="dot abends"></i></span><span>Stimmung: <i class="dot gut il"></i> gut, <i class="dot ok il"></i> ist ok, <i class="dot schlecht il"></i> schlecht, <i class="dot abends il"></i> nur abends. Ohne Angabe bei „Stimmung“ aus den Gefühlen abgeleitet.</span></div>
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="sechead"><h2>Legende</h2></div>
+      <div class="card legend">
+        <div class="lrow"><span class="sw period">P</span><span>Periode (eingetragen)</span></div>
+        <div class="lrow"><span class="sw spot">·</span><span>Schmierblutung</span></div>
+        <div class="lrow"><span class="sw pred">p</span><span>Periode erwartet (Schätzung)</span></div>
+        <div class="lrow"><span class="sw fertile">F</span><span>Fruchtbares Fenster, <b>E</b> Eisprung (Schätzung)</span></div>
+        <div class="lrow"><span class="sw">•</span><span>Gefühle, Körper oder Notiz eingetragen</span></div>
+        <div class="lrow"><span class="sw dots"><i class="dot gut"></i><i class="dot ok"></i><i class="dot schlecht"></i><i class="dot abends"></i></span><span>Stimmung: <i class="dot gut il"></i> gut, <i class="dot ok il"></i> ist ok, <i class="dot schlecht il"></i> schlecht, <i class="dot abends il"></i> nur abends. Ohne Angabe bei „Stimmung“ aus den Gefühlen abgeleitet.</span></div>
+      </div>
+    </section>
+  </div>
 
-    <!-- ANALYSE -->
-    <div role="tabpanel" id="p-ana" aria-labelledby="tab-ana" hidden>
-      <div id="anaEmpty" class="note info" hidden><span class="cap">Noch zu wenig Daten</span>Für die Analyse braucht es mindestens zwei eingetragene Periodenstarts. Trag dazu im Eintrag die Blutung ein (ab „Leicht“).</div>
-      <section class="section">
-        <h2 class="label"><span class="no">№ 04</span> — Überblick</h2>
-        <div class="grid kpis" id="anaKpis"></div>
-      </section>
-      <section class="section">
-        <h2 class="label"><span class="no">№ 05</span> — Zykluslängen</h2>
-        <p class="cap" id="chartCap" style="color:var(--muted);margin:0">Tage pro Zyklus</p>
+  <!-- ANALYSE -->
+  <div role="tabpanel" id="p-ana" aria-labelledby="tab-ana" hidden>
+    <div id="anaEmpty" class="note info" hidden><b>Noch zu wenig Daten</b> Für die Analyse braucht es mindestens zwei eingetragene Periodenstarts. Trag dazu im Eintrag die Blutung ein (ab „Leicht“).</div>
+    <section class="section first">
+      <div class="sechead"><h2>Überblick</h2></div>
+      <div class="tiles" id="anaKpis"></div>
+    </section>
+    <section class="section">
+      <div class="sechead"><h2>Zykluslängen</h2></div>
+      <div class="card">
+        <p class="small muted" id="chartCap" style="margin:0">Tage pro Zyklus</p>
         <div id="cycleChart"></div>
         <details><summary>Als Tabelle</summary><div class="table-scroll" id="cycleTable"></div></details>
-      </section>
-      <section class="section">
-        <h2 class="label"><span class="no">№ 06</span> — Gefühle je Phase</h2>
-        <p style="color:var(--muted);margin:0 0 var(--s3)">Anteil der eingetragenen Tage einer Phase, an denen ein Gefühl vorkam.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="sechead"><h2>Gefühle je Phase</h2></div>
+      <div class="card">
+        <p class="small muted" style="margin:0 0 var(--s4)">Anteil der eingetragenen Tage einer Phase, an denen ein Gefühl vorkam.</p>
         <div class="table-scroll" id="moodTable"></div>
-      </section>
-      <section class="section">
-        <h2 class="label"><span class="no">№ 07</span> — Muster</h2>
-        <div id="insights"></div>
-      </section>
-    </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="sechead"><h2>Muster</h2></div>
+      <div id="insights"></div>
+    </section>
+  </div>
 
-    <!-- DATEN -->
-    <div role="tabpanel" id="p-daten" aria-labelledby="tab-daten" hidden>
-      <section class="section">
-        <h2 class="label"><span class="no">№ 08</span> — Speicher</h2>
-        <div class="note ok"><span class="cap">Lokal</span>Alle Einträge liegen nur in diesem Browser auf diesem Gerät. Es gibt keinen Server und kein Konto. Mach ab und zu ein Backup.</div>
-        <div class="row"><span id="storeInfo"></span></div>
+  <!-- DATEN -->
+  <div role="tabpanel" id="p-daten" aria-labelledby="tab-daten" hidden>
+    <section class="section first">
+      <div class="sechead"><h2>Speicher</h2></div>
+      <div class="card">
+        <div class="note ok flat"><b>Lokal</b> Alle Einträge liegen nur in diesem Browser auf diesem Gerät. Es gibt keinen Server und kein Konto. Mach ab und zu ein Backup.</div>
+        <p id="storeInfo" class="small"></p>
         <div class="actions">
-          <button class="btn primary" id="exportBtn">Backup exportieren</button>
-          <button class="btn" id="importBtn">Backup importieren</button>
+          <button class="pill" id="exportBtn">Backup exportieren <span aria-hidden="true">→</span></button>
+          <button class="pill ghost" id="importBtn">Backup importieren</button>
           <input type="file" id="importFile" accept="application/json,.json" hidden>
-          <button class="btn" id="installBtn" hidden>Als App installieren</button>
+          <button class="pill ghost" id="installBtn" hidden>Als App installieren</button>
         </div>
-      </section>
-      <section class="section">
-        <h2 class="label"><span class="no">№ 09</span> — Einstellungen</h2>
-        <p style="color:var(--muted);margin:0">Die Standardwerte gelten, solange es noch zu wenige eigene Zyklen gibt.</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="sechead"><h2>Einstellungen</h2></div>
+      <div class="card">
+        <p class="small muted" style="margin:0">Die Standardwerte gelten, solange es noch zu wenige eigene Zyklen gibt.</p>
         <div class="settings">
-          <div class="field"><label for="setCycle" class="cap">Zykluslänge (Tage)</label><input type="number" id="setCycle" min="15" max="60" inputmode="numeric"></div>
-          <div class="field"><label for="setPeriod" class="cap">Periodendauer (Tage)</label><input type="number" id="setPeriod" min="1" max="12" inputmode="numeric"></div>
-          <div class="field"><label for="setLuteal" class="cap">Lutealphase (Tage)</label><input type="number" id="setLuteal" min="8" max="18" inputmode="numeric"></div>
-          <div class="field"><label for="setTheme" class="cap">Darstellung</label>
+          <div class="field"><label for="setCycle">Zykluslänge (Tage)</label><input type="number" id="setCycle" min="15" max="60" inputmode="numeric"></div>
+          <div class="field"><label for="setPeriod">Periodendauer (Tage)</label><input type="number" id="setPeriod" min="1" max="12" inputmode="numeric"></div>
+          <div class="field"><label for="setLuteal">Lutealphase (Tage)</label><input type="number" id="setLuteal" min="8" max="18" inputmode="numeric"></div>
+          <div class="field"><label for="setTheme">Darstellung</label>
             <select id="setTheme"><option value="auto">System</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
         </div>
-      </section>
-      <section class="section">
-        <h2 class="label"><span class="no">№ 10</span> — Ausprobieren und löschen</h2>
+      </div>
+    </section>
+    <section class="section">
+      <div class="sechead"><h2>Ausprobieren und löschen</h2></div>
+      <div class="card">
+        <p class="small muted" style="margin:0">Demodaten sind erfundene Beispielwerte über sechs Monate. Sie ersetzen vorhandene Einträge erst nach Rückfrage.</p>
         <div class="actions">
-          <button class="btn" id="demoBtn">Demodaten laden</button>
-          <button class="btn" id="wipeBtn">Alle Daten löschen</button>
+          <button class="pill ghost" id="demoBtn">Demodaten laden</button>
+          <button class="pill ghost danger" id="wipeBtn">Alle Daten löschen</button>
         </div>
-        <p style="color:var(--muted);margin:0">Demodaten sind erfundene Beispielwerte über sechs Monate. Sie ersetzen vorhandene Einträge erst nach Rückfrage.</p>
-      </section>
-    </div>
+      </div>
+    </section>
+    <p class="foot small muted">Zyklus-Tracker · offline · lokal · <span id="footVer">v2.0</span></p>
   </div>
 </main>
 
-<footer><div class="wrap cap"><span>Zyklus-Tracker · offline · lokal</span><span id="footVer">v1.1</span></div></footer>
+<nav class="tabbar" aria-label="Bereiche">
+  <div role="tablist" aria-label="Bereiche">
+    <button role="tab" id="tab-heute" aria-controls="p-heute" aria-selected="true"><span class="ti" data-icon="home"></span><span>Heute</span></button>
+    <button role="tab" id="tab-kal" aria-controls="p-kal" aria-selected="false" tabindex="-1"><span class="ti" data-icon="cal"></span><span>Kalender</span></button>
+    <button role="tab" id="tab-ana" aria-controls="p-ana" aria-selected="false" tabindex="-1"><span class="ti" data-icon="chart"></span><span>Analyse</span></button>
+    <button role="tab" id="tab-daten" aria-controls="p-daten" aria-selected="false" tabindex="-1"><span class="ti" data-icon="data"></span><span>Daten</span></button>
+  </div>
+</nav>
 <div class="tip" id="tip" hidden></div>
 <script type="module" src="src/main.js"></script>
 </body>

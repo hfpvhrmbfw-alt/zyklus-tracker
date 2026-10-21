@@ -20,6 +20,11 @@ export const ENERGY_LABEL = ['Nicht erfasst', 'Sehr niedrig', 'Niedrig', 'Mittel
 export const PHASE_NAME = { men: 'Menstruation', fol: 'Follikelphase', ovu: 'Eisprungphase', lut: 'Lutealphase' };
 export const PHASE_SHORT = { men: 'Periode', fol: 'Follikel', ovu: 'Eisprung', lut: 'Luteal' };
 export const THEME_LABEL = { auto: 'System', light: 'Hell', dark: 'Dunkel' };
+export const WEEKDAY_SHORT = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+/** Begrüßung auf der Startseite, abhängig von der Stunde */
+export const greeting = h => h < 5 ? 'Gute Nacht!' : h < 11 ? 'Guten Morgen!' : h < 14 ? 'Guten Mittag!' : h < 18 ? 'Guten Tag!' : h < 23 ? 'Guten Abend!' : 'Gute Nacht!';
+/** Überschrift oben auf den übrigen Seiten */
+export const TAB_TITLE = { kal: 'Kalender', ana: 'Analyse', daten: 'Daten' };
 
 export const IMPORT_ERROR = {
   invalid_json: 'Die Datei ist kein gültiges JSON.',
