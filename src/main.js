@@ -7,7 +7,7 @@ import { Store } from './storage.js';
 import { IMPORT_ERROR } from './texts.js';
 import {
   $, state, entries, todayNum, plural, readForm,
-  renderDay, renderCalendar, renderData, recompute, showTab, applyTheme, THEME_NEXT,
+  renderDay, renderCalendar, renderData, recompute, showTab, applyTheme, renderIcons, THEME_NEXT,
 } from './ui.js';
 
 // ---------- Tag speichern ----------
@@ -84,7 +84,7 @@ function bind() {
 
   const tabs = [...document.querySelectorAll('[role=tab]')];
   tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => showTab(tab.id.slice(4)));
+    tab.addEventListener('click', () => { showTab(tab.id.slice(4)); window.scrollTo({ top: 0 }); });
     tab.addEventListener('keydown', e => {
       const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
       if (!d) return;
@@ -95,12 +95,23 @@ function bind() {
 
   $('prevMonth').onclick = () => { const [y, m] = state.month; state.month = m ? [y, m - 1] : [y - 1, 11]; renderCalendar(); };
   $('nextMonth').onclick = () => { const [y, m] = state.month; state.month = m === 11 ? [y + 1, 0] : [y, m + 1]; renderCalendar(); };
+  // Tag aus Kalender oder Wochenleiste öffnen: zum Formular springen
+  const openDay = async n => {
+    await saveDay(true);
+    state.sel = n; renderDay(); showTab('heute');
+    $('entry').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
   $('cal').addEventListener('click', e => {
     const b = e.target.closest('button.day[data-n]');
-    if (!b) return;
-    state.sel = Number(b.dataset.n); renderDay(); showTab('heute');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (b) openDay(Number(b.dataset.n));
   });
+  $('moodWeek').addEventListener('click', e => {
+    const b = e.target.closest('button.wday[data-n]');
+    if (b) openDay(Number(b.dataset.n));
+  });
+  $('goEntry').onclick = () => openDay(todayNum());
+  $('seeMonth').onclick = () => { showTab('kal'); window.scrollTo({ top: 0 }); };
+  $('setBtn').onclick = () => { showTab('daten'); window.scrollTo({ top: 0 }); };
 
   // Tooltip für Balken
   const tip = $('tip');
@@ -151,6 +162,7 @@ function bind() {
   list.map(sanitize).filter(Boolean).forEach(e => state.days.set(e.date, e));
   state.settings = { ...DEFAULTS, ...(settings || {}) };
   state.demo = !!demo;
+  renderIcons();
   applyTheme();
   const d = new Date(); state.month = [d.getFullYear(), d.getMonth()];
   bind();

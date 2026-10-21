@@ -3,7 +3,8 @@
 import { toStr, blank, hasDetail, DAY_MS, FLOW, FLOW_PERIOD, MOODS, SYMPTOMS, STIMMUNG, ENERGY, PHASES, DEFAULTS, NOTE_MAX } from './model.js';
 import { analyze, phaseOf, moodDots, moodStats, findPatterns, avgEnergy, topSymptom } from './logic.js';
 import { Store } from './storage.js';
-import { FLOW_LABEL, MOOD_LABEL, SYMPTOM_LABEL, STIMMUNG_LABEL, ENERGY_LABEL, PHASE_NAME, PHASE_SHORT, THEME_LABEL } from './texts.js';
+import { FLOW_LABEL, MOOD_LABEL, SYMPTOM_LABEL, STIMMUNG_LABEL, ENERGY_LABEL, PHASE_NAME, PHASE_SHORT, THEME_LABEL, WEEKDAY_SHORT, greeting } from './texts.js';
+import { MOOD_ICON, EMPTY_ICON, CARD_ART, ICON, scene } from './art.js';
 
 // ---------- Zeit und Formatierung ----------
 /** Heute als Tagnummer in lokaler Zeit. Einzige Stelle, die die aktuelle Uhrzeit liest. */
@@ -28,8 +29,8 @@ function chip(group, type, value, label, checked, cls = '') {
   return `<label class="chip ${cls}"><input type="${type}" name="${group}" value="${value}"${checked ? ' checked' : ''}><span>${esc(label)}</span></label>`;
 }
 
-function kpi(label, value, sub = '', cls = '') {
-  return `<div class="kpi"><div class="cap">${label}</div><div class="v ${cls}">${value}</div>${sub ? `<div class="sub">${sub}</div>` : ''}</div>`;
+function kpi(label, value, sub = '', cls = '', art = '') {
+  return `<div class="tile"><div class="tl">${label}</div><div class="v ${cls}">${value}</div>${sub ? `<div class="sub">${sub}</div>` : ''}${art ? `<div class="art">${CARD_ART[art]}</div>` : ''}</div>`;
 }
 
 function phaseTags(ph) {
@@ -83,15 +84,18 @@ export function readForm() {
 // ---------- Kopf und Ausblick ----------
 function renderHero() {
   const an = state.an, t = todayNum(), c = an.current;
-  $('headDate').textContent = fmt(t, { day: 'numeric', month: 'long', year: 'numeric' });
+  $('greet').textContent = greeting(new Date().getHours());
+  $('headDate').textContent = fmt(t, { weekday: 'long', day: 'numeric', month: 'long' });
   const sep = '<span class="sep">·</span>';
   if (!c) {
-    $('heroTitle').textContent = 'Zyklus';
+    $('heroArt').innerHTML = scene('none');
+    $('heroTitle').textContent = 'Schön, dass du da bist';
     $('heroSub').innerHTML = `Tage${sep}Gefühle${sep}Muster`;
     $('heroLede').textContent = 'Trag den ersten Tag deiner letzten Periode ein. Ab zwei Periodenstarts siehst du Durchschnittswerte, Vorhersagen und Muster.';
     return;
   }
   const ph = phaseOf(an, t);
+  $('heroArt').innerHTML = scene(ph ? ph.phase : 'none');
   $('heroTitle').textContent = `Tag ${c.day}`;
   let when;
   if (c.inPeriod) when = 'Periode läuft';
@@ -106,15 +110,34 @@ function renderHero() {
 
 function renderOutlook() {
   const an = state.an, c = an.current, t = todayNum();
-  if (!c) { $('outlook').innerHTML = kpi('Zyklustag', '–', 'noch keine Periode eingetragen'); return; }
+  if (!c) { $('outlook').innerHTML = kpi('Zyklustag', '–', 'noch keine Periode eingetragen', 'big', 'moon') + kpi('Nächste Periode', '–', 'ab dem ersten Eintrag', '', 'drop'); return; }
   const ph = phaseOf(an, t);
   const nextSub = c.overdue ? `erwartet am ${fmtShort(c.next)}, ${plural(c.overdue, 'Tag', 'Tage')} drüber` : c.next === t ? 'heute' : `in ${plural(c.next - t, 'Tag', 'Tagen')}`;
   const fertSub = c.fertileNext ? 'im nächsten Zyklus' : (t >= c.fs && t <= c.fe ? 'jetzt, Eisprung um ' + fmtShort(c.ov) : 'Eisprung um ' + fmtShort(c.ov));
   $('outlook').innerHTML =
-    kpi('Zyklustag', c.day, 'seit ' + fmtShort(c.start), 'acc') +
-    kpi('Phase', ph ? PHASE_NAME[ph.phase] : '–', ph && ph.predicted ? 'Schätzung' : '', 'sm') +
-    kpi('Nächste Periode', c.overdue ? 'überfällig' : fmtShort(c.next), nextSub, 'sm') +
-    kpi('Fruchtbares Fenster', `${fmtShort(c.fs)}–${fmtShort(c.fe)}`, fertSub, 'sm');
+    kpi('Zyklustag', c.day, 'seit ' + fmtShort(c.start), 'big', 'moon') +
+    kpi('Phase', ph ? PHASE_NAME[ph.phase] : '–', ph && ph.predicted ? 'Schätzung' : '', 'sm', 'leaf') +
+    kpi('Nächste Periode', c.overdue ? 'überfällig' : fmtShort(c.next), nextSub, '', 'drop') +
+    kpi('Fruchtbar', `${fmtShort(c.fs)}–${fmtShort(c.fe)}`, fertSub, 'sm', 'flower');
+}
+
+// ---------- Stimmungswoche ----------
+/** Woche (Mo–So) mit heute: Sonne, Wolke, Regen oder Mond je nach Stimmung des Tages. */
+export function renderWeek() {
+  const t = todayNum();
+  const mon = t - (new Date(t * DAY_MS).getUTCDay() + 6) % 7;
+  let html = '';
+  for (let i = 0; i < 7; i++) {
+    const n = mon + i, e = state.days.get(toStr(n));
+    const dots = e ? moodDots(e) : [];
+    const cls = ['wday'];
+    if (n === t) cls.push('today');
+    if (n > t) cls.push('future');
+    const icon = dots.length ? MOOD_ICON[dots[0]] : n <= t ? EMPTY_ICON : '<svg aria-hidden="true"></svg>';
+    const aria = fmtLong(n) + (n === t ? ', heute' : '') + (dots.length ? ', Stimmung ' + dots.map(k => STIMMUNG_LABEL[k]).join(', ') : '');
+    html += `<button type="button" class="${cls.join(' ')}" data-n="${n}" aria-label="${esc(aria)}"><span class="wl" aria-hidden="true">${WEEKDAY_SHORT[i]}</span><span class="wn" aria-hidden="true">${new Date(n * DAY_MS).getUTCDate()}</span>${icon}<span class="wdots" aria-hidden="true">${dots.length > 1 ? dots.map(k => `<i class="dot ${k}"></i>`).join('') : ''}</span></button>`;
+  }
+  $('moodWeek').innerHTML = html;
 }
 
 // ---------- Kalender ----------
@@ -152,10 +175,10 @@ export function renderAnalysis() {
   const num = v => v == null ? '–' : v.toFixed(1).replace('.', ',').replace(',0', '');
   const rng = an.recent.length ? `${Math.min(...an.recent.map(c => c.len))}–${Math.max(...an.recent.map(c => c.len))}` : '–';
   $('anaKpis').innerHTML =
-    kpi('Ø Zykluslänge', num(an.avgCycle), an.avgCycle ? 'Tage, letzte ' + an.recent.length : `Standard ${an.C} Tage`, 'acc') +
-    kpi('Ø Periodendauer', num(an.avgPeriod), an.avgPeriod ? 'Tage' : `Standard ${an.P} Tage`) +
-    kpi('Spanne', rng, an.sd != null ? `Tage · ±${num(an.sd)} Schwankung` : 'Tage') +
-    kpi('Erfasste Zyklen', an.cycles.length, plural(an.periods.length, 'Periode', 'Perioden') + ' erkannt');
+    kpi('Ø Zykluslänge', num(an.avgCycle), an.avgCycle ? 'Tage, letzte ' + an.recent.length : `Standard ${an.C} Tage`, 'big', 'moon') +
+    kpi('Ø Periode', num(an.avgPeriod), an.avgPeriod ? 'Tage' : `Standard ${an.P} Tage`, '', 'drop') +
+    kpi('Spanne', rng, an.sd != null ? `Tage · ±${num(an.sd)} Schwankung` : 'Tage', '', 'leaf') +
+    kpi('Erfasste Zyklen', an.cycles.length, plural(an.periods.length, 'Periode', 'Perioden') + ' erkannt', '', 'flower');
 
   // Balken
   const cyc = an.cycles.slice(-12);
@@ -221,7 +244,7 @@ export async function renderData() {
 // ---------- Neu berechnen ----------
 export function recompute(full = true) {
   state.an = analyze(entries(), state.settings, todayNum());
-  renderHero(); renderOutlook();
+  renderHero(); renderWeek(); renderOutlook();
   if (full) renderDay();
   else renderDayPhase(); // Formular nicht neu zeichnen (Fokus bleibt)
   if (state.tab === 'kal') renderCalendar();
@@ -251,11 +274,19 @@ export function applyTheme() {
   if (t === 'auto') delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = t;
   try { localStorage.setItem('zyklus-theme', t); } catch { /* egal */ }
   // Statusleiste am Handy passend einfärben
-  const forced = { light: '#DCE2D6', dark: '#151A16' }[t];
-  $('tcLight').content = forced || '#DCE2D6';
-  $('tcDark').content = forced || '#151A16';
-  $('themeBtn').textContent = 'Farbe: ' + THEME_LABEL[t];
+  const forced = { light: '#EADFCC', dark: '#1C1B1A' }[t];
+  $('tcLight').content = forced || '#EADFCC';
+  $('tcDark').content = forced || '#1C1B1A';
+  $('themeBtn').innerHTML = ICON[{ auto: 'auto', light: 'sun', dark: 'moon' }[t]];
+  $('themeBtn').title = 'Farbe: ' + THEME_LABEL[t];
   $('themeBtn').setAttribute('aria-label', `Farbschema: ${THEME_LABEL[t]}. Wechseln zu ${THEME_LABEL[THEME_NEXT[t]]}`);
   $('setTheme').value = t;
 }
 
+
+// ---------- Symbole ----------
+/** Setzt die Symbole der Leiste unten und den Einstellungen-Knopf (einmal beim Start). */
+export function renderIcons() {
+  document.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = ICON[el.dataset.icon]; });
+  $('setBtn').innerHTML = ICON.gear;
+}
