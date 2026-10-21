@@ -3,7 +3,7 @@
 import { toStr, blank, hasDetail, DAY_MS, FLOW, FLOW_PERIOD, MOODS, SYMPTOMS, STIMMUNG, ENERGY, PHASES, DEFAULTS, NOTE_MAX } from './model.js';
 import { analyze, phaseOf, moodDots, moodStats, findPatterns, avgEnergy, topSymptom } from './logic.js';
 import { Store } from './storage.js';
-import { FLOW_LABEL, MOOD_LABEL, SYMPTOM_LABEL, STIMMUNG_LABEL, ENERGY_LABEL, PHASE_NAME, PHASE_SHORT, THEME_LABEL, WEEKDAY_SHORT, greeting } from './texts.js';
+import { FLOW_LABEL, MOOD_LABEL, SYMPTOM_LABEL, STIMMUNG_LABEL, ENERGY_LABEL, PHASE_NAME, PHASE_SHORT, THEME_LABEL, WEEKDAY_SHORT, TAB_TITLE, greeting } from './texts.js';
 import { MOOD_ICON, EMPTY_ICON, CARD_ART, ICON, scene } from './art.js';
 
 // ---------- Zeit und Formatierung ----------
@@ -82,10 +82,15 @@ export function readForm() {
 }
 
 // ---------- Kopf und Ausblick ----------
+/** Überschrift oben: Begrüßung nach Tageszeit nur auf der Startseite, sonst der Name der Seite. */
+function renderHead() {
+  $('greet').textContent = state.tab === 'heute' ? greeting(new Date().getHours()) : TAB_TITLE[state.tab];
+  $('headDate').textContent = fmt(todayNum(), { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
 function renderHero() {
   const an = state.an, t = todayNum(), c = an.current;
-  $('greet').textContent = greeting(new Date().getHours());
-  $('headDate').textContent = fmt(t, { weekday: 'long', day: 'numeric', month: 'long' });
+  renderHead();
   const sep = '<span class="sep">·</span>';
   if (!c) {
     $('heroArt').innerHTML = scene('none');
@@ -261,6 +266,7 @@ export function showTab(name, focus) {
     if (on && focus) tab.focus();
   });
   state.tab = name;
+  renderHead();
   try { localStorage.setItem('zyklus-tab', name); } catch { /* egal */ }
   if (name === 'kal') renderCalendar();
   if (name === 'ana') renderAnalysis();
