@@ -15,18 +15,18 @@ export const MOODS = [
   'ausgeglichen', 'motiviert', 'kreativ', 'optimistisch',
   'verliebt', 'gesellig',
   'sensibel', 'gereizt', 'traurig', 'aengstlich',
-  'gestresst', 'muede', 'lustlos',
+  'gestresst', 'muede', 'lustlos', 'unruhig',
 ];
 export const SYMPTOMS = [
   'kraempfe', 'kopfschmerzen', 'brustspannen', 'blaehungen',
   'rueckenschmerzen', 'unreine_haut', 'heisshunger',
-  'schlafprobleme', 'uebelkeit',
+  'schlafprobleme', 'uebelkeit', 'unterleibsziehen',
 ];
 /** Stimmung des Tages, im Kalender als farbiger Punkt */
 export const STIMMUNG = ['gut', 'ok', 'schlecht', 'abends'];
 /** Ohne eigene Stimmungsangabe wird der Punkt aus den Gefühlen abgeleitet (sonst 'gut') */
 export const MOOD_TONE = {
-  sensibel: 'ok', muede: 'ok', lustlos: 'ok',
+  sensibel: 'ok', muede: 'ok', lustlos: 'ok', unruhig: 'ok',
   gereizt: 'schlecht', traurig: 'schlecht', aengstlich: 'schlecht', gestresst: 'schlecht',
 };
 /** Energie 0 = nicht erfasst, 1–5 sehr niedrig bis sehr hoch */
