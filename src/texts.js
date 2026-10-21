@@ -8,12 +8,12 @@ export const MOOD_LABEL = {
   ausgeglichen: 'Ausgeglichen', motiviert: 'Motiviert', kreativ: 'Kreativ', optimistisch: 'Optimistisch',
   verliebt: 'Verliebt', gesellig: 'Gesellig',
   sensibel: 'Sensibel', gereizt: 'Gereizt', traurig: 'Traurig', aengstlich: 'Ängstlich',
-  gestresst: 'Gestresst', muede: 'Müde', lustlos: 'Lustlos',
+  gestresst: 'Gestresst', muede: 'Müde', lustlos: 'Lustlos', unruhig: 'Unruhig',
 };
 export const SYMPTOM_LABEL = {
   kraempfe: 'Krämpfe', kopfschmerzen: 'Kopfschmerzen', brustspannen: 'Brustspannen', blaehungen: 'Blähungen',
   rueckenschmerzen: 'Rückenschmerzen', unreine_haut: 'Unreine Haut', heisshunger: 'Heißhunger',
-  schlafprobleme: 'Schlafprobleme', uebelkeit: 'Übelkeit',
+  schlafprobleme: 'Schlafprobleme', uebelkeit: 'Übelkeit', unterleibsziehen: 'Ziehen im Unterleib',
 };
 export const STIMMUNG_LABEL = { gut: 'Gut', ok: 'Ist ok', schlecht: 'Schlecht', abends: 'Nur abends' };
 export const ENERGY_LABEL = ['Nicht erfasst', 'Sehr niedrig', 'Niedrig', 'Mittel', 'Hoch', 'Sehr hoch'];
