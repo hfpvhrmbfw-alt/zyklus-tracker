@@ -61,7 +61,8 @@
     "cycleLen": 60,
     "periodLen": 4,
     "luteal": 13,
-    "theme": "dark"
+    "theme": "dark",
+    "font": "klar"
    }
   }
  },

@@ -64,7 +64,8 @@ test('Export lässt sich wieder importieren', () => {
 });
 
 test('Einstellungen werden begrenzt', () => {
-  assert.deepEqual(sanitizeSettings({ cycleLen: 5, periodLen: 'x', luteal: 30, theme: 'neon' }), { cycleLen: 15, periodLen: 5, luteal: 18, theme: 'auto' });
+  assert.deepEqual(sanitizeSettings({ cycleLen: 5, periodLen: 'x', luteal: 30, theme: 'neon', font: 'comic' }), { cycleLen: 15, periodLen: 5, luteal: 18, theme: 'auto', font: 'klar' });
+  assert.equal(sanitizeSettings({ font: 'mix' }).font, 'mix');
   assert.deepEqual(sanitizeSettings(null), DEFAULTS);
 });
 

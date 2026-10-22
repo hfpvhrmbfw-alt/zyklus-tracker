@@ -34,8 +34,10 @@ export const ENERGY = [0, 1, 2, 3, 4, 5];
 /** Zyklusphasen: Menstruation, Follikel, Eisprung, Luteal */
 export const PHASES = ['men', 'fol', 'ovu', 'lut'];
 export const THEMES = ['auto', 'light', 'dark'];
+/** Schriftkombinationen: klassisch = Playfair + DM Sans, klar = DM Serif Display + Outfit, mix = Playfair + Outfit */
+export const FONTS = ['klassisch', 'klar', 'mix'];
 
-export const DEFAULTS = { cycleLen: 28, periodLen: 5, luteal: 14, theme: 'auto' };
+export const DEFAULTS = { cycleLen: 28, periodLen: 5, luteal: 14, theme: 'auto', font: 'klar' };
 export const NOTE_MAX = 2000;
 
 // ---------- Datum: ganze Tage seit 1970 als Zahl, zeitzonenfest ----------
@@ -75,7 +77,7 @@ export function sanitize(raw) {
 }
 
 // ---------- Einstellungen ----------
-/** @typedef {{cycleLen: number, periodLen: number, luteal: number, theme: string}} Settings */
+/** @typedef {{cycleLen: number, periodLen: number, luteal: number, theme: string, font: string}} Settings */
 /** Bringt Einstellungen in gültige Bereiche, fehlende Werte werden Standard. @returns {Settings} */
 export function sanitizeSettings(s) {
   s = s || {};
@@ -85,6 +87,7 @@ export function sanitizeSettings(s) {
     periodLen: clamp(s.periodLen, 1, 12, DEFAULTS.periodLen),
     luteal: clamp(s.luteal, 8, 18, DEFAULTS.luteal),
     theme: THEMES.includes(s.theme) ? s.theme : 'auto',
+    font: FONTS.includes(s.font) ? s.font : DEFAULTS.font,
   };
 }
 
