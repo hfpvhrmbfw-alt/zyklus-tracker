@@ -87,7 +87,13 @@ main { position:relative; z-index:1; }
 .hero h2 { font-size:30px; line-height:1.1; margin:0 0 var(--s4); }
 .hero-art { margin:-46px -34px 0 0; align-self:start; }
 .hero-art .scene { width:100%; height:auto; overflow:visible; filter:drop-shadow(0 12px 14px rgba(30,30,60,.18)); }
-.hero-lede { grid-column:1 / -1; margin:var(--s4) 0 0; padding-top:var(--s4); border-top:1px dashed var(--line-soft); font-size:14px; color:var(--muted); }
+.hero-lede { grid-column:1 / -1; margin:var(--s3) 0 0; padding-top:var(--s3); border-top:1px dashed var(--line-soft); font-size:14px; color:var(--muted); }
+
+/* Heute-Seite etwas dichter: kleinere Abstände zwischen Abschnitten und Karten */
+#p-heute .section { margin-top:var(--s6); }
+#p-heute .sechead { margin-bottom:var(--s3); }
+#p-heute > .note.warn { margin-top:var(--s6); }
+#p-heute .hero { margin-top:var(--s5); }
 
 /* ---------- Buttons ---------- */
 .pill { display:inline-flex; align-items:center; justify-content:center; gap:10px; border:1px solid var(--accent); background:var(--accent); color:var(--accent-ink);
@@ -102,7 +108,7 @@ main { position:relative; z-index:1; }
 
 /* ---------- Stimmungswoche ---------- */
 .week { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px; }
-.wday { display:flex; flex-direction:column; align-items:center; gap:2px; padding:8px 0 6px; border:1px solid transparent; border-radius:16px; background:none; color:var(--ink); cursor:pointer; min-height:96px; }
+.wday { display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 0 5px; border:1px solid transparent; border-radius:16px; background:none; color:var(--ink); cursor:pointer; min-height:88px; }
 .wday:hover { background:var(--sunken); }
 .wday .wl { font-size:11px; color:var(--faint); text-transform:uppercase; letter-spacing:.06em; }
 .wday .wn { font-size:15px; font-weight:500; }
@@ -113,8 +119,8 @@ main { position:relative; z-index:1; }
 .wday .wdots .dot { width:5px; height:5px; }
 
 /* ---------- Kacheln (Ausblick, Überblick) ---------- */
-.tiles { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-.tile { position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:16px 16px 18px; min-height:138px; display:flex; flex-direction:column; }
+.tiles { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.tile { position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:16px 16px 18px; min-height:124px; display:flex; flex-direction:column; }
 .tile .tl { font:var(--serif-w) 16px/1.25 var(--serif); margin:0 0 10px; padding-right:4px; }
 .tile .v { font:var(--serif-w) 26px/1.1 var(--serif); position:relative; z-index:1; }
 .tile .v.big { font-size:40px; color:var(--accent-text); }
@@ -124,20 +130,20 @@ main { position:relative; z-index:1; }
 .tile .art .pic { width:100%; height:100%; object-fit:contain; object-position:right bottom; }
 
 /* ---------- Tag erfassen ---------- */
-.daycard { margin-bottom:14px; }
+.daycard { margin-bottom:10px; }
 /* Raster statt Flex: iOS gibt Datumsfeldern eine feste Mindestbreite, die sonst in den rechten Pfeil läuft */
 .daynav { display:grid; grid-template-columns:44px minmax(0,1fr) 44px; gap:var(--s2); align-items:center; }
 .daynav .field { min-width:0; }
-.daytitle { font-size:22px; line-height:1.25; margin:var(--s4) 0 var(--s3); }
-.dayphase { display:flex; gap:var(--s2); flex-wrap:wrap; margin-bottom:var(--s4); }
+.daytitle { font-size:22px; line-height:1.25; margin:var(--s3) 0 var(--s2); }
+.dayphase { display:flex; gap:var(--s2); flex-wrap:wrap; margin-bottom:var(--s3); }
 .dayphase:empty { display:none; }
 .tag { display:inline-flex; align-items:center; font:500 12px/1 var(--sans); border:1px solid var(--line); color:var(--ink); padding:6px 11px; border-radius:999px; white-space:nowrap; }
 .tag.acc { border-color:var(--accent-text); color:var(--accent-text); }
 .tag.inv { background:var(--ink); border-color:var(--ink); color:var(--bg); }
 
-fieldset.group { margin:0 0 14px; min-width:0; }
-fieldset.group legend { float:left; width:100%; padding:0; margin:0 0 14px; font-size:19px; line-height:1.2; }
-.chips { display:flex; flex-wrap:wrap; gap:10px; clear:both; }
+fieldset.group { margin:0 0 10px; min-width:0; padding:16px 18px 18px; }
+fieldset.group legend { float:left; width:100%; padding:0; margin:0 0 12px; font-size:19px; line-height:1.2; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; clear:both; }
 .chip { position:relative; }
 .chip input { position:absolute; opacity:0; width:1px; height:1px; }
 .chip span { display:inline-flex; align-items:center; min-height:40px; font:500 14px/1 var(--sans); border:1px solid var(--line); padding:9px 15px; border-radius:999px; cursor:pointer; background:transparent; user-select:none; transition:background .15s, border-color .15s; }
@@ -150,7 +156,7 @@ fieldset.group legend { float:left; width:100%; padding:0; margin:0 0 14px; font
 .chip.stim input:checked + span::before { content:""; margin-right:8px; box-shadow:0 0 0 2px var(--surface); }
 .chip.gut { --dc:var(--m-gut); } .chip.ok { --dc:var(--m-ok); } .chip.schlecht { --dc:var(--m-schlecht); } .chip.abends { --dc:var(--m-abends); }
 
-.notecard { margin:0 0 14px; }
+.notecard { margin:0 0 10px; padding:16px 18px 18px; }
 .notecard label { font:var(--serif-w) 19px/1.2 var(--serif); color:var(--ink); margin-bottom:6px; }
 .saverow { display:flex; justify-content:space-between; align-items:center; gap:var(--s3); flex-wrap:wrap; padding:6px 4px 0; }
 
