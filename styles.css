@@ -1,5 +1,5 @@
-/* Zyklus-Tracker · Stil „Beet“ v2.0
-   Mobil zuerst: warme Beige-Töne (hell) bzw. fast Schwarz (dunkel), Serifen-Überschriften,
+/* Zyklus-Tracker · Stil „Beet“ v2.2
+   Mobil zuerst: warme Beige-Töne (hell) bzw. fast Schwarz (dunkel), Serifen-Überschriften (DM Serif Display, Text Outfit),
    abgerundete Karten mit feiner Linie, orange Pillen-Buttons, viel Luft, Leiste unten. */
 :root {
   --bg:#EADFCC; --surface:#EFE6D6; --sunken:#E0D3BD; --line:#B9AA91; --line-soft:#D2C4AC;
@@ -10,7 +10,7 @@
   --err:#A3182B; --err-tint:#F2D3D3; --info:#2C4F80; --info-tint:#D6DEE6;
   --m-gut:#2E8B47; --m-ok:#D9A300; --m-schlecht:#C8283C; --m-abends:#7B4FC2;
   --sparkle:#7A6C5A; --shadow:0 10px 30px -12px rgba(70,50,20,.35);
-  --serif:"Playfair Display",Georgia,serif; --sans:"DM Sans",system-ui,sans-serif;
+  --serif:"DM Serif Display",Georgia,serif; --serif-w:400; --sans:"Outfit",system-ui,sans-serif;
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:44px;
   --r:20px; --maxw:520px; --gutter:20px; color-scheme:light;
 }
@@ -40,7 +40,7 @@ html { background:var(--bg); -webkit-text-size-adjust:100%; }
 body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 var(--sans); -webkit-font-smoothing:antialiased;
   padding-bottom:calc(112px + env(safe-area-inset-bottom)); position:relative; overflow-x:hidden; }
 .wrap { max-width:var(--maxw); margin:0 auto; padding:0 var(--gutter); position:relative; }
-h1, h2, h3, legend { font-family:var(--serif); font-weight:600; letter-spacing:-.005em; }
+h1, h2, h3, legend { font-family:var(--serif); font-weight:var(--serif-w); letter-spacing:-.005em; }
 button { font-family:inherit; }
 :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:6px; }
 [hidden] { display:none !important; }
@@ -58,7 +58,7 @@ svg { display:block; }
 /* ---------- Kopf ---------- */
 .top { display:flex; justify-content:space-between; align-items:flex-start; gap:var(--s4);
   padding-top:calc(env(safe-area-inset-top) + 88px); z-index:1; }
-.top h1 { font-size:34px; line-height:1.1; margin:0; font-weight:700; }
+.top h1 { font-size:34px; line-height:1.1; margin:0; }
 .hello-sub { margin:6px 0 0; color:var(--muted); font-size:15px; }
 .topbtns { display:flex; gap:2px; margin-top:2px; }
 .iconbtn { width:44px; height:44px; display:grid; place-items:center; border:0; background:transparent; color:var(--ink); border-radius:50%; cursor:pointer; font-size:0; }
@@ -111,8 +111,8 @@ main { position:relative; z-index:1; }
 /* ---------- Kacheln (Ausblick, Überblick) ---------- */
 .tiles { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
 .tile { position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:16px 16px 18px; min-height:138px; display:flex; flex-direction:column; }
-.tile .tl { font:600 16px/1.25 var(--serif); margin:0 0 10px; padding-right:4px; }
-.tile .v { font:600 26px/1.1 var(--serif); position:relative; z-index:1; }
+.tile .tl { font:var(--serif-w) 16px/1.25 var(--serif); margin:0 0 10px; padding-right:4px; }
+.tile .v { font:var(--serif-w) 26px/1.1 var(--serif); position:relative; z-index:1; }
 .tile .v.big { font-size:40px; color:var(--accent-text); }
 .tile .v.sm { font-size:20px; }
 .tile .sub { margin-top:6px; font-size:13px; color:var(--muted); position:relative; z-index:1; max-width:78%; }
@@ -145,7 +145,7 @@ fieldset.group legend { float:left; width:100%; padding:0; margin:0 0 14px; font
 .chip.gut { --dc:var(--m-gut); } .chip.ok { --dc:var(--m-ok); } .chip.schlecht { --dc:var(--m-schlecht); } .chip.abends { --dc:var(--m-abends); }
 
 .notecard { margin:0 0 14px; }
-.notecard label { font:600 19px/1.2 var(--serif); color:var(--ink); margin-bottom:6px; }
+.notecard label { font:var(--serif-w) 19px/1.2 var(--serif); color:var(--ink); margin-bottom:6px; }
 .saverow { display:flex; justify-content:space-between; align-items:center; gap:var(--s3); flex-wrap:wrap; padding:6px 4px 0; }
 
 /* ---------- Felder ---------- */
