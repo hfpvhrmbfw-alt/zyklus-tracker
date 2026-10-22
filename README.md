@@ -6,8 +6,11 @@ Reine Frontend-PWA ohne Backend und ohne Build-Schritt. Alle Einträge liegen nu
 - **Eintrag:** pro Tag Blutung (keine bis stark), Gefühle, Energie (1–5), Körpersymptome, Notiz. Speichert automatisch.
 - **Heute:** Zykluskarte mit Bild je Phase, Stimmungswoche (Sonne, Wolke, Regen, Mond), Ausblick-Kacheln.
 - **Kalender:** eingetragene Perioden (P), Schmierblutung (·), erwartete Periode (p), fruchtbares Fenster (F) und Eisprung (E) als Schätzung.
-- **Analyse:** Ø Zykluslänge und Periodendauer (letzte 6 plausiblen Zyklen, 15–60 Tage), Spanne und Schwankung, Balken je Zyklus, Gefühle je Zyklusphase, automatisch erkannte Muster.
-- **Daten:** JSON-Backup exportieren/importieren, Standardwerte (Zykluslänge, Periodendauer, Lutealphase), Hell/Dunkel, Demodaten, alles löschen.
+- **Analyse:** Ø Zykluslänge groß, darunter Periodendauer, Spanne, Schwankung (letzte 6 plausiblen Zyklen, 15–60 Tage); die stärksten Muster zuerst, Balken je Zyklus, je Phase Tage, Energie, häufigstes Körpersymptom und die fünf häufigsten Gefühle (Rest aufklappbar).
+- **Einstellungen** (Symbol oben rechts, nicht in der Leiste): JSON-Backup exportieren/importieren, Standardwerte (Zykluslänge, Periodendauer, Lutealphase), Hell/Dunkel, Demodaten, alles löschen.
+
+## Bilder
+Illustrationen sind meist Inline-SVG in `src/art.js`. Gemalte Bilder liegen als PNG mit echter Transparenz in `img/` (Zweige oben, kleiner Zweig auf den Kacheln). Neue PNGs dort ablegen und in `sw.js` unter `SHELL` eintragen.
 
 ## Wie gerechnet wird
 - Periodenstart = erster Tag mit Blutung ab „Leicht“; Lücken bis 1 Tag gehören zur selben Periode.

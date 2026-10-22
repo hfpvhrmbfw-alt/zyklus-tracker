@@ -1,4 +1,4 @@
-/* Illustrationen und Symbole als Inline-SVG. Gehört zur Oberfläche, kennt nur Stimmungs- und Phasen-IDs.
+/* Illustrationen und Symbole, meist als Inline-SVG, einzelne als PNG aus img/. Gehört zur Oberfläche, kennt nur Stimmungs- und Phasen-IDs.
    Farben, die sich mit Hell/Dunkel ändern, kommen aus CSS-Variablen (--sparkle, --ink, --line). */
 
 const svg = (vb, body, cls = '') => `<svg viewBox="${vb}" class="${cls}" aria-hidden="true" focusable="false">${body}</svg>`;
@@ -79,9 +79,8 @@ export const CARD_ART = {
   flower: svg('0 0 60 60', '<path d="M30 58 V34" stroke="#3F7D58" stroke-width="2.5" stroke-linecap="round"/>' + leaf(30, 50, -150, 16, '#5E9C6C') + leaf(30, 46, -30, 16, '#7DB487') +
     [0, 72, 144, 216, 288].map(a => `<ellipse cx="30" cy="16" rx="6" ry="9" fill="#F4A3A0" transform="rotate(${a} 30 26)"/>`).join('') +
     '<circle cx="30" cy="26" r="6" fill="#F7C548"/>' + sparkles([[8, 12, 1.6], [52, 40, 1.4, '#F47A4B'], [50, 8, 1.2]])),
-  leaf: svg('0 0 60 60', '<path d="M10 52 C20 40 32 30 50 10" stroke="#3F7D58" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
-    leaf(18, 43, -100, 18, '#5E9C6C') + leaf(24, 37, 10, 18, '#7DB487') + leaf(32, 29, -110, 18, '#7DB487') + leaf(38, 23, 0, 18, '#5E9C6C') + leaf(46, 15, -90, 14, '#5E9C6C') +
-    sparkles([[50, 44, 1.6], [10, 20, 1.4, '#F47A4B'], [30, 52, 1.2]])),
+  // Gemaltes Bild statt SVG (img/), Anna liefert nach und nach weitere als PNG
+  leaf: '<img src="img/zweig-klein.png" alt="" class="pic">',
   moon: svg('0 0 60 60', '<path d="M34 10 a20 20 0 1 0 16 32 a16 16 0 1 1 -16 -32z" fill="#F4D77C"/>' + star(14, 14, 4) + star(50, 12, 3) +
     sparkles([[10, 44, 1.4], [48, 52, 1.6, '#F47A4B']])),
 };
@@ -92,7 +91,6 @@ export const ICON = {
   home: line('<path d="M4 11 12 4l8 7v8.5a.5.5 0 0 1-.5.5H15v-6H9v6H4.5a.5.5 0 0 1-.5-.5Z"/>'),
   cal: line('<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.2" fill="currentColor"/>'),
   chart: line('<path d="M4 20h16"/><rect x="5.5" y="11" width="3" height="6" rx="1"/><rect x="10.5" y="6" width="3" height="11" rx="1"/><rect x="15.5" y="9" width="3" height="8" rx="1"/>'),
-  data: line('<path d="M6 3.5h8l4 4V20a.5.5 0 0 1-.5.5h-11.5a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5Z"/><path d="M14 3.5V8h4M9 13h6M9 16.5h6"/>'),
   gear: line('<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/>'),
   sun: line('<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>'),
   moon: line('<path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10Z"/>'),

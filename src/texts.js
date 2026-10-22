@@ -24,7 +24,7 @@ export const WEEKDAY_SHORT = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
 /** Begrüßung auf der Startseite, abhängig von der Stunde */
 export const greeting = h => h < 5 ? 'Gute Nacht!' : h < 11 ? 'Guten Morgen!' : h < 14 ? 'Guten Mittag!' : h < 18 ? 'Guten Tag!' : h < 23 ? 'Guten Abend!' : 'Gute Nacht!';
 /** Überschrift oben auf den übrigen Seiten */
-export const TAB_TITLE = { kal: 'Kalender', ana: 'Analyse', daten: 'Daten' };
+export const TAB_TITLE = { kal: 'Kalender', ana: 'Analyse', daten: 'Einstellungen' };
 
 export const IMPORT_ERROR = {
   invalid_json: 'Die Datei ist kein gültiges JSON.',

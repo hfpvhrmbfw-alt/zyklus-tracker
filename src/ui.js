@@ -20,7 +20,7 @@ export const $ = id => document.getElementById(id);
 // ---------- Zustand der Ansicht ----------
 export const state = {
   days: new Map(), settings: { ...DEFAULTS }, demo: false,
-  sel: todayNum(), month: null, an: null, tab: 'heute',
+  sel: todayNum(), month: null, an: null, tab: 'heute', lastTab: 'heute',
 };
 export const entries = () => [...state.days.values()];
 
@@ -110,7 +110,7 @@ function renderHero() {
   $('heroSub').innerHTML = `${ph ? PHASE_NAME[ph.phase] : 'Zyklus'}${sep}${when}${c.inPeriod ? '' : sep + 'Schätzung'}`;
   $('heroLede').textContent = an.recent.length
     ? `Berechnet aus ${plural(an.recent.length, 'Zyklus', 'Zyklen')} mit durchschnittlich ${String(an.avgCycle.toFixed(1)).replace('.', ',').replace(',0', '')} Tagen.`
-    : `Noch kein vollständiger Zyklus erfasst. Bis dahin rechnet die App mit ${an.C} Tagen (Einstellung unter „Daten“).`;
+    : `Noch kein vollständiger Zyklus erfasst. Bis dahin rechnet die App mit ${an.C} Tagen (änderbar in den Einstellungen).`;
 }
 
 function renderOutlook() {
@@ -179,13 +179,22 @@ export function renderAnalysis() {
   $('anaEmpty').hidden = enough;
   const num = v => v == null ? '–' : v.toFixed(1).replace('.', ',').replace(',0', '');
   const rng = an.recent.length ? `${Math.min(...an.recent.map(c => c.len))}–${Math.max(...an.recent.map(c => c.len))}` : '–';
-  $('anaKpis').innerHTML =
-    kpi('Ø Zykluslänge', num(an.avgCycle), an.avgCycle ? 'Tage, letzte ' + an.recent.length : `Standard ${an.C} Tage`, 'big', 'moon') +
-    kpi('Ø Periode', num(an.avgPeriod), an.avgPeriod ? 'Tage' : `Standard ${an.P} Tage`, '', 'drop') +
-    kpi('Spanne', rng, an.sd != null ? `Tage · ±${num(an.sd)} Schwankung` : 'Tage', '', 'leaf') +
-    kpi('Erfasste Zyklen', an.cycles.length, plural(an.periods.length, 'Periode', 'Perioden') + ' erkannt', '', 'flower');
+
+  // Überblick: eine Zahl groß, der Rest als kleine Liste
+  const stat = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
+  $('anaSum').innerHTML =
+    `<div class="sum-main"><div class="tl">Ø Zykluslänge</div><div class="v">${num(an.avgCycle)}<span class="u">${an.avgCycle ? ' Tage' : ''}</span></div>` +
+    `<div class="sub">${an.avgCycle ? 'aus ' + plural(an.recent.length, 'Zyklus', 'Zyklen') : `Standard ${an.C} Tage`}</div></div>` +
+    `<div class="sum-art">${CARD_ART.moon}</div>` +
+    '<dl class="sum-list">' +
+    stat('Ø Periode', an.avgPeriod ? num(an.avgPeriod) + ' Tage' : `${an.P} Tage (Standard)`) +
+    stat('Spanne', rng === '–' ? '–' : rng + ' Tage') +
+    stat('Schwankung', an.sd != null ? '±' + num(an.sd) + ' Tage' : '–') +
+    stat('Erfasst', plural(an.cycles.length, 'Zyklus', 'Zyklen')) +
+    '</dl>';
 
   // Balken
+  const H = 128;
   const cyc = an.cycles.slice(-12);
   if (!cyc.length) { $('cycleChart').innerHTML = '<p style="color:var(--muted)">Noch keine abgeschlossenen Zyklen.</p>'; $('cycleTable').innerHTML = ''; }
   else {
@@ -195,41 +204,60 @@ export function renderAnalysis() {
     lbl.add(lens.indexOf(Math.max(...lens))); lbl.add(lens.indexOf(Math.min(...lens)));
     const tipText = c => `${fmtShort(c.start)}: ${c.len} Tage · Periode ${c.periodLen} Tage${c.ok ? '' : ' · ausgeschlossen'}`;
     let h = '<div class="bars" id="bars">';
-    if (an.avgCycle) h += `<div class="avg" style="bottom:${(an.avgCycle / max) * 198}px" aria-hidden="true"></div>`;
+    if (an.avgCycle) h += `<div class="avg" style="bottom:${(an.avgCycle / max) * H}px" aria-hidden="true"></div>`;
     cyc.forEach((c, i) => {
-      h += `<div class="col${c.ok ? '' : ' out'}" tabindex="0" data-tip="${esc(tipText(c))}" aria-label="${esc(tipText(c))}">${lbl.has(i) ? `<span class="val">${c.len}</span>` : ''}<div class="bar" style="height:${(Math.min(c.len, max) / max) * 198}px"></div></div>`;
+      h += `<div class="col${c.ok ? '' : ' out'}" tabindex="0" data-tip="${esc(tipText(c))}" aria-label="${esc(tipText(c))}">${lbl.has(i) ? `<span class="val">${c.len}</span>` : ''}<div class="bar" style="height:${(Math.min(c.len, max) / max) * H}px"></div></div>`;
     });
     h += '</div><div class="xlabels" aria-hidden="true">' + cyc.map(c => `<span>${fmtShort(c.start)}</span>`).join('') + '</div>';
     $('cycleChart').innerHTML = h;
-    $('chartCap').textContent = `Tage pro Zyklus · gestrichelt = Durchschnitt${an.avgCycle ? ' (' + num(an.avgCycle) + ')' : ''} · grau = ausgeschlossen (unter 15 oder über 60 Tage)`;
+    $('chartCap').textContent = `Tage pro Zyklus${an.avgCycle ? ' · gestrichelt = Ø ' + num(an.avgCycle) : ''}${cyc.some(c => !c.ok) ? ' · grau = ausgeschlossen (unter 15 oder über 60 Tage)' : ''}`;
     $('cycleTable').innerHTML = '<table class="data"><thead><tr><th>Beginn</th><th class="num">Zyklus</th><th class="num">Periode</th><th>Status</th></tr></thead><tbody>' +
       an.cycles.slice().reverse().map(c => `<tr><td>${fmt(c.start, { day: '2-digit', month: '2-digit', year: 'numeric' })}</td><td class="num">${c.len}</td><td class="num">${c.periodLen}</td><td>${c.ok ? 'gezählt' : 'ausgeschlossen'}</td></tr>`).join('') + '</tbody></table>';
   }
 
-  // Gefühle je Phase
+  // Je Phase: erst Tage, Energie, Körper; dann die häufigsten Gefühle, der Rest aufklappbar
   const st = moodStats(an, entries(), t);
   const anyN = PHASES.some(k => st[k].n);
-  if (!anyN) $('moodTable').innerHTML = '<p style="color:var(--muted)">Noch keine Gefühle in einem erkannten Zyklus eingetragen.</p>';
+  const head = first => `<thead><tr><th>${first}</th>` + PHASES.map(k => `<th class="num">${PHASE_SHORT[k]}</th>`).join('') + '</tr></thead>';
+  $('moodCap').hidden = $('moodMore').hidden = true;
+  $('moodTable').innerHTML = $('moodTableAll').innerHTML = '';
+  if (!anyN) { $('phaseTable').innerHTML = '<p style="color:var(--muted);margin:0">Noch keine Einträge in einem erkannten Zyklus.</p>'; }
   else {
-    const cell = (c, n) => {
-      if (!n) return '<td class="cell num">–</td>';
-      const p = Math.round((c / n) * 100);
-      return `<td class="cell num">${p} %<span class="meter" aria-hidden="true"><i style="width:${p}%"></i></span></td>`;
-    };
-    const used = MOODS.filter(id => PHASES.some(k => st[k].moods[id]));
-    let h = '<table class="data ph"><thead><tr><th>Gefühl</th>' + PHASES.map(k => `<th class="num">${PHASE_SHORT[k]}</th>`).join('') + '</tr></thead><tbody>';
-    h += '<tr><td class="mood">Eingetragene Tage</td>' + PHASES.map(k => `<td class="num">${st[k].n}</td>`).join('') + '</tr>';
-    used.forEach(id => { h += `<tr><td class="mood">${MOOD_LABEL[id]}</td>` + PHASES.map(k => cell(st[k].moods[id] || 0, st[k].n)).join('') + '</tr>'; });
-    h += '<tr><td class="mood">Ø Energie (1–5)</td>' + PHASES.map(k => {
-      const v = avgEnergy(st[k].energy); return `<td class="num">${v == null ? '–' : dec1(v)}</td>`;
-    }).join('') + '</tr>';
-    const topSym = k => { const s = topSymptom(st[k]); return s ? `${SYMPTOM_LABEL[s.id]} (${Math.round(s.share * 100)} %)` : '–'; };
-    h += '<tr><td class="mood">Häufigstes Körpersymptom</td>' + PHASES.map(k => `<td>${st[k].n ? topSym(k) : '–'}</td>`).join('') + '</tr>';
-    $('moodTable').innerHTML = h + '</tbody></table>';
+    const syms = PHASES.map(k => ({ k, s: st[k].n && topSymptom(st[k]) })).filter(o => o.s);
+    $('phaseTable').innerHTML = '<table class="data ph">' + head('') + '<tbody>' +
+      '<tr><td class="mood">Tage</td>' + PHASES.map(k => `<td class="num">${st[k].n}</td>`).join('') + '</tr>' +
+      '<tr><td class="mood">Ø Energie</td>' + PHASES.map(k => { const v = avgEnergy(st[k].energy); return `<td class="num">${v == null ? '–' : dec1(v)}</td>`; }).join('') + '</tr></tbody></table>' +
+      (syms.length ? '<p class="small muted cap symcap">Häufigstes Körpersymptom</p><ul class="symlist">' + syms.map(({ k, s }) =>
+        `<li><span class="k">${PHASE_SHORT[k]}</span><span>${SYMPTOM_LABEL[s.id]} · ${Math.round(s.share * 100)} %</span></li>`).join('') + '</ul>' : '');
+
+    const share = (id, k) => st[k].n ? (st[k].moods[id] || 0) / st[k].n : null;
+    const used = MOODS.filter(id => PHASES.some(k => st[k].moods[id]))
+      .map(id => ({ id, total: PHASES.reduce((s, k) => s + (st[k].moods[id] || 0), 0) }))
+      .sort((a, b) => b.total - a.total).map(o => o.id);
+    const rows = ids => ids.map(id => {
+      const ps = PHASES.map(k => share(id, k)), hi = Math.max(...ps.filter(p => p != null));
+      return `<tr><td class="mood">${MOOD_LABEL[id]}</td>` + ps.map(p => {
+        if (p == null) return '<td class="cell num">–</td>';
+        const v = Math.round(p * 100);
+        return `<td class="cell num${p === hi && v >= 20 ? ' hi' : ''}">${v} %<span class="meter" aria-hidden="true"><i style="width:${v}%"></i></span></td>`;
+      }).join('') + '</tr>';
+    }).join('');
+    const TOP = 5;
+    if (used.length) {
+      $('moodCap').hidden = false;
+      $('moodTable').innerHTML = '<table class="data ph">' + head('Gefühl') + '<tbody>' + rows(used.slice(0, TOP)) + '</tbody></table>';
+      if (used.length > TOP) {
+        $('moodMore').hidden = false;
+        $('moodMore').querySelector('summary').textContent = `Weitere ${used.length - TOP} Gefühle`;
+        $('moodTableAll').innerHTML = '<table class="data ph">' + head('Gefühl') + '<tbody>' + rows(used.slice(TOP)) + '</tbody></table>';
+      }
+    }
   }
+
   const pats = enough ? findPatterns(st).map(patternText) : [];
   $('insights').innerHTML = pats.length
-    ? pats.map((p, i) => `<div class="row${i < 2 ? ' prio' : ''}"><span>${p}</span></div>`).join('') + '<div class="note info"><span class="cap">Einordnung</span>Muster sind einfache Häufigkeiten aus deinen Einträgen. Je mehr Tage du erfasst, desto belastbarer werden sie.</div>'
+    ? pats.slice(0, 3).map((p, i) => `<div class="row${i === 0 ? ' prio' : ''}"><span>${p}</span></div>`).join('') +
+      (pats.length > 3 ? `<details><summary>Weitere ${plural(pats.length - 3, 'Muster', 'Muster')}</summary><div>${pats.slice(3).map(p => `<div class="row"><span>${p}</span></div>`).join('')}</div></details>` : '') + '<p class="small muted cap">Einfache Häufigkeiten aus deinen Einträgen. Je mehr Tage du erfasst, desto belastbarer.</p>'
     : '<div class="row"><span>Noch keine deutlichen Muster. Sie erscheinen, sobald in mindestens zwei Phasen je drei Tage mit Gefühlen erfasst sind.</span></div>';
 }
 
@@ -262,9 +290,12 @@ export function showTab(name, focus) {
   document.querySelectorAll('[role=tab]').forEach(tab => {
     const on = tab.id === 'tab-' + name;
     tab.setAttribute('aria-selected', on); tab.tabIndex = on ? 0 : -1;
-    $(tab.getAttribute('aria-controls')).hidden = !on;
     if (on && focus) tab.focus();
   });
+  // Seiten: drei aus der Leiste unten, Einstellungen über das Symbol oben rechts
+  ['heute', 'kal', 'ana', 'daten'].forEach(k => { $('p-' + k).hidden = k !== name; });
+  $('setBtn').setAttribute('aria-pressed', name === 'daten');
+  if (name !== 'daten') state.lastTab = name;
   state.tab = name;
   renderHead();
   try { localStorage.setItem('zyklus-tab', name); } catch { /* egal */ }

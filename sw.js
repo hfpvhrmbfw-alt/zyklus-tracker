@@ -1,8 +1,8 @@
 /* Service Worker: App offline verfügbar machen. Speichert nur App-Dateien, keine Einträge. */
-const VERSION = 'zyklus-v2.1.0';
+const VERSION = 'zyklus-v2.2.0';
 const SHELL = ['./', './index.html', './styles.css', './manifest.webmanifest',
   './src/main.js', './src/ui.js', './src/logic.js', './src/model.js', './src/storage.js', './src/texts.js', './src/art.js',
-  './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
+  './img/zweig-ecke.png', './img/zweig-klein.png', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 const FONTS = 'zyklus-fonts';
 
 self.addEventListener('install', e => {
