@@ -125,8 +125,9 @@ main { position:relative; z-index:1; }
 
 /* ---------- Tag erfassen ---------- */
 .daycard { margin-bottom:14px; }
-.daynav { display:flex; gap:var(--s2); align-items:center; }
-.daynav .field { flex:1; }
+/* Raster statt Flex: iOS gibt Datumsfeldern eine feste Mindestbreite, die sonst in den rechten Pfeil läuft */
+.daynav { display:grid; grid-template-columns:44px minmax(0,1fr) 44px; gap:var(--s2); align-items:center; }
+.daynav .field { min-width:0; }
 .daytitle { font-size:22px; line-height:1.25; margin:var(--s4) 0 var(--s3); }
 .dayphase { display:flex; gap:var(--s2); flex-wrap:wrap; margin-bottom:var(--s4); }
 .dayphase:empty { display:none; }
@@ -157,7 +158,8 @@ fieldset.group legend { float:left; width:100%; padding:0; margin:0 0 14px; font
 .field { display:grid; gap:6px; }
 .field label { font-size:13px; color:var(--muted); }
 .field input, .field select, .field textarea { font:16px var(--sans); padding:11px 16px; background:var(--bg); color:var(--ink); border:1px solid var(--line); border-radius:14px; width:100%; min-height:44px; }
-.daynav .field input { border-radius:999px; text-align:center; }
+.daynav .field input { border-radius:999px; text-align:center; min-width:0; height:44px; display:block; -webkit-appearance:none; appearance:none; }
+.daynav .field input::-webkit-date-and-time-value { text-align:center; }
 .field textarea { min-height:110px; resize:vertical; line-height:1.5; }
 .field input:focus, .field select:focus, .field textarea:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-tint); }
 
