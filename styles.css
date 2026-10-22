@@ -51,7 +51,7 @@ svg { display:block; }
 
 /* ---------- Zweige oben ---------- */
 .sprigs { position:absolute; inset:0 0 auto; height:0; pointer-events:none; z-index:0; }
-.sprig { position:absolute; top:0; width:96px; height:88px; overflow:visible; }
+.sprig { position:absolute; top:0; width:92px; height:auto; }
 .sprig.l { left:0; }
 .sprig.r { right:0; transform:scaleX(-1); }
 
@@ -63,6 +63,7 @@ svg { display:block; }
 .topbtns { display:flex; gap:2px; margin-top:2px; }
 .iconbtn { width:44px; height:44px; display:grid; place-items:center; border:0; background:transparent; color:var(--ink); border-radius:50%; cursor:pointer; font-size:0; }
 .iconbtn:hover { background:var(--sunken); }
+.iconbtn[aria-pressed="true"] { background:var(--sage-tint); }
 .ico { width:24px; height:24px; }
 
 /* ---------- Abschnitte und Karten ---------- */
@@ -117,6 +118,7 @@ main { position:relative; z-index:1; }
 .tile .v.sm { font-size:20px; }
 .tile .sub { margin-top:6px; font-size:13px; color:var(--muted); position:relative; z-index:1; max-width:78%; }
 .tile .art { position:absolute; right:-6px; bottom:-6px; width:58px; height:58px; opacity:.95; }
+.tile .art .pic { width:100%; height:100%; object-fit:contain; object-position:right bottom; }
 
 /* ---------- Tag erfassen ---------- */
 .daycard { margin-bottom:14px; }
@@ -168,8 +170,8 @@ fieldset.group legend { float:left; width:100%; padding:0; margin:0 0 14px; font
 
 /* ---------- Leiste unten ---------- */
 .tabbar { position:fixed; z-index:20; left:50%; transform:translateX(-50%); bottom:calc(12px + env(safe-area-inset-bottom));
-  width:min(calc(var(--maxw) - 2 * var(--gutter)), calc(100% - 28px)); background:var(--surface); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); padding:6px; }
-.tabbar [role="tablist"] { display:grid; grid-template-columns:repeat(4,1fr); }
+  width:min(300px, calc(100% - 28px)); background:var(--surface); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); padding:5px; }
+.tabbar [role="tablist"] { display:grid; grid-template-columns:repeat(3,1fr); }
 .tabbar [role="tab"] { display:flex; flex-direction:column; align-items:center; gap:3px; border:0; background:none; color:var(--muted); font:500 11px/1.2 var(--sans); padding:6px 0 4px; cursor:pointer; border-radius:16px; min-height:52px; }
 .tabbar [role="tab"]:hover { color:var(--ink); }
 .tabbar .ti { display:grid; place-items:center; width:48px; height:30px; border-radius:999px; transition:background .15s; }
@@ -210,8 +212,20 @@ fieldset.group legend { float:left; width:100%; padding:0; margin:0 0 14px; font
 .legend .sw.dots { display:grid; grid-template-columns:repeat(2,7px); gap:3px; place-content:center; }
 .dot.il { display:inline-block; margin:0 2px 0 4px; vertical-align:middle; }
 
+/* ---------- Analyse: Überblick ---------- */
+.anasum { position:relative; overflow:hidden; display:grid; grid-template-columns:1fr auto; gap:0 var(--s3); padding:20px 20px 16px; }
+.anasum .tl { font:600 16px/1.25 var(--serif); }
+.anasum .v { font:600 46px/1.05 var(--serif); color:var(--accent-text); margin-top:6px; }
+.anasum .v .u { font-size:18px; color:var(--ink); }
+.anasum .sub { font-size:13px; color:var(--muted); margin-top:4px; }
+.sum-art { width:72px; height:72px; margin:-4px -4px 0 0; }
+.sum-list { grid-column:1 / -1; display:grid; grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); gap:var(--s3) var(--s4); margin:var(--s4) 0 0; padding-top:var(--s4); border-top:1px dashed var(--line-soft); }
+.sum-list dt { font-size:12px; color:var(--muted); }
+.sum-list dd { margin:2px 0 0; font:600 15px/1.3 var(--sans); }
+.cap { margin:0; }
+
 /* ---------- Balkendiagramm Zykluslängen ---------- */
-.bars { position:relative; display:flex; align-items:flex-end; gap:5px; height:220px; padding:22px 0 0; border-bottom:1px solid var(--line); margin:var(--s3) 0 0; }
+.bars { position:relative; display:flex; align-items:flex-end; gap:5px; height:150px; padding:22px 0 0; border-bottom:1px solid var(--line); margin:var(--s3) 0 0; }
 .bars .col { flex:1 1 0; min-width:0; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; position:relative; outline:none; }
 .bars .bar { width:100%; max-width:36px; background:var(--accent); border-radius:8px 8px 3px 3px; }
 .bars .col.out .bar { background:var(--faint); }
@@ -230,8 +244,24 @@ table.data th { text-align:left; font:600 12px var(--sans); color:var(--muted); 
 table.data td { border-bottom:1px solid var(--line-soft); padding:10px 10px; }
 table.data tr:last-child td { border-bottom:0; }
 table.data .num { text-align:right; font-variant-numeric:tabular-nums; }
-table.data td.mood { font-weight:600; min-width:118px; }
-.ph td.cell { min-width:76px; }
+table.data td.mood { font-weight:600; min-width:96px; }
+/* Phasentabellen passen ohne Querscrollen aufs Handy */
+table.data.ph { table-layout:fixed; }
+.ph th:first-child { width:32%; }
+.ph th { font-size:12px; }
+.ph td.cell, .ph th.num { white-space:nowrap; }
+.ph th.num + th.num { padding-left:8px; }
+.ph td.mood { min-width:0; padding-left:0; hyphens:auto; }
+.symlist { margin:var(--s1) 0 0; padding:0; list-style:none; font-size:13px; }
+.symlist li { display:flex; justify-content:space-between; gap:var(--s3); padding:6px 0; border-bottom:1px solid var(--line-soft); }
+.symlist li:last-child { border-bottom:0; }
+.symlist .k { color:var(--muted); }
+.ph th, .ph td { padding:8px 4px; font-size:13px; }
+.ph th:first-child { padding-left:0; }
+.ph th.num { text-align:right; }
+.ph td.hi { color:var(--accent-text); font-weight:600; }
+.ph td.hi .meter i { background:var(--accent); }
+#phaseTable + .cap, .symcap { margin:var(--s5) 0 var(--s2); }
 .meter { display:block; height:5px; background:var(--sunken); margin-top:5px; border-radius:99px; overflow:hidden; }
 .meter i { display:block; height:100%; background:var(--sage); border-radius:99px; }
 
@@ -243,10 +273,13 @@ details[open] summary::after { content:"−"; }
 details > div { padding:var(--s3) 0 0; }
 
 /* ---------- Muster ---------- */
-#insights .row { background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:16px 18px 16px 40px; margin-bottom:12px; position:relative; font-size:15px; }
-#insights .row::before { content:""; position:absolute; left:18px; top:24px; width:9px; height:9px; border-radius:50%; background:var(--line); }
-#insights .row.prio::before { background:var(--accent); }
-#insights .note { margin-top:var(--s4); }
+#insights .row { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:12px 16px 12px 36px; margin-bottom:8px; position:relative; font-size:14px; }
+#insights .row::before { content:""; position:absolute; left:16px; top:19px; width:8px; height:8px; border-radius:50%; background:var(--line); }
+#insights .row.prio { background:var(--accent-tint); border-color:var(--accent-tint); padding:16px 18px 16px 38px; font-size:16px; }
+#insights .row.prio::before { background:var(--accent); top:24px; }
+#insights .cap { margin:var(--s3) 4px 0; }
+#insights details { margin-top:4px; border-top:0; }
+#insights details > div { padding:var(--s2) 0 0; }
 
 /* ---------- Daten ---------- */
 .actions { display:flex; gap:10px; flex-wrap:wrap; margin:var(--s4) 0 0; }

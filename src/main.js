@@ -111,7 +111,8 @@ function bind() {
   });
   $('goEntry').onclick = () => openDay(todayNum());
   $('seeMonth').onclick = () => { showTab('kal'); window.scrollTo({ top: 0 }); };
-  $('setBtn').onclick = () => { showTab('daten'); window.scrollTo({ top: 0 }); };
+  // Symbol oben rechts öffnet die Einstellungen, ein zweiter Tipp führt zurück
+  $('setBtn').onclick = () => { showTab(state.tab === 'daten' ? state.lastTab : 'daten'); window.scrollTo({ top: 0 }); };
 
   // Tooltip für Balken
   const tip = $('tip');
