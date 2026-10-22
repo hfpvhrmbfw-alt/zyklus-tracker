@@ -7,7 +7,7 @@ import { Store } from './storage.js';
 import { IMPORT_ERROR } from './texts.js';
 import {
   $, state, entries, todayNum, plural, readForm,
-  renderDay, renderCalendar, renderData, recompute, showTab, applyTheme, renderIcons, THEME_NEXT,
+  renderDay, renderCalendar, renderData, recompute, showTab, applyTheme, applyFont, renderIcons, THEME_NEXT,
 } from './ui.js';
 
 // ---------- Tag speichern ----------
@@ -38,7 +38,7 @@ function askPersist() {
 async function saveSettings(s) {
   state.settings = sanitizeSettings(s);
   await Store.setMeta('settings', state.settings);
-  applyTheme();
+  applyTheme(); applyFont();
 }
 
 // ---------- Export / Import ----------
@@ -129,8 +129,8 @@ function bind() {
   $('exportBtn').onclick = exportData;
   $('importBtn').onclick = () => $('importFile').click();
   $('importFile').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) importData(f); };
-  ['setCycle', 'setPeriod', 'setLuteal', 'setTheme'].forEach(id => $(id).addEventListener('change', async () => {
-    await saveSettings({ cycleLen: $('setCycle').value, periodLen: $('setPeriod').value, luteal: $('setLuteal').value, theme: $('setTheme').value });
+  ['setCycle', 'setPeriod', 'setLuteal', 'setTheme', 'setFont'].forEach(id => $(id).addEventListener('change', async () => {
+    await saveSettings({ cycleLen: $('setCycle').value, periodLen: $('setPeriod').value, luteal: $('setLuteal').value, theme: $('setTheme').value, font: $('setFont').value });
     recompute(); renderData();
   }));
   $('demoBtn').onclick = async () => {
@@ -165,6 +165,7 @@ function bind() {
   state.demo = !!demo;
   renderIcons();
   applyTheme();
+  applyFont();
   const d = new Date(); state.month = [d.getFullYear(), d.getMonth()];
   bind();
   recompute();

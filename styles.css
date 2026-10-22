@@ -14,6 +14,9 @@
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:44px;
   --r:20px; --maxw:520px; --gutter:20px; color-scheme:light;
 }
+/* Schriftwahl in den Einstellungen (ohne Attribut gilt „klar“) */
+[data-font="klassisch"] { --serif:"Playfair Display",Georgia,serif; --serif-w:600; --sans:"DM Sans",system-ui,sans-serif; }
+[data-font="mix"] { --serif:"Playfair Display",Georgia,serif; --serif-w:600; }
 [data-theme="dark"] {
   --bg:#1C1B1A; --surface:#252321; --sunken:#302D2A; --line:#4E4943; --line-soft:#3A3632;
   --ink:#EFE6D6; --muted:#B6AB9B; --faint:#80776C;

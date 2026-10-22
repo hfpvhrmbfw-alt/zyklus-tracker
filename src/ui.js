@@ -320,6 +320,14 @@ export function applyTheme() {
   $('setTheme').value = t;
 }
 
+// ---------- Schrift ----------
+export function applyFont() {
+  const f = state.settings.font;
+  if (f === 'klar') delete document.documentElement.dataset.font; else document.documentElement.dataset.font = f;
+  try { localStorage.setItem('zyklus-font', f); } catch { /* egal */ }
+  $('setFont').value = f;
+}
+
 
 // ---------- Symbole ----------
 /** Setzt die Symbole der Leiste unten und den Einstellungen-Knopf (einmal beim Start). */
