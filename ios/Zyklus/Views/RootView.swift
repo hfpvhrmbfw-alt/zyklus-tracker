@@ -1,4 +1,4 @@
-// Drei Bereiche in der Leiste unten, Einstellungen über das Symbol oben rechts. Beim ersten Start die Begrüßung.
+// Drei Bereiche in der eigenen Leiste unten, Einstellungen über das Symbol oben rechts. Beim ersten Start die Begrüßung.
 
 import SwiftUI
 import ZyklusKit
@@ -15,14 +15,12 @@ struct RootView: View {
   @State private var showSettings = false
 
   var body: some View {
-    TabView(selection: $tab) {
-      screen(HeuteView(open: { editing = EditDay(n: $0) }, showMonth: { tab = .kalender }))
-        .tabItem { Label("Heute", systemImage: "house") }.tag(Tab.heute)
-      screen(KalenderView(open: { editing = EditDay(n: $0) }))
-        .tabItem { Label("Kalender", systemImage: "calendar") }.tag(Tab.kalender)
-      screen(AnalyseView(open: { editing = EditDay(n: $0) }, showCalendar: { tab = .kalender }))
-        .tabItem { Label("Analyse", systemImage: "chart.bar") }.tag(Tab.analyse)
+    ZStack {
+      page(.heute) { HeuteView(open: { editing = EditDay(n: $0) }, showMonth: { tab = .kalender }) }
+      page(.kalender) { KalenderView(open: { editing = EditDay(n: $0) }) }
+      page(.analyse) { AnalyseView(open: { editing = EditDay(n: $0) }, showCalendar: { tab = .kalender }) }
     }
+    .safeAreaInset(edge: .bottom, spacing: 0) { TabBar(tab: $tab) }
     .sheet(item: $editing) { DayEditor(start: $0.n) }
     .sheet(isPresented: $showSettings) { EinstellungenView() }
     .fullScreenCover(isPresented: Binding(get: { !store.onboarded }, set: { _ in })) { IntroView() }
@@ -33,6 +31,12 @@ struct RootView: View {
     let a = ProcessInfo.processInfo.arguments
     guard let i = a.firstIndex(of: "-tab"), i + 1 < a.count else { return .heute }
     return ["kalender": .kalender, "analyse": .analyse][a[i + 1]] ?? .heute
+  }
+
+  /// Alle drei Bereiche bleiben geladen (Scrollposition bleibt erhalten), sichtbar ist nur der gewählte
+  private func page<V: View>(_ t: Tab, @ViewBuilder _ content: () -> V) -> some View {
+    let on = tab == t
+    return screen(content()).opacity(on ? 1 : 0).allowsHitTesting(on).accessibilityHidden(!on)
   }
 
   /// Gemeinsamer Rahmen: Hintergrund, Zweige oben, Einstellungen-Knopf
@@ -52,6 +56,40 @@ struct RootView: View {
       }
       .toolbarBackground(.hidden, for: .navigationBar)
     }
+  }
+}
+
+/// Schwebende Leiste unten wie in der Web-App (statt der System-Leiste, die je nach iOS-Version anders aussieht)
+struct TabBar: View {
+  @Binding var tab: Tab
+  private struct Item: Identifiable { let id: Tab; let label: String; let icon: String }
+  private let items = [Item(id: .heute, label: "Heute", icon: "house"), Item(id: .kalender, label: "Kalender", icon: "calendar"), Item(id: .analyse, label: "Analyse", icon: "chart.bar")]
+
+  var body: some View {
+    HStack(spacing: 0) {
+      ForEach(items) { item in
+        let on = tab == item.id
+        Button { tab = item.id } label: {
+          VStack(spacing: 3) {
+            Image(systemName: item.icon).font(.system(size: 18, weight: on ? .semibold : .regular))
+              .frame(width: 48, height: 30)
+              .background(Capsule().fill(on ? Theme.sageTint : .clear))
+            Text(item.label).font(.sans(11, on ? .semibold : .medium))
+          }
+          .foregroundStyle(on ? Theme.ink : Theme.muted)
+          .frame(maxWidth: .infinity, minHeight: 52)
+          .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(on ? [.isSelected] : [])
+      }
+    }
+    .padding(5)
+    .frame(width: 300)
+    .background(RoundedRectangle(cornerRadius: 22).fill(Theme.surface).shadow(color: .black.opacity(0.12), radius: 14, y: 6))
+    .overlay(RoundedRectangle(cornerRadius: 22).stroke(Theme.line, lineWidth: 1))
+    .padding(.bottom, 4)
+    .animation(.easeOut(duration: 0.15), value: tab)
   }
 }
 

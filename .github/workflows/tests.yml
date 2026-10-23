@@ -40,7 +40,7 @@ jobs:
   # Bildschirmfotos aus dem Simulator, verkleinert als Text im Log (zum Ansehen ohne Mac)
   ios-bilder:
     if: github.event_name == 'pull_request'
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
       - run: brew install xcodegen
@@ -49,7 +49,7 @@ jobs:
       - name: Bauen
         working-directory: ios
         run: |
-          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone 16')))")
+          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys,re; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if re.fullmatch(r'iPhone \\d+', x['name'])))")
           echo "UDID=$UDID" >> $GITHUB_ENV
           xcodebuild -project Zyklus.xcodeproj -scheme Zyklus -destination "id=$UDID" -derivedDataPath build CODE_SIGNING_ALLOWED=NO build -quiet
       - name: Fotos
