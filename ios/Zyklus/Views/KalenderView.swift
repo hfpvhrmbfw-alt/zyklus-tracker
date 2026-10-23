@@ -17,11 +17,11 @@ struct KalenderView: View {
         PageHead(title: "Kalender", sub: Texts.dayMonth(t))
         VStack(spacing: 16) {
           HStack {
-            Button { shift(-1, y, m) } label: { Image(systemName: "arrow.left") }.buttonStyle(RoundButton()).accessibilityLabel("Vorheriger Monat")
+            Button { shift(-1, y, m) } label: { Text("←").font(.sans(18)) }.buttonStyle(RoundButton()).accessibilityLabel("Vorheriger Monat")
             Spacer()
             Text("\(Texts.months[m - 1]) \(String(y))").font(.serif(21))
             Spacer()
-            Button { shift(1, y, m) } label: { Image(systemName: "arrow.right") }.buttonStyle(RoundButton()).accessibilityLabel("Nächster Monat")
+            Button { shift(1, y, m) } label: { Text("→").font(.sans(18)) }.buttonStyle(RoundButton()).accessibilityLabel("Nächster Monat")
           }
           grid(y, m, t)
         }
