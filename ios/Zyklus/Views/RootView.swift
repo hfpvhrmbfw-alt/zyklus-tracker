@@ -51,7 +51,7 @@ struct RootView: View {
       HStack {
         Spacer()
         Button { showSettings = true } label: {
-          Image(systemName: "slider.horizontal.3").font(.system(size: 19)).frame(width: 44, height: 44).contentShape(Circle())
+          LineIcon(kind: .gear).frame(width: 44, height: 44).contentShape(Circle())
         }
         .buttonStyle(.plain)
         .foregroundStyle(Theme.ink)
@@ -65,8 +65,8 @@ struct RootView: View {
 /// Schwebende Leiste unten wie in der Web-App (statt der System-Leiste, die je nach iOS-Version anders aussieht)
 struct TabBar: View {
   @Binding var tab: Tab
-  private struct Item: Identifiable { let id: Tab; let label: String; let icon: String }
-  private let items = [Item(id: .heute, label: "Heute", icon: "house"), Item(id: .kalender, label: "Kalender", icon: "calendar"), Item(id: .analyse, label: "Analyse", icon: "chart.bar")]
+  private struct Item: Identifiable { let id: Tab; let label: String; let icon: LineIconKind }
+  private let items = [Item(id: .heute, label: "Heute", icon: .home), Item(id: .kalender, label: "Kalender", icon: .cal), Item(id: .analyse, label: "Analyse", icon: .chart)]
 
   var body: some View {
     HStack(spacing: 0) {
@@ -74,7 +74,7 @@ struct TabBar: View {
         let on = tab == item.id
         Button { tab = item.id } label: {
           VStack(spacing: 3) {
-            Image(systemName: item.icon).font(.system(size: 18, weight: on ? .semibold : .regular))
+            LineIcon(kind: item.icon, size: 22, weight: on ? 2.1 : 1.7)
               .frame(width: 48, height: 30)
               .background(Capsule().fill(on ? Theme.sageTint : .clear))
             Text(item.label).font(.sans(11, on ? .semibold : .medium))

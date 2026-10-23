@@ -54,7 +54,7 @@ struct Chip: View {
     Button(action: action) {
       HStack(spacing: 7) {
         if let dot { Circle().fill(dot).frame(width: 10, height: 10) }
-        else if selected { Image(systemName: "checkmark").font(.system(size: 12, weight: .semibold)) }
+        else if selected { Text("✓").font(.sans(13)) }
         Text(label)
       }
       .font(.sans(14, .medium))

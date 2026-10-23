@@ -89,12 +89,12 @@ struct DayEditor: View {
     let ph = Logic.phaseOf(store.analysis, n)
     return VStack(alignment: .leading, spacing: 10) {
       HStack {
-        Button { n -= 1 } label: { Image(systemName: "arrow.left") }.buttonStyle(RoundButton()).accessibilityLabel("Vorheriger Tag")
+        Button { n -= 1 } label: { Text("←").font(.sans(18)) }.buttonStyle(RoundButton()).accessibilityLabel("Vorheriger Tag")
         Spacer()
         DatePicker("Datum", selection: Binding(get: { date(n) }, set: { n = EntryStore.currentDay($0) }), displayedComponents: .date)
           .labelsHidden()
         Spacer()
-        Button { n += 1 } label: { Image(systemName: "arrow.right") }.buttonStyle(RoundButton()).accessibilityLabel("Nächster Tag")
+        Button { n += 1 } label: { Text("→").font(.sans(18)) }.buttonStyle(RoundButton()).accessibilityLabel("Nächster Tag")
       }
       Text(Texts.long(n) + (n == store.today ? " · heute" : "")).font(.serif(22))
       if let ph {
