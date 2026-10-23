@@ -1,0 +1,75 @@
+# Prüft bei jedem Push: Logik der Web-App (Node), Logik der iOS-App (Swift, gleiche Testfälle) und ob die iOS-App baut.
+name: Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+
+  swift-logik:
+    runs-on: ubuntu-latest
+    container: swift:6.0
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test --package-path ios/ZyklusKit
+
+  ios-app:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen
+        working-directory: ios
+      - name: App bauen (Simulator, ohne Signatur)
+        working-directory: ios
+        run: |
+          xcodebuild -project Zyklus.xcodeproj -scheme Zyklus \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build | tail -n 80
+          exit ${PIPESTATUS[0]}
+
+  # Bildschirmfotos aus dem Simulator, verkleinert als Text im Log (zum Ansehen ohne Mac)
+  ios-bilder:
+    if: github.event_name == 'pull_request'
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen
+        working-directory: ios
+      - name: Bauen
+        working-directory: ios
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone 16')))")
+          echo "UDID=$UDID" >> $GITHUB_ENV
+          xcodebuild -project Zyklus.xcodeproj -scheme Zyklus -destination "id=$UDID" -derivedDataPath build CODE_SIGNING_ALLOWED=NO build -quiet
+      - name: Fotos
+        working-directory: ios
+        run: |
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryLevel 100 --cellularBars 4
+          xcrun simctl install "$UDID" build/Build/Products/Debug-iphonesimulator/Zyklus.app
+          shot() {
+            xcrun simctl ui "$UDID" appearance "$2"
+            xcrun simctl launch "$UDID" de.annagramm.zyklus ${@:3}
+            sleep 5
+            xcrun simctl io "$UDID" screenshot "/tmp/$1.png"
+            xcrun simctl terminate "$UDID" de.annagramm.zyklus || true
+            sips -Z 900 -s format jpeg -s formatOptions 70 "/tmp/$1.png" --out "/tmp/$1.jpg" >/dev/null
+            echo "BILD-START $1"; base64 -i "/tmp/$1.jpg" | fold -w 2000; echo "BILD-ENDE $1"
+          }
+          shot begruessung light
+          shot heute light -demo
+          shot kalender light -demo -tab kalender
+          shot analyse light -demo -tab analyse
+          shot heute-dunkel dark -demo
