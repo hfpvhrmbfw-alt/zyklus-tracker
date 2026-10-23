@@ -1,5 +1,6 @@
 // Beschriftungen zu den IDs aus ZyklusKit, wie src/texts.js.
 
+import Foundation
 import ZyklusKit
 
 enum Texts {
