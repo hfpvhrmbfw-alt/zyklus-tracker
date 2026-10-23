@@ -10,7 +10,7 @@ Reine Frontend-PWA ohne Backend und ohne Build-Schritt. Alle Einträge liegen nu
 - **Erster Start:** Begrüßung in drei Schritten (was die App kann, Daten bleiben lokal, letzte Periode und übliche Längen). Die letzte Periode wird als „Leicht“ eingetragen. Alternativ gleich mit Demodaten starten.
 - **Backup-Erinnerung:** ab fünf Einträgen auf der Startseite, wenn das letzte Backup (oder ohne Backup der erste Eintrag) 30 Tage her ist; „Später“ schiebt um 7 Tage. Am Handy öffnet „Backup exportieren“ das Teilen-Menü (In Dateien sichern, iCloud).
 - **Leerzustände:** Kalender und Analyse zeigen ohne Daten ein Bild, einen kurzen Text und einen Knopf zum Eintragen.
-- **Einstellungen** (Symbol oben rechts, nicht in der Leiste): JSON-Backup exportieren/importieren, Standardwerte (Zykluslänge, Periodendauer, Lutealphase), Hell/Dunkel, Demodaten, alles löschen.
+- **Einstellungen** (Symbol oben rechts, nicht in der Leiste): Backup exportieren/importieren (Datei „Zyklus-Backup TT.MM.JJJJ“), Standardwerte (Zykluslänge, Periodendauer, Lutealphase), Hell/Dunkel, Demodaten, alles löschen.
 
 ## Bilder
 Illustrationen sind meist Inline-SVG in `src/art.js`. Gemalte Bilder liegen als PNG mit echter Transparenz in `img/` (Zweige oben, kleiner Zweig auf den Kacheln). Neue PNGs dort ablegen und in `sw.js` unter `SHELL` eintragen.

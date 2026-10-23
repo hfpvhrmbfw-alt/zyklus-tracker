@@ -45,7 +45,8 @@ async function saveSettings(s) {
 // ---------- Export / Import ----------
 async function exportData() {
   const data = buildExport(state.settings, entries(), new Date().toISOString());
-  const name = `zyklus-backup-${toStr(todayNum())}.json`;
+  // Lesbarer Name ohne Technikwörter; die Endung .json braucht das iPhone, um die Datei wieder einzulesen
+  const name = `Zyklus-Backup ${toStr(todayNum()).split('-').reverse().join('.')}.json`;
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   // Am Handy über das Teilen-Menü (In Dateien sichern, iCloud …), sonst als Download
   const file = typeof File === 'function' ? new File([blob], name, { type: 'application/json' }) : null;

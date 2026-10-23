@@ -27,7 +27,7 @@ export const greeting = h => h < 5 ? 'Gute Nacht!' : h < 11 ? 'Guten Morgen!' : 
 export const TAB_TITLE = { kal: 'Kalender', ana: 'Analyse', daten: 'Einstellungen' };
 
 export const IMPORT_ERROR = {
-  invalid_json: 'Die Datei ist kein gültiges JSON.',
+  invalid_json: 'Diese Datei ist kein Zyklus-Backup. Bitte wähle eine Datei, die mit „Backup exportieren“ gespeichert wurde.',
   no_entries: 'In der Datei wurden keine Einträge gefunden.',
   newer_version: 'Die Datei stammt aus einer neueren Version der App. Bitte zuerst die App aktualisieren.',
 };
