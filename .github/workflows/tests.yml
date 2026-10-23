@@ -1,0 +1,38 @@
+# Prüft bei jedem Push: Logik der Web-App (Node), Logik der iOS-App (Swift, gleiche Testfälle) und ob die iOS-App baut.
+name: Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+
+  swift-logik:
+    runs-on: ubuntu-latest
+    container: swift:6.0
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test --package-path ios/ZyklusKit
+
+  ios-app:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen
+        working-directory: ios
+      - name: App bauen (Simulator, ohne Signatur)
+        working-directory: ios
+        run: |
+          xcodebuild -project Zyklus.xcodeproj -scheme Zyklus \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build | tail -n 80
+          exit ${PIPESTATUS[0]}

@@ -49,6 +49,9 @@ Vier Schichten, Abhängigkeiten nur in eine Richtung (Oberfläche → Logik → 
 
 Weitere Dateien: `index.html` · `styles.css` (Stil „Beet“ v2.0, mobil zuerst) · `sw.js` · `manifest.webmanifest` · `icons/` · `docs/SWIFT.md` (Übertragung nach Swift)
 
+## iOS-App
+Im Ordner `ios/` liegt die native iOS-App (SwiftUI). Anleitung zum Öffnen auf dem Mac: [ios/README.md](ios/README.md).
+
 ## Tests
 Die Logik läuft ohne Browser und wird mit Node getestet (keine Abhängigkeiten):
 
