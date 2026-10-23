@@ -10,7 +10,7 @@ struct EditDay: Identifiable { let n: DayNum; var id: DayNum { n } }
 
 struct RootView: View {
   @Environment(EntryStore.self) private var store
-  @State private var tab: Tab = .heute
+  @State private var tab: Tab = RootView.startTab
   @State private var editing: EditDay?
   @State private var showSettings = false
 
@@ -26,6 +26,13 @@ struct RootView: View {
     .sheet(item: $editing) { DayEditor(start: $0.n) }
     .sheet(isPresented: $showSettings) { EinstellungenView() }
     .fullScreenCover(isPresented: Binding(get: { !store.onboarded }, set: { _ in })) { IntroView() }
+  }
+
+  /// Start-Bereich, für Bildschirmfotos über das Startargument -tab kalender|analyse wählbar
+  static var startTab: Tab {
+    let a = ProcessInfo.processInfo.arguments
+    guard let i = a.firstIndex(of: "-tab"), i + 1 < a.count else { return .heute }
+    return ["kalender": .kalender, "analyse": .analyse][a[i + 1]] ?? .heute
   }
 
   /// Gemeinsamer Rahmen: Hintergrund, Zweige oben, Einstellungen-Knopf

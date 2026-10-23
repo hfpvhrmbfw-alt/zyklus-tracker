@@ -4,8 +4,15 @@ import SwiftUI
 
 @main
 struct ZyklusApp: App {
-  @State private var store = EntryStore()
+  @State private var store: EntryStore
   @Environment(\.scenePhase) private var scenePhase
+
+  init() {
+    let s = EntryStore()
+    // Für Bildschirmfotos und Tests: mit -demo startet die App mit Beispieldaten
+    if ProcessInfo.processInfo.arguments.contains("-demo") { s.loadDemo() }
+    _store = State(initialValue: s)
+  }
 
   var body: some Scene {
     WindowGroup {
