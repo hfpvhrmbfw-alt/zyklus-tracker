@@ -5,7 +5,14 @@ import ZyklusKit
 
 struct IntroView: View {
   @Environment(EntryStore.self) private var store
-  @State private var step = 0
+  @State private var step = IntroView.startStep
+
+  /// Für Bildschirmfotos: Startargument -schritt 2 zeigt gleich den zweiten Schritt
+  static var startStep: Int {
+    let a = ProcessInfo.processInfo.arguments
+    guard let i = a.firstIndex(of: "-schritt"), i + 1 < a.count, let n = Int(a[i + 1]) else { return 0 }
+    return min(max(n - 1, 0), 2)
+  }
   @State private var knowsStart = true
   @State private var start = Date()
   @State private var periodLen = 5

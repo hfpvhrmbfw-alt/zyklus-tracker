@@ -1,0 +1,24 @@
+/* Schlichte Textseiten (Datenschutz, Hilfe, Impressum) im Stil der App: gleiche Farben und lokale Schriften */
+@import url(./fonts/fonts.css);
+:root {
+  --bg:#EADFCC; --surface:#EFE6D6; --line:#B9AA91; --ink:#1E1A16; --muted:#5C5247; --link:#A9461C; --mark:#F6D2BE;
+  --serif:"DM Serif Display",Georgia,serif; --sans:"Outfit",system-ui,sans-serif; color-scheme:light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg:#1C1B1A; --surface:#252321; --line:#4E4943; --ink:#EFE6D6; --muted:#B6AB9B; --link:#FF9A70; --mark:#4A2C1F; color-scheme:dark; } }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.6 var(--sans); -webkit-text-size-adjust:100%; }
+main { max-width:680px; margin:0 auto; padding:48px 20px 64px; }
+h1 { font:400 40px/1.15 var(--serif); margin:0 0 8px; }
+h2 { font:400 25px/1.25 var(--serif); margin:40px 0 8px; }
+h3 { font-weight:600; font-size:17px; margin:24px 0 4px; }
+p, ul, ol { margin:0 0 12px; }
+ul, ol { padding-left:22px; }
+li { margin-bottom:6px; }
+a { color:var(--link); text-underline-offset:3px; }
+.lead { color:var(--muted); font-size:18px; }
+.card { background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:16px 20px; margin:20px 0; }
+.card p:last-child, .card ul:last-child { margin-bottom:0; }
+.platzhalter { background:var(--mark); border-radius:6px; padding:0 4px; }
+.stand, footer { color:var(--muted); font-size:15px; }
+footer { margin-top:48px; border-top:1px solid var(--line); padding-top:16px; }
