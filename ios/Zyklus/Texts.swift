@@ -1,5 +1,6 @@
 // Beschriftungen zu den IDs aus ZyklusKit, wie src/texts.js.
 
+import Foundation
 import ZyklusKit
 
 enum Texts {
@@ -36,6 +37,12 @@ enum Texts {
     .noEntries: "In der Datei wurden keine Einträge gefunden.",
     .newerVersion: "Die Datei stammt aus einer neueren Version der App. Bitte zuerst die App aktualisieren.",
   ]
+
+  // Seiten im Netz (GitHub Pages), auch im App-Store-Eintrag verlinkt
+  static let web = "https://hfpvhrmbfw-alt.github.io/zyklus-tracker/"
+  static let datenschutzURL = URL(string: web + "datenschutz.html")!
+  static let hilfeURL = URL(string: web + "hilfe.html")!
+  static let impressumURL = URL(string: web + "impressum.html")!
 
   static let disclaimer = "Alle Vorhersagen sind Schätzungen aus deinen bisherigen Einträgen. Sie sind kein medizinischer Rat und nicht zur Verhütung geeignet."
 

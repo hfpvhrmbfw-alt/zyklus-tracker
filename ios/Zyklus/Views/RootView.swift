@@ -24,6 +24,8 @@ struct RootView: View {
     .sheet(item: $editing) { DayEditor(start: $0.n) }
     .sheet(isPresented: $showSettings) { EinstellungenView() }
     .fullScreenCover(isPresented: Binding(get: { !store.onboarded }, set: { _ in })) { IntroView() }
+    // für Bildschirmfotos: Startargument -eintrag öffnet gleich das Eintragsblatt für heute
+    .onAppear { if ProcessInfo.processInfo.arguments.contains("-eintrag") { editing = EditDay(n: store.today) } }
   }
 
   /// Start-Bereich, für Bildschirmfotos über das Startargument -tab kalender|analyse wählbar

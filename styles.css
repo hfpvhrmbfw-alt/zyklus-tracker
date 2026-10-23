@@ -297,6 +297,7 @@ details > div { padding:var(--s3) 0 0; }
 .settings { display:grid; gap:var(--s4); grid-template-columns:repeat(2,minmax(0,1fr)); margin:var(--s4) 0 0; }
 #storeInfo { margin:0; }
 .foot { text-align:center; margin:var(--s7) 0 0; }
+.foot a { color:inherit; }
 
 /* ---------- Backup-Erinnerung ---------- */
 .note.remind { margin:var(--s5) 0 0; }

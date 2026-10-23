@@ -52,6 +52,8 @@ Weitere Dateien: `index.html` · `styles.css` (Stil „Beet“ v2.0, mobil zuers
 ## iOS-App
 Im Ordner `ios/` liegt die native iOS-App (SwiftUI). Anleitung zum Öffnen auf dem Mac: [ios/README.md](ios/README.md).
 
+App Store: Schritte, Store-Texte und Antworten für App Store Connect in [docs/app-store/](docs/app-store/README.md). Datenschutz, Hilfe und Impressum liegen als `datenschutz.html`, `hilfe.html` und `impressum.html` im Hauptordner (über GitHub Pages erreichbar).
+
 ## Tests
 Die Logik läuft ohne Browser und wird mit Node getestet (keine Abhängigkeiten):
 

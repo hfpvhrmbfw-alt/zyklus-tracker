@@ -1,5 +1,5 @@
 /* Service Worker: App offline verfügbar machen. Speichert nur App-Dateien, keine Einträge. */
-const VERSION = 'zyklus-v2.4.1';
+const VERSION = 'zyklus-v2.4.2';
 const SHELL = ['./', './index.html', './styles.css', './manifest.webmanifest',
   './src/main.js', './src/ui.js', './src/logic.js', './src/model.js', './src/storage.js', './src/texts.js', './src/art.js',
   './fonts/fonts.css', './fonts/dm-serif-display-latin.woff2', './fonts/outfit-latin.woff2', './fonts/playfair-display-latin.woff2', './fonts/dm-sans-latin.woff2',

@@ -49,6 +49,12 @@ struct EinstellungenView: View {
           Text(Texts.disclaimer).font(.sans(13)).foregroundStyle(Theme.muted)
           LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "–")
         }
+
+        Section("Rechtliches") {
+          Link("Datenschutz", destination: Texts.datenschutzURL)
+          Link("Hilfe und Kontakt", destination: Texts.hilfeURL)
+          Link("Impressum", destination: Texts.impressumURL)
+        }
       }
       .font(.sans(16))
       .scrollContentBackground(.hidden)

@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   web:
@@ -73,3 +74,52 @@ jobs:
           shot kalender light -demo -tab kalender
           shot analyse light -demo -tab analyse
           shot heute-dunkel dark -demo
+
+  # Bildschirmfotos für den App Store in voller Größe (6,9 Zoll, 1320 × 2868), als Download unter „Artifacts“ im Lauf
+  store-bilder:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request'
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen
+        working-directory: ios
+      - name: Bauen
+        working-directory: ios
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "import json,sys,re; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if re.fullmatch(r'iPhone \\d+ Pro Max', x['name'])))")
+          echo "UDID=$UDID" >> $GITHUB_ENV
+          xcodebuild -project Zyklus.xcodeproj -scheme Zyklus -destination "id=$UDID" -derivedDataPath build CODE_SIGNING_ALLOWED=NO build -quiet
+      - name: Fotos
+        working-directory: ios
+        run: |
+          mkdir -p store-bilder
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3
+          xcrun simctl install "$UDID" build/Build/Products/Debug-iphonesimulator/Zyklus.app
+          shot() {
+            xcrun simctl ui "$UDID" appearance "$2"
+            xcrun simctl launch "$UDID" de.annagramm.zyklus ${@:3} -storefoto -AppleLanguages "(de)" -AppleLocale de_DE
+            sleep 6
+            xcrun simctl io "$UDID" screenshot "store-bilder/$1.png"
+            xcrun simctl terminate "$UDID" de.annagramm.zyklus || true
+          }
+          # Begrüßung zuerst, solange die App noch frisch installiert ist
+          shot 06-begruessung-daten-bleiben-bei-dir light -schritt 2
+          shot 01-heute light -demo
+          shot 02-kalender light -demo -tab kalender
+          shot 03-eintrag light -demo -eintrag
+          shot 04-analyse light -demo -tab analyse
+          shot 05-heute-dunkel dark -demo
+          sips -g pixelWidth -g pixelHeight store-bilder/*.png
+          # kleine Vorschau als Text im Log (zum Prüfen ohne Download)
+          for f in store-bilder/*.png; do
+            n=$(basename "$f" .png)
+            sips -Z 480 -s format jpeg -s formatOptions 60 "$f" --out "/tmp/$n.jpg" >/dev/null
+            echo "BILD-START $n"; base64 -i "/tmp/$n.jpg" | fold -w 2000; echo "BILD-ENDE $n"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-store-bildschirmfotos
+          path: ios/store-bilder/*.png
