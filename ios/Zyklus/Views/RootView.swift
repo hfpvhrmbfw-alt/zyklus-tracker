@@ -41,20 +41,23 @@ struct RootView: View {
 
   /// Gemeinsamer Rahmen: Hintergrund, Zweige oben, Einstellungen-Knopf
   private func screen<V: View>(_ content: V) -> some View {
-    NavigationStack {
-      ZStack(alignment: .top) {
-        Theme.bg.ignoresSafeArea()
-        Sprigs()
-        content
-      }
-      .toolbar {
-        ToolbarItem(placement: .topBarTrailing) {
-          Button { showSettings = true } label: { Image(systemName: "slider.horizontal.3") }
-            .accessibilityLabel("Einstellungen und Backup")
-            .foregroundStyle(Theme.ink)
+    ZStack(alignment: .top) {
+      Theme.bg.ignoresSafeArea()
+      Sprigs()
+      content
+    }
+    // eigener Knopf statt Navigationsleiste, damit er auf jeder iOS-Version gleich aussieht
+    .safeAreaInset(edge: .top, spacing: 0) {
+      HStack {
+        Spacer()
+        Button { showSettings = true } label: {
+          Image(systemName: "slider.horizontal.3").font(.system(size: 19)).frame(width: 44, height: 44).contentShape(Circle())
         }
+        .buttonStyle(.plain)
+        .foregroundStyle(Theme.ink)
+        .accessibilityLabel("Einstellungen und Backup")
       }
-      .toolbarBackground(.hidden, for: .navigationBar)
+      .padding(.horizontal, 8)
     }
   }
 }
