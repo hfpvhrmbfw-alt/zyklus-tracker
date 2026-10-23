@@ -53,10 +53,12 @@ struct HeuteView: View {
         VStack(alignment: .leading, spacing: 6) {
           Text(heroSub(an, t, ph)).font(.sans(13)).foregroundStyle(Theme.muted)
           Text(an.current.map { "Tag \($0.day)" } ?? "Schön, dass du da bist").font(.serif(30)).foregroundStyle(Theme.ink)
-          Button("Tag eintragen  →") { open(t) }.buttonStyle(.pill).padding(.top, 6)
+          Button { open(t) } label: { Text("Tag eintragen  →").lineLimit(1).fixedSize() }
+            .buttonStyle(.pill).padding(.top, 6)
         }
+        .layoutPriority(1)
         Spacer(minLength: 0)
-        Image(phaseImage(ph?.phase)).resizable().scaledToFit().frame(maxWidth: 160)
+        Image(phaseImage(ph?.phase)).resizable().scaledToFit().frame(maxWidth: 130)
           .offset(x: 18, y: -30).padding(.bottom, -30).accessibilityHidden(true)
       }
       Divider().overlay(Theme.lineSoft)
