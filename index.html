@@ -14,9 +14,10 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Zyklus">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Serif+Display&family=Outfit:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Schriften liegen in der App (fonts/), kein Abruf bei Google -->
+<link rel="preload" href="fonts/dm-serif-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -40,6 +41,13 @@
 <main class="wrap">
   <!-- HEUTE -->
   <div role="tabpanel" id="p-heute" aria-labelledby="tab-heute">
+    <div id="backupNote" class="note warn remind" role="status" hidden>
+      <p><b>Backup</b> <span id="backupText"></span></p>
+      <div class="actions">
+        <button type="button" class="pill small" id="backupNow">Jetzt sichern</button>
+        <button type="button" class="pill ghost small" id="backupLater">Später</button>
+      </div>
+    </div>
     <div id="demoNote" class="note info" hidden><b>Demo</b> Gerade sind Beispieldaten geladen. In den Einstellungen (Symbol oben rechts) kannst du sie wieder entfernen.</div>
 
     <section class="card hero" aria-live="polite">
@@ -107,6 +115,7 @@
         <div class="cal" id="cal" role="grid" aria-label="Monatskalender"></div>
       </div>
     </section>
+    <section class="section" id="kalEmpty" hidden></section>
     <section class="section">
       <div class="sechead"><h2>Legende</h2></div>
       <div class="card legend">
@@ -122,7 +131,8 @@
 
   <!-- ANALYSE -->
   <div role="tabpanel" id="p-ana" aria-labelledby="tab-ana" hidden>
-    <div id="anaEmpty" class="note info" hidden><b>Noch zu wenig Daten</b> Für die Analyse braucht es mindestens zwei eingetragene Periodenstarts. Trag dazu im Eintrag die Blutung ein (ab „Leicht“).</div>
+    <section class="section first" id="anaEmpty" hidden></section>
+    <div id="anaBody">
     <section class="section first">
       <div class="card anasum" id="anaSum"></div>
     </section>
@@ -147,6 +157,7 @@
         <details id="moodMore" hidden><summary>Alle Gefühle</summary><div class="table-scroll" id="moodTableAll"></div></details>
       </div>
     </section>
+    </div>
   </div>
 
   <!-- EINSTELLUNGEN (über das Symbol oben rechts, nicht in der Leiste) -->
@@ -189,7 +200,7 @@
         </div>
       </div>
     </section>
-    <p class="foot small muted">Zyklus-Tracker · offline · lokal · <span id="footVer">v2.3</span></p>
+    <p class="foot small muted">Zyklus-Tracker · offline · lokal · <span id="footVer">v2.4</span></p>
   </div>
 </main>
 
@@ -201,6 +212,42 @@
   </div>
 </nav>
 <div class="tip" id="tip" hidden></div>
+
+<!-- Begrüßung beim ersten Start: drei Schritte -->
+<dialog id="intro" class="intro" aria-labelledby="introTitle1">
+  <div class="intro-in">
+    <div class="intro-top">
+      <div class="intro-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+      <button type="button" class="more" id="introSkip">Überspringen</button>
+    </div>
+    <section class="intro-step" data-step="0">
+      <div class="intro-art" data-art="ovu"></div>
+      <h2 id="introTitle1">Schön, dass du da bist</h2>
+      <p>Trag ein, wie es dir geht: Blutung, Stimmung, Gefühle, Energie und Körper. Daraus erkennt die App deinen Zyklus, schätzt die nächste Periode und zeigt dir deine Muster.</p>
+      <div class="intro-btns"><button type="button" class="pill" data-next>Weiter <span aria-hidden="true">→</span></button></div>
+    </section>
+    <section class="intro-step" data-step="1" hidden>
+      <div class="intro-art" data-art="lut"></div>
+      <h2 id="introTitle2">Deine Daten bleiben bei dir</h2>
+      <p>Es gibt kein Konto und keinen Server. Alles liegt nur auf diesem Gerät. Darum erinnert dich die App etwa einmal im Monat an ein Backup, das du zum Beispiel in deinen Dateien oder in der iCloud ablegst.</p>
+      <div class="intro-btns"><button type="button" class="pill" data-next>Weiter <span aria-hidden="true">→</span></button></div>
+    </section>
+    <section class="intro-step" data-step="2" hidden>
+      <div class="intro-art small" data-art="men"></div>
+      <h2 id="introTitle3">Wann hat deine letzte Periode begonnen?</h2>
+      <p class="small muted">Wenn du es nicht genau weißt, lass das Feld leer. Alles lässt sich später ändern.</p>
+      <div class="intro-form">
+        <div class="field wide"><label for="introStart">Erster Tag der letzten Periode</label><input type="date" id="introStart"></div>
+        <div class="field"><label for="introPeriod">Periode dauert meist (Tage)</label><input type="number" id="introPeriod" min="1" max="12" inputmode="numeric"></div>
+        <div class="field"><label for="introCycle">Zyklus dauert meist (Tage)</label><input type="number" id="introCycle" min="15" max="60" inputmode="numeric"></div>
+      </div>
+      <div class="intro-btns">
+        <button type="button" class="pill" id="introDone">Los geht’s <span aria-hidden="true">→</span></button>
+        <button type="button" class="pill ghost" id="introDemo">Erst mit Beispieldaten ausprobieren</button>
+      </div>
+    </section>
+  </div>
+</dialog>
 <script type="module" src="src/main.js"></script>
 </body>
 </html>

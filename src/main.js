@@ -2,13 +2,14 @@
    Start, Aktionen und Ereignisse. Verbindet Oberfläche, Logik und Speicher. */
 
 import { toNum, toStr, isEmpty, sanitize, sanitizeSettings, buildExport, parseImport, DEFAULTS } from './model.js';
-import { makeDemo } from './logic.js';
+import { makeDemo, introPeriod } from './logic.js';
 import { Store } from './storage.js';
 import { IMPORT_ERROR } from './texts.js';
 import {
   $, state, entries, todayNum, plural, readForm,
-  renderDay, renderCalendar, renderData, recompute, showTab, applyTheme, applyFont, renderIcons, THEME_NEXT,
+  renderDay, renderCalendar, renderData, renderBackup, recompute, showTab, applyTheme, applyFont, renderIcons, THEME_NEXT,
 } from './ui.js';
+import { scene } from './art.js';
 
 // ---------- Tag speichern ----------
 let saveTimer;
@@ -42,14 +43,32 @@ async function saveSettings(s) {
 }
 
 // ---------- Export / Import ----------
-function exportData() {
+async function exportData() {
   const data = buildExport(state.settings, entries(), new Date().toISOString());
+  const name = `zyklus-backup-${toStr(todayNum())}.json`;
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  // Am Handy über das Teilen-Menü (In Dateien sichern, iCloud …), sonst als Download
+  const file = typeof File === 'function' ? new File([blob], name, { type: 'application/json' }) : null;
+  if (file && matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: 'Zyklus-Backup' }); }
+    catch (e) { if (e.name === 'AbortError') return; download(blob, name); }
+  } else download(blob, name);
+  await markBackup();
+}
+
+function download(blob, name) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `zyklus-backup-${toStr(todayNum())}.json`;
+  a.download = name;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+async function markBackup() {
+  state.lastBackup = todayNum(); state.backupSnooze = null;
+  await Store.setMeta('lastBackup', state.lastBackup);
+  renderBackup();
+  if (state.tab === 'daten') renderData();
 }
 
 async function importData(file) {
@@ -61,8 +80,50 @@ async function importData(file) {
   await Store.putDays(res.days);
   res.days.forEach(e => state.days.set(e.date, e));
   if (res.settings) await saveSettings(res.settings);
+  await markBackup(); // wer importiert, hat die Datei schon als Backup
   recompute(); renderData();
   alert('Import abgeschlossen.');
+}
+
+async function loadDemo() {
+  await Store.clearDays(); state.days.clear();
+  const list = makeDemo(todayNum());
+  await Store.putDays(list); list.forEach(e => state.days.set(e.date, e));
+  state.demo = true; await Store.setMeta('demo', true);
+  recompute(); renderData();
+}
+
+// ---------- Begrüßung beim ersten Start ----------
+function openIntro() {
+  const dlg = $('intro');
+  dlg.querySelectorAll('[data-art]').forEach(el => { el.innerHTML = scene(el.dataset.art); });
+  $('introStart').max = toStr(todayNum());
+  $('introPeriod').value = state.settings.periodLen; $('introCycle').value = state.settings.cycleLen;
+  const steps = [...dlg.querySelectorAll('.intro-step')], dots = [...dlg.querySelectorAll('.intro-dots i')];
+  const go = i => {
+    steps.forEach((s, k) => { s.hidden = k !== i; });
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    const h = steps[i].querySelector('h2');
+    dlg.setAttribute('aria-labelledby', h.id);
+    h.tabIndex = -1; h.focus();
+  };
+  dlg.querySelectorAll('[data-next]').forEach((b, i) => { b.onclick = () => go(i + 1); });
+  const finish = async () => { await Store.setMeta('onboarded', true); dlg.close(); };
+  $('introSkip').onclick = finish;
+  dlg.addEventListener('cancel', e => { e.preventDefault(); finish(); });
+  $('introDemo').onclick = async () => { await finish(); await loadDemo(); };
+  $('introDone').onclick = async () => {
+    await saveSettings({ ...state.settings, cycleLen: $('introCycle').value, periodLen: $('introPeriod').value });
+    const v = $('introStart').value;
+    if (v && toNum(v) <= todayNum()) {
+      const list = introPeriod(toNum(v), state.settings.periodLen, todayNum());
+      await Store.putDays(list); list.forEach(e => state.days.set(e.date, e));
+    }
+    await finish();
+    recompute();
+  };
+  if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+  go(0);
 }
 
 // ---------- Ereignisse ----------
@@ -110,6 +171,18 @@ function bind() {
     if (b) openDay(Number(b.dataset.n));
   });
   $('goEntry').onclick = () => openDay(todayNum());
+  // Knöpfe in den Leerzuständen (Kalender, Analyse)
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-go]');
+    if (!b) return;
+    if (b.dataset.go === 'today') openDay(todayNum());
+    else { showTab(b.dataset.go); window.scrollTo({ top: 0 }); }
+  });
+  $('backupNow').onclick = exportData;
+  $('backupLater').onclick = async () => {
+    state.backupSnooze = todayNum(); await Store.setMeta('backupSnooze', state.backupSnooze);
+    renderBackup();
+  };
   $('seeMonth').onclick = () => { showTab('kal'); window.scrollTo({ top: 0 }); };
   // Symbol oben rechts öffnet die Einstellungen, ein zweiter Tipp führt zurück
   $('setBtn').onclick = () => { showTab(state.tab === 'daten' ? state.lastTab : 'daten'); window.scrollTo({ top: 0 }); };
@@ -135,11 +208,7 @@ function bind() {
   }));
   $('demoBtn').onclick = async () => {
     if (state.days.size && !confirm('Demodaten ersetzen alle vorhandenen Einträge. Vorher am besten ein Backup exportieren. Fortfahren?')) return;
-    await Store.clearDays(); state.days.clear();
-    const list = makeDemo(todayNum());
-    await Store.putDays(list); list.forEach(e => state.days.set(e.date, e));
-    state.demo = true; await Store.setMeta('demo', true);
-    recompute(); renderData();
+    await loadDemo();
   };
   $('wipeBtn').onclick = async () => {
     if (!confirm('Wirklich alle Einträge auf diesem Gerät löschen? Das lässt sich nicht rückgängig machen.')) return;
@@ -159,10 +228,13 @@ function bind() {
 // ---------- Start ----------
 (async function init() {
   await Store.open();
-  const [list, settings, demo] = await Promise.all([Store.allDays(), Store.getMeta('settings'), Store.getMeta('demo')]);
+  const [list, settings, demo, lastBackup, backupSnooze, onboarded] = await Promise.all([Store.allDays(),
+    Store.getMeta('settings'), Store.getMeta('demo'), Store.getMeta('lastBackup'), Store.getMeta('backupSnooze'), Store.getMeta('onboarded')]);
   list.map(sanitize).filter(Boolean).forEach(e => state.days.set(e.date, e));
   state.settings = { ...DEFAULTS, ...(settings || {}) };
   state.demo = !!demo;
+  state.lastBackup = Number.isFinite(lastBackup) ? lastBackup : null;
+  state.backupSnooze = Number.isFinite(backupSnooze) ? backupSnooze : null;
   renderIcons();
   applyTheme();
   applyFont();
@@ -173,6 +245,11 @@ function bind() {
   let tab = 'heute';
   try { tab = localStorage.getItem('zyklus-tab') || 'heute'; } catch { /* egal */ }
   showTab(['heute', 'kal', 'ana', 'daten'].includes(tab) ? tab : 'heute');
+  // Erster Start: Begrüßung. Wer schon Einträge hat (ältere Version), sieht sie nicht.
+  if (!onboarded) {
+    if (state.days.size || state.demo) Store.setMeta('onboarded', true);
+    else { showTab('heute'); openIntro(); }
+  }
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     // Neue Version übernommen → einmal neu laden, damit alle Dateien zusammenpassen
     const hadController = !!navigator.serviceWorker.controller;
