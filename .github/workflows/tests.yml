@@ -100,7 +100,7 @@ jobs:
           xcrun simctl install "$UDID" build/Build/Products/Debug-iphonesimulator/Zyklus.app
           shot() {
             xcrun simctl ui "$UDID" appearance "$2"
-            xcrun simctl launch "$UDID" de.annagramm.zyklus ${@:3}
+            xcrun simctl launch "$UDID" de.annagramm.zyklus ${@:3} -storefoto -AppleLanguages "(de)" -AppleLocale de_DE
             sleep 6
             xcrun simctl io "$UDID" screenshot "store-bilder/$1.png"
             xcrun simctl terminate "$UDID" de.annagramm.zyklus || true

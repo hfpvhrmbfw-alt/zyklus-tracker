@@ -24,7 +24,8 @@ struct HeuteView: View {
     ScrollView {
       VStack(alignment: .leading, spacing: 32) {
         PageHead(title: Texts.greeting(Calendar.current.component(.hour, from: Date())), sub: Texts.dayMonth(t))
-        if store.demo {
+        // für App-Store-Fotos (Startargument -storefoto) ohne Demo-Hinweis
+        if store.demo && !ProcessInfo.processInfo.arguments.contains("-storefoto") {
           Note(label: "Demo", text: "Gerade sind Beispieldaten geladen. In den Einstellungen (oben rechts) kannst du sie wieder entfernen.", tint: Theme.accentTint, labelColor: Theme.accentText)
         }
         hero(an, t)
