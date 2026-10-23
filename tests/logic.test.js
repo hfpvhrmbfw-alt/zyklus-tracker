@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { toNum, toStr, sanitize, sanitizeSettings, parseImport, buildExport, isEmpty, blank, DEFAULTS } from '../src/model.js';
-import { analyze, phaseOf, moodStats, findPatterns, makeDemo, moodDots } from '../src/logic.js';
+import { analyze, phaseOf, moodStats, findPatterns, makeDemo, moodDots, backupDue, introPeriod } from '../src/logic.js';
 
 const dir = new URL('./fixtures/', import.meta.url);
 const load = name => JSON.parse(readFileSync(new URL(name, dir), 'utf8'));
@@ -78,4 +78,24 @@ test('Kleine Helfer', () => {
   assert.ok(isEmpty(blank('2026-01-01')));
   assert.deepEqual(moodDots({ ...blank('2026-01-01'), moods: ['gereizt', 'ruhig'] }), ['gut', 'schlecht']);
   assert.deepEqual(moodDots({ ...blank('2026-01-01'), stimmung: ['abends'], moods: ['gereizt'] }), ['abends']);
+});
+
+test('Backup-Erinnerung: erst ab fünf Einträgen und nach 30 Tagen', () => {
+  const t = 1000;
+  assert.equal(backupDue({ count: 4, first: t - 90, lastBackup: null, snoozed: null, today: t }), false);
+  assert.equal(backupDue({ count: 5, first: t - 29, lastBackup: null, snoozed: null, today: t }), false);
+  assert.equal(backupDue({ count: 5, first: t - 30, lastBackup: null, snoozed: null, today: t }), true);
+  assert.equal(backupDue({ count: 50, first: t - 200, lastBackup: t - 10, snoozed: null, today: t }), false);
+  assert.equal(backupDue({ count: 50, first: t - 200, lastBackup: t - 31, snoozed: null, today: t }), true);
+  assert.equal(backupDue({ count: 50, first: t - 200, lastBackup: t - 31, snoozed: t - 3, today: t }), false);
+  assert.equal(backupDue({ count: 50, first: t - 200, lastBackup: t - 31, snoozed: t - 7, today: t }), true);
+});
+
+test('Begrüßung: letzte Periode wird als „Leicht“ eingetragen, höchstens bis heute', () => {
+  const t = toNum('2026-10-23');
+  const list = introPeriod(toNum('2026-10-21'), 5, t);
+  assert.deepEqual(list.map(e => e.date), ['2026-10-21', '2026-10-22', '2026-10-23']);
+  assert.ok(list.every(e => e.flow === 2 && sanitize(e)));
+  const an = analyze(introPeriod(toNum('2026-10-01'), 5, t), DEFAULTS, t);
+  assert.equal(an.periods.length, 1);
 });

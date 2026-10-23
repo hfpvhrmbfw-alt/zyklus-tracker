@@ -1,7 +1,7 @@
 /* Oberfläche: Zustand der Ansicht, Formatierung, Rendering. Ruft Logik und Speicher auf, nie umgekehrt. */
 
-import { toStr, blank, hasDetail, DAY_MS, FLOW, FLOW_PERIOD, MOODS, SYMPTOMS, STIMMUNG, ENERGY, PHASES, DEFAULTS, NOTE_MAX } from './model.js';
-import { analyze, phaseOf, moodDots, moodStats, findPatterns, avgEnergy, topSymptom } from './logic.js';
+import { toNum, toStr, blank, hasDetail, DAY_MS, FLOW, FLOW_PERIOD, MOODS, SYMPTOMS, STIMMUNG, ENERGY, PHASES, DEFAULTS, NOTE_MAX } from './model.js';
+import { analyze, phaseOf, moodDots, moodStats, findPatterns, avgEnergy, topSymptom, backupDue } from './logic.js';
 import { Store } from './storage.js';
 import { FLOW_LABEL, MOOD_LABEL, SYMPTOM_LABEL, STIMMUNG_LABEL, ENERGY_LABEL, PHASE_NAME, PHASE_SHORT, THEME_LABEL, WEEKDAY_SHORT, TAB_TITLE, greeting } from './texts.js';
 import { MOOD_ICON, EMPTY_ICON, CARD_ART, ICON, scene } from './art.js';
@@ -21,6 +21,7 @@ export const $ = id => document.getElementById(id);
 export const state = {
   days: new Map(), settings: { ...DEFAULTS }, demo: false,
   sel: todayNum(), month: null, an: null, tab: 'heute', lastTab: 'heute',
+  lastBackup: null, backupSnooze: null, // Tagnummern oder null
 };
 export const entries = () => [...state.days.values()];
 
@@ -38,6 +39,16 @@ function phaseTags(ph) {
     ? `<span class="tag inv">Zyklustag ${ph.cycleDay}</span><span class="tag">${PHASE_NAME[ph.phase]}${ph.predicted ? ' · Schätzung' : ''}</span>${ph.fertile ? '<span class="tag acc">Fruchtbar · Schätzung</span>' : ''}`
     : '';
 }
+
+/**
+ * Leerzustand: Bild, Überschrift, kurzer Text und ein Knopf.
+ * `go` sagt main.js, wohin der Knopf führt (today = Tag eintragen, kal = Kalender).
+ */
+function emptyCard({ art, title, text, btn, go }) {
+  return `<div class="card empty"><div class="empty-art">${art}</div><h3>${title}</h3><p>${text}</p>` +
+    (btn ? `<button type="button" class="pill" data-go="${go}">${btn} <span aria-hidden="true">→</span></button>` : '') + '</div>';
+}
+const EMPTY_LINE = text => `<p class="empty-line">${EMPTY_ICON}<span>${text}</span></p>`;
 
 /** Formuliert ein Muster aus logic.findPatterns als Satz (mit <b>-Hervorhebung). */
 export function patternText(p) {
@@ -170,13 +181,36 @@ export function renderCalendar() {
     html += `<button class="${cls.join(' ')}" data-n="${n}" aria-label="${esc(aria.join(', '))}"><span>${new Date(n * DAY_MS).getUTCDate()}</span>${dots.length ? `<span class="dots" aria-hidden="true">${dots.map(k => `<i class="dot ${k}"></i>`).join('')}</span>` : ''}<span class="marks" aria-hidden="true">${marks.join(' ')}</span></button>`;
   }
   $('cal').innerHTML = html;
+  const none = !state.days.size;
+  $('kalEmpty').hidden = !none;
+  $('kalEmpty').innerHTML = none ? emptyCard({
+    art: CARD_ART.drop, title: 'Dein Kalender ist noch leer',
+    text: 'Tipp auf einen Tag, um Blutung, Stimmung und mehr einzutragen. Vergangene Perioden kannst du so auch nachtragen.',
+    btn: 'Heute eintragen', go: 'today',
+  }) : '';
 }
 
 // ---------- Analyse ----------
 export function renderAnalysis() {
   const an = state.an, t = todayNum();
   const enough = an.periods.length >= 2;
+  // Zu wenig Daten: ein Leerzustand statt lauter Striche
   $('anaEmpty').hidden = enough;
+  $('anaBody').hidden = !enough;
+  if (!enough) {
+    $('anaEmpty').innerHTML = an.periods.length
+      ? emptyCard({
+        art: scene('fol'), title: 'Fast geschafft',
+        text: `Ein Periodenstart ist da (${fmtShort(an.periods[0].start)}). Sobald die nächste Periode beginnt, siehst du hier deine Zykluslänge und erste Muster. Frühere Perioden kannst du im Kalender nachtragen.`,
+        btn: 'Im Kalender nachtragen', go: 'kal',
+      })
+      : emptyCard({
+        art: scene('none'), title: 'Hier wächst deine Analyse',
+        text: 'Trag den ersten Tag deiner Periode ein (Blutung ab „Leicht“). Ab zwei Periodenstarts siehst du Zykluslängen, Durchschnitt und Muster je Phase.',
+        btn: 'Periode eintragen', go: 'today',
+      });
+    return;
+  }
   const num = v => v == null ? '–' : v.toFixed(1).replace('.', ',').replace(',0', '');
   const rng = an.recent.length ? `${Math.min(...an.recent.map(c => c.len))}–${Math.max(...an.recent.map(c => c.len))}` : '–';
 
@@ -196,7 +230,7 @@ export function renderAnalysis() {
   // Balken
   const H = 128;
   const cyc = an.cycles.slice(-12);
-  if (!cyc.length) { $('cycleChart').innerHTML = '<p style="color:var(--muted)">Noch keine abgeschlossenen Zyklen.</p>'; $('cycleTable').innerHTML = ''; }
+  if (!cyc.length) { $('cycleChart').innerHTML = EMPTY_LINE('Noch keine abgeschlossenen Zyklen.'); $('cycleTable').innerHTML = ''; }
   else {
     const max = Math.max(40, ...cyc.map(c => c.len)) * 1.08;
     const lbl = new Set([cyc.length - 1]);
@@ -221,7 +255,7 @@ export function renderAnalysis() {
   const head = first => `<thead><tr><th>${first}</th>` + PHASES.map(k => `<th class="num">${PHASE_SHORT[k]}</th>`).join('') + '</tr></thead>';
   $('moodCap').hidden = $('moodMore').hidden = true;
   $('moodTable').innerHTML = $('moodTableAll').innerHTML = '';
-  if (!anyN) { $('phaseTable').innerHTML = '<p style="color:var(--muted);margin:0">Noch keine Einträge in einem erkannten Zyklus.</p>'; }
+  if (!anyN) { $('phaseTable').innerHTML = EMPTY_LINE('Noch keine Einträge in einem erkannten Zyklus.'); }
   else {
     const syms = PHASES.map(k => ({ k, s: st[k].n && topSymptom(st[k]) })).filter(o => o.s);
     $('phaseTable').innerHTML = '<table class="data ph">' + head('') + '<tbody>' +
@@ -268,16 +302,29 @@ export async function renderData() {
   if (navigator.storage && navigator.storage.persisted) {
     try { info += (await navigator.storage.persisted()) ? ' · dauerhaft geschützt' : ' · Browser darf bei Speichermangel aufräumen'; } catch { /* egal */ }
   }
+  info += '<br>' + (state.lastBackup != null ? `Letztes Backup am ${fmt(state.lastBackup, { day: 'numeric', month: 'long', year: 'numeric' })}` : 'Noch kein Backup gemacht');
   $('storeInfo').innerHTML = info;
   const s = state.settings;
   $('setCycle').value = s.cycleLen; $('setPeriod').value = s.periodLen; $('setLuteal').value = s.luteal; $('setTheme').value = s.theme;
   $('demoNote').hidden = !state.demo;
 }
 
+// ---------- Backup-Erinnerung ----------
+export function renderBackup() {
+  const t = todayNum(), ds = [...state.days.keys()];
+  const first = ds.length ? toNum(ds.reduce((a, b) => (a < b ? a : b))) : null;
+  const due = !state.demo && backupDue({ count: ds.length, first, lastBackup: state.lastBackup, snoozed: state.backupSnooze, today: t });
+  $('backupNote').hidden = !due;
+  if (!due) return;
+  $('backupText').textContent = state.lastBackup != null
+    ? `Dein letztes Backup ist ${plural(t - state.lastBackup, 'Tag', 'Tage')} her. Deine Einträge liegen nur auf diesem Gerät.`
+    : 'Du hast noch kein Backup gemacht. Deine Einträge liegen nur auf diesem Gerät. Sichere sie am besten in deinen Dateien oder in der iCloud.';
+}
+
 // ---------- Neu berechnen ----------
 export function recompute(full = true) {
   state.an = analyze(entries(), state.settings, todayNum());
-  renderHero(); renderWeek(); renderOutlook();
+  renderHero(); renderWeek(); renderOutlook(); renderBackup();
   if (full) renderDay();
   else renderDayPhase(); // Formular nicht neu zeichnen (Fokus bleibt)
   if (state.tab === 'kal') renderCalendar();

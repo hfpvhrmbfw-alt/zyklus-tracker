@@ -193,3 +193,30 @@ export function makeDemo(today) {
   }
   return out;
 }
+
+// ---------- Backup-Erinnerung ----------
+export const BACKUP_EVERY = 30;   // Tage bis zur Erinnerung
+export const BACKUP_SNOOZE = 7;   // „Später“ schiebt um so viele Tage
+/**
+ * Ist eine Backup-Erinnerung fällig? Alle Zeitpunkte als Tagnummern oder null.
+ * Ohne bisheriges Backup zählt der erste Eintrag. Erst ab fünf Einträgen, damit Neue nicht gleich gemahnt werden.
+ * @param {{count: number, first: number|null, lastBackup: number|null, snoozed: number|null, today: number}} p
+ */
+export function backupDue({ count, first, lastBackup, snoozed, today }) {
+  if (count < 5) return false;
+  if (snoozed != null && today - snoozed < BACKUP_SNOOZE) return false;
+  const ref = lastBackup ?? first;
+  return ref != null && today - ref >= BACKUP_EVERY;
+}
+
+// ---------- Erster Start ----------
+/**
+ * Einträge für die letzte Periode aus der Begrüßung: ab Start so viele Tage wie periodLen mit Blutung „Leicht“, höchstens bis heute.
+ * @param {number} start Tagnummer @param {number} periodLen @param {number} today
+ * @returns {import('./model.js').DayEntry[]}
+ */
+export function introPeriod(start, periodLen, today) {
+  const out = [];
+  for (let n = start; n < start + periodLen && n <= today; n++) out.push({ ...blank(toStr(n)), flow: FLOW_PERIOD });
+  return out;
+}

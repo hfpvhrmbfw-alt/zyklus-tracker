@@ -7,10 +7,16 @@ Reine Frontend-PWA ohne Backend und ohne Build-Schritt. Alle Einträge liegen nu
 - **Heute:** Zykluskarte mit Bild je Phase, Stimmungswoche (Sonne, Wolke, Regen, Mond), Ausblick-Kacheln.
 - **Kalender:** eingetragene Perioden (P), Schmierblutung (·), erwartete Periode (p), fruchtbares Fenster (F) und Eisprung (E) als Schätzung.
 - **Analyse:** Ø Zykluslänge groß, darunter Periodendauer, Spanne, Schwankung (letzte 6 plausiblen Zyklen, 15–60 Tage); die stärksten Muster zuerst, Balken je Zyklus, je Phase Tage, Energie, häufigstes Körpersymptom und die fünf häufigsten Gefühle (Rest aufklappbar).
+- **Erster Start:** Begrüßung in drei Schritten (was die App kann, Daten bleiben lokal, letzte Periode und übliche Längen). Die letzte Periode wird als „Leicht“ eingetragen. Alternativ gleich mit Demodaten starten.
+- **Backup-Erinnerung:** ab fünf Einträgen auf der Startseite, wenn das letzte Backup (oder ohne Backup der erste Eintrag) 30 Tage her ist; „Später“ schiebt um 7 Tage. Am Handy öffnet „Backup exportieren“ das Teilen-Menü (In Dateien sichern, iCloud).
+- **Leerzustände:** Kalender und Analyse zeigen ohne Daten ein Bild, einen kurzen Text und einen Knopf zum Eintragen.
 - **Einstellungen** (Symbol oben rechts, nicht in der Leiste): JSON-Backup exportieren/importieren, Standardwerte (Zykluslänge, Periodendauer, Lutealphase), Hell/Dunkel, Demodaten, alles löschen.
 
 ## Bilder
 Illustrationen sind meist Inline-SVG in `src/art.js`. Gemalte Bilder liegen als PNG mit echter Transparenz in `img/` (Zweige oben, kleiner Zweig auf den Kacheln). Neue PNGs dort ablegen und in `sw.js` unter `SHELL` eintragen.
+
+## Schriften
+Liegen in `fonts/` (variable WOFF2, Zeichensatz latin, SIL Open Font License) und werden nicht bei Google geladen. Neue Schriftdateien in `sw.js` unter `SHELL` eintragen.
 
 ## Wie gerechnet wird
 - Periodenstart = erster Tag mit Blutung ab „Leicht“; Lücken bis 1 Tag gehören zur selben Periode.
