@@ -113,10 +113,10 @@ jobs:
           shot 04-analyse light -demo -tab analyse
           shot 05-heute-dunkel dark -demo
           sips -g pixelWidth -g pixelHeight store-bilder/*.png
-          # zusätzlich als JPEG im Log, damit die Bilder auch ohne Download-Zugang ausgelesen werden können
+          # kleine Vorschau als Text im Log (zum Prüfen ohne Download)
           for f in store-bilder/*.png; do
             n=$(basename "$f" .png)
-            sips -s format jpeg -s formatOptions 88 "$f" --out "/tmp/$n.jpg" >/dev/null
+            sips -Z 480 -s format jpeg -s formatOptions 60 "$f" --out "/tmp/$n.jpg" >/dev/null
             echo "BILD-START $n"; base64 -i "/tmp/$n.jpg" | fold -w 2000; echo "BILD-ENDE $n"
           done
       - uses: actions/upload-artifact@v4
