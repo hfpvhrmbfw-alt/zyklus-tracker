@@ -7,7 +7,7 @@ import { Store } from './storage.js';
 import { IMPORT_ERROR } from './texts.js';
 import {
   $, state, entries, todayNum, plural, readForm,
-  renderDay, renderCalendar, renderData, renderBackup, recompute, showTab, applyTheme, applyFont, renderIcons, THEME_NEXT,
+  renderDay, renderCalendar, renderData, renderBackup, recompute, showTab, showCycle, selectPhase, applyTheme, applyFont, renderIcons, THEME_NEXT,
 } from './ui.js';
 import { scene } from './art.js';
 
@@ -188,14 +188,9 @@ function bind() {
   // Symbol oben rechts öffnet die Einstellungen, ein zweiter Tipp führt zurück
   $('setBtn').onclick = () => { showTab(state.tab === 'daten' ? state.lastTab : 'daten'); window.scrollTo({ top: 0 }); };
 
-  // Tooltip für Balken
-  const tip = $('tip');
-  const showTip = el => { const r = el.getBoundingClientRect(); tip.textContent = el.dataset.tip; tip.hidden = false; tip.style.left = (r.left + r.width / 2 + scrollX) + 'px'; tip.style.top = (r.top + scrollY + el.offsetHeight - el.querySelector('.bar').offsetHeight - 8) + 'px'; const tr = tip.getBoundingClientRect(); if (tr.left < 8) tip.style.left = (parseFloat(tip.style.left) + 8 - tr.left) + 'px'; if (tr.right > innerWidth - 8) tip.style.left = (parseFloat(tip.style.left) - (tr.right - innerWidth + 8)) + 'px'; };
-  const hideTip = () => { tip.hidden = true; };
-  $('cycleChart').addEventListener('pointerover', e => { const c = e.target.closest('.col'); if (c) showTip(c); });
-  $('cycleChart').addEventListener('pointerout', e => { if (e.target.closest('.col')) hideTip(); });
-  $('cycleChart').addEventListener('focusin', e => { const c = e.target.closest('.col'); if (c) showTip(c); });
-  $('cycleChart').addEventListener('focusout', hideTip);
+  // Analyse: Streifen antippen, Phase wählen
+  $('cycleChart').addEventListener('click', e => { const b = e.target.closest('.strip'); if (b) showCycle(+b.dataset.i); });
+  $('phasePick').addEventListener('click', e => { const b = e.target.closest('button'); if (b) selectPhase(b.dataset.k); });
 
   $('themeBtn').onclick = async () => {
     await saveSettings({ ...state.settings, theme: THEME_NEXT[state.settings.theme] });

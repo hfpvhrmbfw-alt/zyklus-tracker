@@ -43,13 +43,18 @@ export const MOOD_ICON = {
 };
 export const EMPTY_ICON = svg('0 0 40 40', '<circle cx="20" cy="20" r="8" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="2.5 3"/>');
 
+// Herbstblatt in einem 60er-Feld, schräg gestellt
+const autumnLeaf = '<g transform="rotate(-28 30 30)"><path d="M30 6C44 16 48 34 30 54C12 34 16 16 30 6z" fill="#D9823F"/>' +
+  '<path d="M30 12V58M30 24l-7-5M30 24l7-5M30 34l-9-6M30 34l9-6M30 44l-7-5M30 44l7-5" stroke="#9A4E1F" stroke-width="1.5" fill="none" stroke-linecap="round"/></g>';
+
 // ---------- Szenen für die Zykluskarte (je Phase) ----------
 const blob = fill => `<path d="M22 38 C12 14 50 4 80 14 C112 0 156 14 150 50 C160 86 122 112 82 102 C42 116 6 96 14 70 C17 58 26 50 22 38Z" fill="${fill}"/>`;
 const SCENES = {
-  lut: blob('#1F2A5C') +
-    '<path d="M98 26 a20 20 0 1 0 16 34 a16 16 0 1 1 -16 -34z" fill="#F4D77C"/>' + face(88, 48, 1.2) +
-    star(40, 34, 6) + star(62, 70, 4.5) + star(128, 78, 5) + star(52, 50, 2.5, '#FFFFFF') +
-    sparkles([[30, 62, 1.6, '#fff'], [74, 28, 1.4, '#fff'], [140, 40, 1.6, '#fff'], [110, 92, 1.4, '#fff'], [88, 84, 1.2, '#F47A4B']]),
+  // Luteal: Herbstblatt, nach dem Höhepunkt wird es ruhiger
+  lut: blob('#F1C9A5') +
+    `<g transform="translate(23 1) scale(1.9)">${autumnLeaf}</g>` +
+    `<g transform="translate(26 30) scale(.55)">${autumnLeaf}</g><g transform="translate(118 70) scale(.45) rotate(40 30 30)">${autumnLeaf}</g>` +
+    sparkles([[34, 82, 1.6, '#fff'], [128, 34, 1.8, '#F47A4B'], [140, 58, 1.4, '#fff'], [102, 100, 1.4, '#fff']]),
   men: blob('#F3B4A0') +
     '<path d="M80 22 C80 22 56 52 56 68 a24 24 0 0 0 48 0 C104 52 80 22 80 22Z" fill="#E0614A"/>' +
     '<path d="M68 62 q-2 8 4 14" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7"/>' + face(80, 70, 1.4) +
@@ -61,7 +66,12 @@ const SCENES = {
     '<path d="M80 76 C80 60 80 48 80 36" stroke="#3F7D58" stroke-width="3" fill="none" stroke-linecap="round"/>' +
     leaf(80, 52, -150, 30, '#5E9C6C') + leaf(80, 44, -35, 30, '#7DB487') + leaf(80, 64, -20, 22, '#5E9C6C') + leaf(80, 36, -100, 18, '#7DB487') +
     sparkles([[40, 40, 2, '#fff'], [122, 36, 1.8, '#F47A4B'], [130, 70, 1.6, '#fff'], [34, 74, 1.4, '#F47A4B'], [110, 92, 1.4, '#fff']]),
-  ovu: blob('#F8D9A0') + sun(80, 58, 24) + face(80, 59, 1.9) +
+  // Eisprung: offene Blüte
+  ovu: blob('#F8D9A0') +
+    '<path d="M80 106 V60" stroke="#3F7D58" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    leaf(80, 96, -150, 24, '#5E9C6C') + leaf(80, 88, -30, 24, '#7DB487') +
+    [0, 72, 144, 216, 288].map(a => `<ellipse cx="80" cy="30" rx="13" ry="18" fill="#F3A08A" transform="rotate(${a} 80 50)"/>`).join('') +
+    '<circle cx="80" cy="50" r="13" fill="#F7C548"/>' + face(80, 51, 1.5) +
     star(36, 40, 5, '#F47A4B') + star(130, 84, 4, '#F47A4B') +
     sparkles([[124, 30, 2, '#fff'], [40, 84, 1.8, '#fff'], [140, 52, 1.4, '#fff'], [28, 62, 1.4, '#F47A4B']]),
   none: blob('#D9CBB3') +
@@ -81,6 +91,7 @@ export const CARD_ART = {
     '<circle cx="30" cy="26" r="6" fill="#F7C548"/>' + sparkles([[8, 12, 1.6], [52, 40, 1.4, '#F47A4B'], [50, 8, 1.2]])),
   // Gemaltes Bild statt SVG (img/), Anna liefert nach und nach weitere als PNG
   leaf: '<img src="img/zweig-klein.png" alt="" class="pic">',
+  autumn: svg('0 0 60 60', autumnLeaf + sparkles([[8, 14, 1.6], [52, 46, 1.4, '#F47A4B'], [50, 10, 1.2]])),
   moon: svg('0 0 60 60', '<path d="M34 10 a20 20 0 1 0 16 32 a16 16 0 1 1 -16 -32z" fill="#F4D77C"/>' + star(14, 14, 4) + star(50, 12, 3) +
     sparkles([[10, 44, 1.4], [48, 52, 1.6, '#F47A4B']])),
 };
