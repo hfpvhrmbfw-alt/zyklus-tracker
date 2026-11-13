@@ -137,25 +137,27 @@
       <div class="card anasum" id="anaSum"></div>
     </section>
     <section class="section">
-      <div class="sechead"><h2>Muster</h2></div>
-      <div id="insights"></div>
-    </section>
-    <section class="section">
-      <div class="sechead"><h2>Zykluslängen</h2></div>
-      <div class="card">
-        <p class="small muted cap" id="chartCap">Tage pro Zyklus</p>
+      <div class="sechead"><h2>Deine letzten Zyklen</h2></div>
+      <div class="card cyc">
+        <div class="legend small muted" aria-hidden="true"><span><i class="k-p"></i>Periode</span><span><i class="k-r"></i>Rest des Zyklus</span><span id="legBand"><i class="k-b"></i>üblicher Bereich</span></div>
         <div id="cycleChart"></div>
+        <p class="small cap" id="cycleDetail" aria-live="polite"></p>
         <details><summary>Als Tabelle</summary><div class="table-scroll" id="cycleTable"></div></details>
       </div>
     </section>
     <section class="section">
+      <div class="sechead"><h2>Muster</h2></div>
+      <div id="insights"></div>
+    </section>
+    <section class="section">
       <div class="sechead"><h2>Je Phase</h2></div>
-      <div class="card">
-        <div class="table-scroll" id="phaseTable"></div>
-        <p class="small muted cap" id="moodCap" hidden>Gefühle: Anteil der eingetragenen Tage einer Phase.</p>
-        <div class="table-scroll" id="moodTable"></div>
-        <details id="moodMore" hidden><summary>Alle Gefühle</summary><div class="table-scroll" id="moodTableAll"></div></details>
+      <div class="phase-wrap" id="phaseWrap">
+        <div class="card ecard"><p class="small muted cap">Energie über den Zyklus</p><div id="energyCurve"></div></div>
+        <div class="seg" id="phasePick" role="group" aria-label="Phase wählen"><span class="thumb" aria-hidden="true"></span></div>
+        <div class="card phase" id="phaseCard" aria-live="polite"></div>
+        <details id="moodMore" hidden><summary>Alle Gefühle je Phase</summary><p class="small muted cap">Anteil der eingetragenen Tage einer Phase.</p><div class="table-scroll" id="moodTableAll"></div></details>
       </div>
+      <div id="phaseEmpty" hidden></div>
     </section>
     </div>
   </div>
@@ -200,18 +202,17 @@
         </div>
       </div>
     </section>
-    <p class="foot small muted">Zyklus-Tracker · offline · lokal · <span id="footVer">v2.4</span><br><a href="datenschutz.html" target="_blank" rel="noopener">Datenschutz</a> · <a href="hilfe.html" target="_blank" rel="noopener">Hilfe</a> · <a href="impressum.html" target="_blank" rel="noopener">Impressum</a></p>
+    <p class="foot small muted">Zyklus-Tracker · offline · lokal · <span id="footVer">v2.5</span><br><a href="datenschutz.html" target="_blank" rel="noopener">Datenschutz</a> · <a href="hilfe.html" target="_blank" rel="noopener">Hilfe</a> · <a href="impressum.html" target="_blank" rel="noopener">Impressum</a></p>
   </div>
 </main>
 
 <nav class="tabbar" aria-label="Bereiche">
   <div role="tablist" aria-label="Bereiche">
-    <button role="tab" id="tab-heute" aria-controls="p-heute" aria-selected="true"><span class="ti" data-icon="home"></span><span>Heute</span></button>
-    <button role="tab" id="tab-kal" aria-controls="p-kal" aria-selected="false" tabindex="-1"><span class="ti" data-icon="cal"></span><span>Kalender</span></button>
-    <button role="tab" id="tab-ana" aria-controls="p-ana" aria-selected="false" tabindex="-1"><span class="ti" data-icon="chart"></span><span>Analyse</span></button>
+    <button role="tab" id="tab-heute" aria-controls="p-heute" aria-selected="true"><span class="ti" data-icon="home"></span><span class="lbl">Heute</span></button>
+    <button role="tab" id="tab-kal" aria-controls="p-kal" aria-selected="false" tabindex="-1"><span class="ti" data-icon="cal"></span><span class="lbl">Kalender</span></button>
+    <button role="tab" id="tab-ana" aria-controls="p-ana" aria-selected="false" tabindex="-1"><span class="ti" data-icon="chart"></span><span class="lbl">Analyse</span></button>
   </div>
 </nav>
-<div class="tip" id="tip" hidden></div>
 
 <!-- Begrüßung beim ersten Start: drei Schritte -->
 <dialog id="intro" class="intro" aria-labelledby="introTitle1">

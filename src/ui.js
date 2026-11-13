@@ -22,6 +22,7 @@ export const state = {
   days: new Map(), settings: { ...DEFAULTS }, demo: false,
   sel: todayNum(), month: null, an: null, tab: 'heute', lastTab: 'heute',
   lastBackup: null, backupSnooze: null, // Tagnummern oder null
+  anaStats: null, anaPhase: null, // Analyse: Werte je Phase, gewählte Phase
 };
 export const entries = () => [...state.days.values()];
 
@@ -53,11 +54,11 @@ const EMPTY_LINE = text => `<p class="empty-line">${EMPTY_ICON}<span>${text}</sp
 /** Formuliert ein Muster aus logic.findPatterns als Satz (mit <b>-Hervorhebung). */
 export function patternText(p) {
   if (p.kind === 'energy') {
-    return `Deine Energie ist in der <b>${PHASE_NAME[p.high.phase]}</b> am höchsten (Ø ${dec1(p.high.avg)} von 5) und in der <b>${PHASE_NAME[p.low.phase]}</b> am niedrigsten (Ø ${dec1(p.low.avg)}).`;
+    return `Deine <b>Energie</b> ist in der <b>${PHASE_NAME[p.high.phase]}</b> am höchsten (Ø ${dec1(p.high.avg)} von 5), in der <b>${PHASE_NAME[p.low.phase]}</b> am niedrigsten (Ø ${dec1(p.low.avg)}).`;
   }
   const label = p.kind === 'mood' ? MOOD_LABEL[p.id] : SYMPTOM_LABEL[p.id];
-  const verb = p.kind === 'mood' ? 'trägst du' : 'notierst du';
-  return `<b>${label}</b> ${verb} in der <b>${PHASE_NAME[p.phase]}</b> an ${Math.round(p.share * 100)} % der Tage, in den übrigen Phasen an ${Math.round(p.otherShare * 100)} %.`;
+  const verb = p.kind === 'mood' ? 'fühlst du dich' : 'hast du';
+  return `<b>${label}</b> ${verb} vor allem in der <b>${PHASE_NAME[p.phase]}</b>, an ${Math.round(p.share * 100)} % der Tage.`;
 }
 
 // ---------- Eintrag ----------
@@ -191,6 +192,25 @@ export function renderCalendar() {
 }
 
 // ---------- Analyse ----------
+const num = v => v == null ? '–' : v.toFixed(1).replace('.', ',').replace(',0', '');
+/** Wie regelmäßig, in Worten statt „±1,3 Tage“ (Schwankung = Standardabweichung der letzten Zyklen). */
+const regularity = sd => sd <= 2 ? 'sehr regelmäßig' : sd <= 4 ? 'recht regelmäßig' : 'eher unregelmäßig';
+const PHASE_ART = { men: 'drop', fol: 'leaf', ovu: 'flower', lut: 'autumn' };
+const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/** Zahl weich von „from“ auf ihren Endwert zählen (wie in Porto). Ohne Bewegung: sofort der Endwert. */
+function countUp(el, from, ms = 700) {
+  const to = +el.dataset.to, dec = +(el.dataset.dec || 0), final = el.textContent;
+  if (reduceMotion() || !isFinite(to)) return;
+  const t0 = performance.now();
+  const step = now => {
+    const p = Math.min(1, (now - t0) / ms), v = from + (to - from) * (1 - (1 - p) ** 3);
+    el.textContent = p < 1 ? v.toFixed(dec).replace('.', ',') : final;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
 export function renderAnalysis() {
   const an = state.an, t = todayNum();
   const enough = an.periods.length >= 2;
@@ -211,88 +231,152 @@ export function renderAnalysis() {
       });
     return;
   }
-  const num = v => v == null ? '–' : v.toFixed(1).replace('.', ',').replace(',0', '');
-  const rng = an.recent.length ? `${Math.min(...an.recent.map(c => c.len))}–${Math.max(...an.recent.map(c => c.len))}` : '–';
 
-  // Überblick: eine Zahl groß, der Rest als kleine Liste
+  // Überblick: eine Zahl groß, darunter ein Satz in Worten, dann eine kleine Liste
+  const lens = an.recent.map(c => c.len), lo = Math.min(...lens), hi = Math.max(...lens);
+  const verdict = !lens.length ? 'Noch kein Zyklus zwischen 15 und 60 Tagen erfasst.'
+    : lens.length === 1 ? `Bisher ein Zyklus mit ${lens[0]} Tagen. Ab dem zweiten siehst du, wie regelmäßig er ist.`
+    : `Dein Zyklus ist <b>${regularity(an.sd)}</b>, ${lo === hi ? `zuletzt immer ${lo} Tage` : `zuletzt zwischen ${lo} und ${hi} Tagen`}.`;
   const stat = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
+  const counted = (v, dec) => v == null ? '–' : `<span data-to="${v}" data-dec="${dec}">${dec ? num(v) : v}</span>`;
   $('anaSum').innerHTML =
-    `<div class="sum-main"><div class="tl">Ø Zykluslänge</div><div class="v">${num(an.avgCycle)}<span class="u">${an.avgCycle ? ' Tage' : ''}</span></div>` +
-    `<div class="sub">${an.avgCycle ? 'aus ' + plural(an.recent.length, 'Zyklus', 'Zyklen') : `Standard ${an.C} Tage`}</div></div>` +
+    `<div class="sum-main"><div class="tl">Ø Zykluslänge</div><div class="v">${counted(an.avgCycle, 1)}<span class="u">${an.avgCycle ? ' Tage' : ''}</span></div>` +
+    (an.avgCycle ? '' : `<div class="sub">Standard ${an.C} Tage</div>`) + `<p class="verdict">${verdict}</p></div>` +
     `<div class="sum-art">${CARD_ART.moon}</div>` +
     '<dl class="sum-list">' +
-    stat('Ø Periode', an.avgPeriod ? num(an.avgPeriod) + ' Tage' : `${an.P} Tage (Standard)`) +
-    stat('Spanne', rng === '–' ? '–' : rng + ' Tage') +
-    stat('Schwankung', an.sd != null ? '±' + num(an.sd) + ' Tage' : '–') +
-    stat('Erfasst', plural(an.cycles.length, 'Zyklus', 'Zyklen')) +
+    stat('Ø Periode', an.avgPeriod ? `${counted(an.avgPeriod, 1)} Tage` : `${an.P} Tage (Standard)`) +
+    stat('Spanne', lens.length ? (lo === hi ? lo : `${lo}–${hi}`) + ' Tage' : '–') +
+    stat('Erfasst', `${counted(an.cycles.length, 0)} ${an.cycles.length === 1 ? 'Zyklus' : 'Zyklen'}`) +
     '</dl>';
 
-  // Balken
-  const H = 128;
+  // Zyklen als Streifen: vorne die Periode, dahinter der Rest des Zyklus
   const cyc = an.cycles.slice(-12);
+  $('cycleDetail').innerHTML = cyc.length ? '<span class="muted">Tipp auf einen Streifen für Details.</span>' : '';
+  $('legBand').hidden = lens.length < 2;
   if (!cyc.length) { $('cycleChart').innerHTML = EMPTY_LINE('Noch keine abgeschlossenen Zyklen.'); $('cycleTable').innerHTML = ''; }
   else {
-    const max = Math.max(40, ...cyc.map(c => c.len)) * 1.08;
-    const lbl = new Set([cyc.length - 1]);
-    const lens = cyc.map(c => c.len);
-    lbl.add(lens.indexOf(Math.max(...lens))); lbl.add(lens.indexOf(Math.min(...lens)));
-    const tipText = c => `${fmtShort(c.start)}: ${c.len} Tage · Periode ${c.periodLen} Tage${c.ok ? '' : ' · ausgeschlossen'}`;
-    let h = '<div class="bars" id="bars">';
-    if (an.avgCycle) h += `<div class="avg" style="bottom:${(an.avgCycle / max) * H}px" aria-hidden="true"></div>`;
+    const max = Math.max(35, ...cyc.map(c => Math.min(c.len, 60)));
+    const x = d => Math.min(d, max) / max;
+    let h = '<div class="strips">';
+    if (lens.length > 1) h += `<div class="band" style="--a:${x(lo)};--w:${x(hi) - x(lo)}" aria-hidden="true"></div>`;
     cyc.forEach((c, i) => {
-      h += `<div class="col${c.ok ? '' : ' out'}" tabindex="0" data-tip="${esc(tipText(c))}" aria-label="${esc(tipText(c))}">${lbl.has(i) ? `<span class="val">${c.len}</span>` : ''}<div class="bar" style="height:${(Math.min(c.len, max) / max) * H}px"></div></div>`;
+      h += `<button type="button" class="strip${c.ok ? '' : ' out'}" data-i="${an.cycles.length - cyc.length + i}" aria-pressed="false" aria-label="${esc(cycleText(c))}" style="--i:${i}">` +
+        `<span class="d">${fmtShort(c.start)}</span><span class="track"><span class="sbar" style="width:${x(c.len) * 100}%">` +
+        `<span class="p" style="width:${Math.min(100, (c.periodLen / c.len) * 100)}%"></span><span class="r"></span><span class="n">${c.len}</span></span></span></button>`;
     });
-    h += '</div><div class="xlabels" aria-hidden="true">' + cyc.map(c => `<span>${fmtShort(c.start)}</span>`).join('') + '</div>';
+    h += '</div><div class="axis" aria-hidden="true"><span></span><div>' +
+      Array.from({ length: Math.floor(max / 10) + 1 }, (_, k) => `<span style="left:${x(k * 10) * 100}%">${k * 10}</span>`).join('') + '</div></div>';
     $('cycleChart').innerHTML = h;
-    $('chartCap').textContent = `Tage pro Zyklus${an.avgCycle ? ' · gestrichelt = Ø ' + num(an.avgCycle) : ''}${cyc.some(c => !c.ok) ? ' · grau = ausgeschlossen (unter 15 oder über 60 Tage)' : ''}`;
     $('cycleTable').innerHTML = '<table class="data"><thead><tr><th>Beginn</th><th class="num">Zyklus</th><th class="num">Periode</th><th>Status</th></tr></thead><tbody>' +
       an.cycles.slice().reverse().map(c => `<tr><td>${fmt(c.start, { day: '2-digit', month: '2-digit', year: 'numeric' })}</td><td class="num">${c.len}</td><td class="num">${c.periodLen}</td><td>${c.ok ? 'gezählt' : 'ausgeschlossen'}</td></tr>`).join('') + '</tbody></table>';
   }
 
-  // Je Phase: erst Tage, Energie, Körper; dann die häufigsten Gefühle, der Rest aufklappbar
+  // Muster: kurzer Satz, daneben vier kleine Säulen (eine je Phase)
   const st = moodStats(an, entries(), t);
-  const anyN = PHASES.some(k => st[k].n);
-  const head = first => `<thead><tr><th>${first}</th>` + PHASES.map(k => `<th class="num">${PHASE_SHORT[k]}</th>`).join('') + '</tr></thead>';
-  $('moodCap').hidden = $('moodMore').hidden = true;
-  $('moodTable').innerHTML = $('moodTableAll').innerHTML = '';
-  if (!anyN) { $('phaseTable').innerHTML = EMPTY_LINE('Noch keine Einträge in einem erkannten Zyklus.'); }
-  else {
-    const syms = PHASES.map(k => ({ k, s: st[k].n && topSymptom(st[k]) })).filter(o => o.s);
-    $('phaseTable').innerHTML = '<table class="data ph">' + head('') + '<tbody>' +
-      '<tr><td class="mood">Tage</td>' + PHASES.map(k => `<td class="num">${st[k].n}</td>`).join('') + '</tr>' +
-      '<tr><td class="mood">Ø Energie</td>' + PHASES.map(k => { const v = avgEnergy(st[k].energy); return `<td class="num">${v == null ? '–' : dec1(v)}</td>`; }).join('') + '</tr></tbody></table>' +
-      (syms.length ? '<p class="small muted cap symcap">Häufigstes Körpersymptom</p><ul class="symlist">' + syms.map(({ k, s }) =>
-        `<li><span class="k">${PHASE_SHORT[k]}</span><span>${SYMPTOM_LABEL[s.id]} · ${Math.round(s.share * 100)} %</span></li>`).join('') + '</ul>' : '');
-
-    const share = (id, k) => st[k].n ? (st[k].moods[id] || 0) / st[k].n : null;
-    const used = MOODS.filter(id => PHASES.some(k => st[k].moods[id]))
-      .map(id => ({ id, total: PHASES.reduce((s, k) => s + (st[k].moods[id] || 0), 0) }))
-      .sort((a, b) => b.total - a.total).map(o => o.id);
-    const rows = ids => ids.map(id => {
-      const ps = PHASES.map(k => share(id, k)), hi = Math.max(...ps.filter(p => p != null));
-      return `<tr><td class="mood">${MOOD_LABEL[id]}</td>` + ps.map(p => {
-        if (p == null) return '<td class="cell num">–</td>';
-        const v = Math.round(p * 100);
-        return `<td class="cell num${p === hi && v >= 20 ? ' hi' : ''}">${v} %<span class="meter" aria-hidden="true"><i style="width:${v}%"></i></span></td>`;
-      }).join('') + '</tr>';
-    }).join('');
-    const TOP = 5;
-    if (used.length) {
-      $('moodCap').hidden = false;
-      $('moodTable').innerHTML = '<table class="data ph">' + head('Gefühl') + '<tbody>' + rows(used.slice(0, TOP)) + '</tbody></table>';
-      if (used.length > TOP) {
-        $('moodMore').hidden = false;
-        $('moodMore').querySelector('summary').textContent = `Weitere ${used.length - TOP} Gefühle`;
-        $('moodTableAll').innerHTML = '<table class="data ph">' + head('Gefühl') + '<tbody>' + rows(used.slice(TOP)) + '</tbody></table>';
-      }
-    }
-  }
-
-  const pats = enough ? findPatterns(st).map(patternText) : [];
+  state.anaStats = st;
+  const pats = findPatterns(st);
+  const patRow = (p, i) => {
+    const energy = p.kind === 'energy', key = p.kind === 'mood' ? 'moods' : 'syms', top = energy ? p.high.phase : p.phase;
+    const share = k => energy ? (avgEnergy(st[k].energy) || 0) / 5 : st[k].n ? (st[k][key][p.id] || 0) / st[k].n : 0;
+    const label = PHASES.map(k => `${PHASE_SHORT[k]} ${energy ? (st[k].energy.length ? 'Ø ' + dec1(avgEnergy(st[k].energy)) + ' von 5' : 'keine Angabe') : Math.round(share(k) * 100) + ' %'}`).join(', ');
+    return `<div class="pat${i === 0 ? ' prio' : ''}" style="--i:${i}"><p>${patternText(p)}</p><span class="quad" role="img" aria-label="${esc(label)}">` +
+      PHASES.map((k, j) => `<span><span class="c"><i class="${k === top ? 'on' : ''}" style="height:${Math.round(share(k) * 100)}%;--j:${j}"></i></span>${PHASE_SHORT[k][0]}</span>`).join('') + '</span></div>';
+  };
   $('insights').innerHTML = pats.length
-    ? pats.slice(0, 3).map((p, i) => `<div class="row${i === 0 ? ' prio' : ''}"><span>${p}</span></div>`).join('') +
-      (pats.length > 3 ? `<details><summary>Weitere ${plural(pats.length - 3, 'Muster', 'Muster')}</summary><div>${pats.slice(3).map(p => `<div class="row"><span>${p}</span></div>`).join('')}</div></details>` : '') + '<p class="small muted cap">Einfache Häufigkeiten aus deinen Einträgen. Je mehr Tage du erfasst, desto belastbarer.</p>'
-    : '<div class="row"><span>Noch keine deutlichen Muster. Sie erscheinen, sobald in mindestens zwei Phasen je drei Tage mit Gefühlen erfasst sind.</span></div>';
+    ? pats.slice(0, 3).map(patRow).join('') +
+      (pats.length > 3 ? `<details><summary>Weitere ${plural(pats.length - 3, 'Muster', 'Muster')}</summary><div>${pats.slice(3).map((p, i) => patRow(p, i + 3)).join('')}</div></details>` : '') +
+      '<p class="small muted cap">Die Säulen zeigen, wie oft es in jeder Phase vorkommt: P Periode, F Follikel, E Eisprung, L Luteal. Einfache Häufigkeiten aus deinen Einträgen, je mehr Tage, desto belastbarer.</p>'
+    : '<div class="pat"><p>Noch keine deutlichen Muster. Sie erscheinen, sobald in mindestens zwei Phasen je drei Tage mit Gefühlen erfasst sind.</p></div>';
+
+  // Je Phase: Energiekurve, Umschalter und eine Karte für die gewählte Phase
+  const anyN = PHASES.some(k => st[k].n);
+  $('phaseWrap').hidden = !anyN; $('phaseEmpty').hidden = anyN;
+  $('phaseEmpty').innerHTML = anyN ? '' : EMPTY_LINE('Noch keine Einträge in einem erkannten Zyklus.');
+  if (!anyN) return;
+  const en = PHASES.map(k => avgEnergy(st[k].energy));
+  const X = [40, 120, 200, 280], Y = v => 80 - (v / 5) * 60;
+  const pts = en.map((v, i) => v == null ? null : [X[i], Y(v)]).filter(Boolean);
+  let d = pts.length ? `M${pts[0][0]} ${pts[0][1]}` : '';
+  for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], m = (x0 + x1) / 2; d += ` C${m} ${y0} ${m} ${y1} ${x1} ${y1}`; }
+  $('energyCurve').innerHTML = `<svg viewBox="0 0 320 96" role="img" aria-label="${esc('Energie je Phase: ' + PHASES.map((k, i) => `${PHASE_SHORT[k]} ${en[i] == null ? 'keine Angabe' : dec1(en[i])}`).join(', ') + ' (von 5)')}">` +
+    '<line x1="20" x2="300" y1="80" y2="80" stroke="var(--line-soft)"/>' +
+    (d ? `<path class="epath" d="${d}" fill="none" stroke="var(--sage)" stroke-width="2.5" stroke-linecap="round"/>` : '') +
+    PHASES.map((k, i) => `<text x="${X[i]}" y="94" text-anchor="middle" class="elbl">${PHASE_SHORT[k]}</text>` +
+      (en[i] == null ? '' : `<text x="${X[i]}" y="${Y(en[i]) - 11}" text-anchor="middle" class="eval">${dec1(en[i])}</text><circle class="edot" data-k="${k}" cx="${X[i]}" cy="${Y(en[i])}" r="4"/>`)).join('') + '</svg>';
+  if (!$('phasePick').querySelector('button')) {
+    $('phasePick').insertAdjacentHTML('beforeend', PHASES.map(k => `<button type="button" data-k="${k}" aria-pressed="false">${PHASE_SHORT[k]}</button>`).join(''));
+  }
+  $('phaseCard').innerHTML = `<div class="ph-top"><div><h3 id="phName"></h3><div class="small muted" id="phWhen"></div></div><div class="ph-art" id="phArt"></div></div>` +
+    '<dl class="ph-facts"><div><dt>Erfasste Tage</dt><dd id="phDays">–</dd></div><div><dt>Energie</dt><dd id="phEnergy"></dd></div></dl>' +
+    '<div><p class="small muted cap">Häufigste Gefühle</p><div class="ph-moods" id="phMoods">' +
+    [0, 1, 2].map(() => '<div class="ph-mood"><span class="ml"></span><span class="m"><i></i></span><span class="v"></span></div>').join('') + '<p class="small muted" id="phNoMood" hidden>Keine Gefühle eingetragen.</p></div></div>' +
+    '<div><p class="small muted cap">Häufigstes Körpersymptom</p><div class="ph-sym" id="phSym"></div></div>';
+  // Alle Gefühle als Tabelle, für alle, die Zahlen mögen
+  const used = MOODS.filter(id => PHASES.some(k => st[k].moods[id]))
+    .map(id => ({ id, total: PHASES.reduce((s, k) => s + (st[k].moods[id] || 0), 0) })).sort((a, b) => b.total - a.total).map(o => o.id);
+  $('moodMore').hidden = !used.length;
+  $('moodTableAll').innerHTML = used.length ? '<table class="data ph"><thead><tr><th>Gefühl</th>' + PHASES.map(k => `<th class="num">${PHASE_SHORT[k]}</th>`).join('') + '</tr></thead><tbody>' +
+    used.map(id => `<tr><td class="mood">${MOOD_LABEL[id]}</td>` + PHASES.map(k => `<td class="num">${st[k].n ? Math.round(((st[k].moods[id] || 0) / st[k].n) * 100) + ' %' : '–'}</td>`).join('') + '</tr>').join('') + '</tbody></table>' : '';
+  const now = phaseOf(an, t);
+  if (!state.anaPhase) state.anaPhase = now ? now.phase : 'men';
+  selectPhase(state.anaPhase, true);
+}
+
+const cycleText = c => `Zyklus ab ${fmtShort(c.start)}: ${c.len} Tage, davon ${c.periodLen} Tage Periode${c.ok ? '' : ' · nicht gezählt (unter 15 oder über 60 Tage)'}`;
+/** Streifen angetippt: Details darunter zeigen. */
+export function showCycle(i) {
+  const c = state.an.cycles[i];
+  document.querySelectorAll('#cycleChart .strip').forEach(b => b.setAttribute('aria-pressed', b.dataset.i == i));
+  $('cycleDetail').textContent = c ? cycleText(c) + '.' : '';
+}
+
+/** Phase im Umschalter wählen. Die Karte bleibt stehen, nur Werte und Balken wechseln weich. */
+export function selectPhase(k, first) {
+  const st = state.anaStats, an = state.an; if (!st) return;
+  const s = st[k], i = PHASES.indexOf(k), prevDays = +($('phDays').dataset.to || 0);
+  state.anaPhase = k;
+  $('phasePick').style.setProperty('--k', i);
+  $('phasePick').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === k));
+  document.querySelectorAll('#energyCurve .edot').forEach(c => c.classList.toggle('on', c.dataset.k === k));
+  // ungefähre Zyklustage der Phase, gleiche Regeln wie phaseOf
+  const ov = an.C - an.L + 1, R = { men: [1, an.P], fol: [an.P + 1, ov - 3], ovu: [ov - 2, ov + 1], lut: [ov + 2, an.C] }[k];
+  $('phName').textContent = PHASE_NAME[k];
+  $('phWhen').textContent = R[1] >= R[0] ? `etwa Zyklustag ${R[0]} bis ${R[1]}` : '';
+  $('phArt').innerHTML = CARD_ART[PHASE_ART[k]];
+  if (!first && !reduceMotion()) { $('phArt').classList.remove('pop'); void $('phArt').offsetWidth; $('phArt').classList.add('pop'); }
+  const days = $('phDays'); days.dataset.to = s.n; days.textContent = s.n; if (!first) countUp(days, prevDays, 500);
+  const e = avgEnergy(s.energy);
+  $('phEnergy').innerHTML = e == null ? '–' : `<span class="dots" role="img" aria-label="Ø ${dec1(e)} von 5">${[1, 2, 3, 4, 5].map(n => `<i class="${n <= Math.round(e) ? 'on' : ''}"></i>`).join('')}</span>`;
+  const top = Object.entries(s.moods).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  $('phMoods').querySelectorAll('.ph-mood').forEach((row, j) => {
+    const m = top[j]; row.hidden = !m;
+    if (!m) return;
+    const v = Math.round((m[1] / s.n) * 100);
+    row.querySelector('.ml').textContent = MOOD_LABEL[m[0]];
+    row.querySelector('.m i').style.width = v + '%';
+    row.querySelector('.v').textContent = v + ' %';
+  });
+  $('phNoMood').hidden = top.length > 0;
+  const sym = s.n && topSymptom(s);
+  $('phSym').textContent = sym ? `${SYMPTOM_LABEL[sym.id]} · ${Math.round(sym.share * 100)} %` : s.n ? 'Keins eingetragen' : 'Noch keine Einträge in dieser Phase';
+}
+
+/** Beim Öffnen der Analyse: Karten gleiten herein, Streifen und Säulen wachsen, Zahlen zählen hoch. */
+let playTimer;
+export function playAnalysis() {
+  const p = $('p-ana');
+  if (reduceMotion() || $('anaBody').hidden) return;
+  p.classList.remove('play'); void p.offsetWidth; p.classList.add('play');
+  p.querySelectorAll('#anaSum [data-to]').forEach(el => countUp(el, 0, 900));
+  const path = p.querySelector('.epath');
+  if (path) {
+    const L = path.getTotalLength();
+    path.style.transition = 'none'; path.style.strokeDasharray = L; path.style.strokeDashoffset = L;
+    path.getBoundingClientRect();
+    path.style.transition = 'stroke-dashoffset 1s var(--ease) .25s'; path.style.strokeDashoffset = 0;
+  }
+  clearTimeout(playTimer);
+  playTimer = setTimeout(() => p.classList.remove('play'), 2000);
 }
 
 // ---------- Daten ----------
@@ -347,7 +431,7 @@ export function showTab(name, focus) {
   renderHead();
   try { localStorage.setItem('zyklus-tab', name); } catch { /* egal */ }
   if (name === 'kal') renderCalendar();
-  if (name === 'ana') renderAnalysis();
+  if (name === 'ana') { renderAnalysis(); playAnalysis(); }
   if (name === 'daten') renderData();
 }
 
