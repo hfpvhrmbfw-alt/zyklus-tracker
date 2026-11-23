@@ -8,7 +8,7 @@
 <meta name="theme-color" id="tcDark" content="#1C1B1A" media="(prefers-color-scheme: dark)">
 <meta name="description" content="Zyklus-Tracker: Tage, Gefühle und Muster erfassen. Alle Daten bleiben auf diesem Gerät.">
 <title>Zyklus-Tracker</title>
-<script>try{var t=localStorage.getItem('zyklus-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;var f=localStorage.getItem('zyklus-font');if(f==='klassisch'||f==='mix')document.documentElement.dataset.font=f;}catch(e){}</script>
+<script>try{var t=localStorage.getItem('zyklus-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -48,6 +48,10 @@
         <button type="button" class="pill ghost small" id="backupLater">Später</button>
       </div>
     </div>
+    <div id="installNote" class="note info remind" hidden>
+      <p><b>Tipp</b> Leg Zyklus auf deinen Home-Bildschirm: unten auf das Teilen-Symbol tippen, dann „Zum Home-Bildschirm“. Als App bleiben deine Einträge zuverlässig gespeichert, auch wenn du sie länger nicht öffnest.</p>
+      <div class="actions"><button type="button" class="pill ghost small" id="installOk">Verstanden</button></div>
+    </div>
     <div id="demoNote" class="note info" hidden><b>Demo</b> Gerade sind Beispieldaten geladen. In den Einstellungen (Symbol oben rechts) kannst du sie wieder entfernen.</div>
 
     <section class="card hero" aria-live="polite">
@@ -68,36 +72,6 @@
     <section class="section">
       <div class="sechead"><h2>Ausblick</h2></div>
       <div class="tiles" id="outlook"></div>
-    </section>
-
-    <section class="section" id="entry">
-      <div class="sechead"><h2>Tag erfassen</h2></div>
-      <div class="card daycard">
-        <div class="daynav">
-          <button class="roundbtn" id="prevDay" aria-label="Vorheriger Tag">←</button>
-          <div class="field"><label for="dayDate" class="sr">Datum</label><input type="date" id="dayDate"></div>
-          <button class="roundbtn" id="nextDay" aria-label="Nächster Tag">→</button>
-        </div>
-        <h3 class="daytitle" id="dayTitle"></h3>
-        <div class="dayphase" id="dayPhase"></div>
-        <button class="pill ghost small" id="todayBtn">Zu heute</button>
-      </div>
-
-      <form id="dayForm" onsubmit="return false">
-        <fieldset class="card group"><legend>Blutung</legend><div class="chips" id="flowChips"></div></fieldset>
-        <fieldset class="card group"><legend>Stimmung</legend><div class="chips" id="stimChips"></div></fieldset>
-        <fieldset class="card group"><legend>Gefühle</legend><div class="chips" id="moodChips"></div></fieldset>
-        <fieldset class="card group"><legend>Energie</legend><div class="chips" id="energyChips"></div></fieldset>
-        <fieldset class="card group"><legend>Körper</legend><div class="chips" id="symChips"></div></fieldset>
-        <div class="card group notecard field">
-          <label for="note">Notiz</label>
-          <textarea id="note" maxlength="2000" placeholder="Was war heute los?"></textarea>
-        </div>
-        <div class="saverow">
-          <span class="small muted" id="saveState" aria-live="polite">Änderungen werden automatisch gespeichert</span>
-          <button type="button" class="pill ghost small" id="clearDay">Tag leeren</button>
-        </div>
-      </form>
     </section>
 
     <div class="note warn"><b>Hinweis</b> Alle Vorhersagen sind Schätzungen aus deinen bisherigen Einträgen. Sie sind kein medizinischer Rat und nicht zur Verhütung geeignet.</div>
@@ -167,7 +141,7 @@
     <section class="section first">
       <div class="sechead"><h2>Backup</h2></div>
       <div class="card">
-        <div class="note ok flat"><b>Lokal</b> Alle Einträge liegen nur in diesem Browser auf diesem Gerät. Es gibt keinen Server und kein Konto. Mach ab und zu ein Backup.</div>
+        <div class="note ok flat"><b>Lokal</b> Alle Einträge liegen nur auf diesem Gerät. Es gibt keinen Server und kein Konto. Mach ab und zu ein Backup.</div>
         <p id="storeInfo" class="small"></p>
         <div class="actions">
           <button class="pill" id="exportBtn">Backup exportieren <span aria-hidden="true">→</span></button>
@@ -187,9 +161,13 @@
           <div class="field"><label for="setLuteal">Lutealphase (Tage)</label><input type="number" id="setLuteal" min="8" max="18" inputmode="numeric"></div>
           <div class="field"><label for="setTheme">Darstellung</label>
             <select id="setTheme"><option value="auto">System</option><option value="light">Hell</option><option value="dark">Dunkel</option></select></div>
-          <div class="field"><label for="setFont">Schrift</label>
-            <select id="setFont"><option value="klassisch">Klassisch (Playfair + DM Sans)</option><option value="klar">Klar (DM Serif + Outfit)</option><option value="mix">Mischung (Playfair + Outfit)</option></select></div>
         </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="sechead"><h2>Vorhersagen</h2></div>
+      <div class="card">
+        <label class="switch"><input type="checkbox" id="setPause" role="switch"><span class="sw-track" aria-hidden="true"></span><span class="sw-text"><b>Vorhersagen pausieren</b><span class="small muted">Zum Beispiel in der Schwangerschaft, in der Stillzeit, mit der Pille oder in den Wechseljahren. Du kannst weiter alles eintragen, die App schätzt dann keine Periode, keine fruchtbaren Tage und keinen Eisprung.</span></span></label>
       </div>
     </section>
     <section class="section">
@@ -202,7 +180,7 @@
         </div>
       </div>
     </section>
-    <p class="foot small muted">Zyklus-Tracker · offline · lokal · <span id="footVer">v2.5</span><br><a href="datenschutz.html" target="_blank" rel="noopener">Datenschutz</a> · <a href="hilfe.html" target="_blank" rel="noopener">Hilfe</a> · <a href="impressum.html" target="_blank" rel="noopener">Impressum</a></p>
+    <p class="foot small muted">Zyklus-Tracker · offline · lokal · <span id="footVer">v2.6</span><br><a href="datenschutz.html" target="_blank" rel="noopener">Datenschutz</a> · <a href="hilfe.html" target="_blank" rel="noopener">Hilfe</a> · <a href="impressum.html" target="_blank" rel="noopener">Impressum</a></p>
   </div>
 </main>
 
@@ -213,6 +191,48 @@
     <button role="tab" id="tab-ana" aria-controls="p-ana" aria-selected="false" tabindex="-1"><span class="ti" data-icon="chart"></span><span class="lbl">Analyse</span></button>
   </div>
 </nav>
+
+<!-- Tag eintragen: Blatt, das von unten hochfährt -->
+<dialog id="daySheet" class="sheet" aria-labelledby="dayTitle">
+  <div class="sheet-in">
+    <div class="sheet-head">
+      <div class="daynav">
+        <button type="button" class="roundbtn" id="prevDay" aria-label="Vorheriger Tag">←</button>
+        <div class="field"><label for="dayDate" class="sr">Datum</label><input type="date" id="dayDate"></div>
+        <button type="button" class="roundbtn" id="nextDay" aria-label="Nächster Tag">→</button>
+      </div>
+      <button type="button" class="pill small" id="sheetDone">Fertig</button>
+    </div>
+    <h2 class="daytitle" id="dayTitle"></h2>
+    <div class="dayphase" id="dayPhase"></div>
+    <button type="button" class="pill ghost small" id="todayBtn">Zu heute</button>
+
+    <form id="dayForm" onsubmit="return false">
+      <fieldset class="card group"><legend>Blutung</legend><div class="chips" id="flowChips"></div></fieldset>
+      <fieldset class="card group"><legend>Stimmung</legend><div class="chips" id="stimChips"></div></fieldset>
+      <fieldset class="card group"><legend>Gefühle</legend><div class="chips" id="moodChips"></div></fieldset>
+      <fieldset class="card group"><legend>Energie</legend><div class="chips" id="energyChips"></div></fieldset>
+      <fieldset class="card group"><legend>Körper</legend><div class="chips" id="symChips"></div></fieldset>
+      <details class="card group moreentry" id="moreEntry">
+        <summary>Weitere Angaben <span class="small muted" id="moreCount"></span></summary>
+        <fieldset class="sub"><legend>Medikamente</legend><div class="chips" id="medChips"></div></fieldset>
+        <fieldset class="sub"><legend>Sex</legend><div class="chips" id="sexChips"></div></fieldset>
+        <fieldset class="sub"><legend>Ausfluss</legend><div class="chips" id="dischargeChips"></div></fieldset>
+        <div class="sub field">
+          <label for="note">Notiz</label>
+          <textarea id="note" maxlength="2000" placeholder="Was war heute los?"></textarea>
+        </div>
+      </details>
+      <div class="saverow">
+        <span class="small muted" id="saveState" aria-live="polite">Änderungen werden automatisch gespeichert</span>
+        <button type="button" class="pill ghost small" id="clearDay">Tag leeren</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<!-- Kurze Meldungen unten (Rückgängig, neue Version, Fehler) -->
+<div id="toast" class="toast" role="status" aria-live="polite" hidden><span id="toastText"></span><button type="button" class="more" id="toastBtn" hidden></button></div>
 
 <!-- Begrüßung beim ersten Start: drei Schritte -->
 <dialog id="intro" class="intro" aria-labelledby="introTitle1">

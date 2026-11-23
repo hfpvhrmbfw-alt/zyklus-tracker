@@ -17,6 +17,9 @@
      "moods": [],
      "symptoms": [],
      "energy": 0,
+     "meds": [],
+     "sex": 0,
+     "discharge": 0,
      "note": ""
     }
    ],
@@ -54,6 +57,9 @@
      "moods": [],
      "symptoms": [],
      "energy": 0,
+     "meds": [],
+     "sex": 0,
+     "discharge": 0,
      "note": ""
     }
    ],
@@ -62,7 +68,8 @@
     "periodLen": 4,
     "luteal": 13,
     "theme": "dark",
-    "font": "klar"
+    "font": "klar",
+    "pause": false
    }
   }
  },
@@ -70,7 +77,7 @@
   "name": "neuere Version",
   "input": {
    "app": "zyklus-tracker",
-   "version": 2,
+   "version": 3,
    "days": [
     {
      "date": "2026-01-02",

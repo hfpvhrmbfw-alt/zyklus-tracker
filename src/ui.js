@@ -1,9 +1,8 @@
 /* Oberfläche: Zustand der Ansicht, Formatierung, Rendering. Ruft Logik und Speicher auf, nie umgekehrt. */
 
-import { toNum, toStr, blank, hasDetail, DAY_MS, FLOW, FLOW_PERIOD, MOODS, SYMPTOMS, STIMMUNG, ENERGY, PHASES, DEFAULTS, NOTE_MAX } from './model.js';
-import { analyze, phaseOf, moodDots, moodStats, findPatterns, avgEnergy, topSymptom, backupDue } from './logic.js';
-import { Store } from './storage.js';
-import { FLOW_LABEL, MOOD_LABEL, SYMPTOM_LABEL, STIMMUNG_LABEL, ENERGY_LABEL, PHASE_NAME, PHASE_SHORT, THEME_LABEL, WEEKDAY_SHORT, TAB_TITLE, greeting } from './texts.js';
+import { toNum, toStr, blank, hasDetail, DAY_MS, FLOW, FLOW_PERIOD, MOODS, SYMPTOMS, STIMMUNG, ENERGY, MEDS, SEX, DISCHARGE, PHASES, DEFAULTS, NOTE_MAX } from './model.js';
+import { analyze, phaseShown, moodDots, moodStats, findPatterns, avgEnergy, topSymptom, backupDue, topUsed } from './logic.js';
+import { FLOW_LABEL, MOOD_LABEL, SYMPTOM_LABEL, STIMMUNG_LABEL, ENERGY_LABEL, MED_LABEL, SEX_LABEL, DISCHARGE_LABEL, PHASE_NAME, PHASE_SHORT, THEME_LABEL, WEEKDAY_SHORT, TAB_TITLE, greeting } from './texts.js';
 import { MOOD_ICON, EMPTY_ICON, CARD_ART, ICON, scene } from './art.js';
 
 // ---------- Zeit und Formatierung ----------
@@ -25,6 +24,8 @@ export const state = {
   anaStats: null, anaPhase: null, // Analyse: Werte je Phase, gewählte Phase
 };
 export const entries = () => [...state.days.values()];
+/** Phase eines Tages, wie angezeigt: bei pausierten Vorhersagen ohne Schätzungen */
+const phaseAt = n => phaseShown(state.an, n, state.settings.pause);
 
 // ---------- Bausteine ----------
 function chip(group, type, value, label, checked, cls = '') {
@@ -62,35 +63,77 @@ export function patternText(p) {
 }
 
 // ---------- Eintrag ----------
+/** So viele Möglichkeiten zeigt eine lange Liste zuerst, der Rest liegt hinter „weitere“ */
+const COMPACT = 3;
+
+/**
+ * Lange Auswahl kompakt: zuerst die drei meistgenutzten und alle gewählten, der Rest hinter „+ N weitere“.
+ * @param {string} id Container @param {string} group Feldname @param {string[]} ids Stammdaten
+ * @param {Object<string,string>} labels @param {string[]} sel gewählte IDs @param {string} field Feld im Eintrag
+ */
+function compactChips(id, group, ids, labels, sel, field) {
+  const top = topUsed(entries(), field, ids, COMPACT);
+  const first = [...top, ...ids.filter(v => sel.includes(v) && !top.includes(v))];
+  const order = [...first, ...ids.filter(v => !first.includes(v))];
+  const extra = ids.length - first.length;
+  const box = $(id);
+  box.classList.remove('open');
+  box.innerHTML = order.map(v => chip(group, 'checkbox', v, labels[v], sel.includes(v), first.includes(v) ? '' : 'extra')).join('') +
+    (extra > 0 ? `<button type="button" class="chipmore" aria-expanded="false" data-n="${extra}">+ ${extra} weitere</button>` : '');
+}
+
+/** Einzelauswahl, die sich durch nochmaliges Tippen wieder aufheben lässt (Checkboxen mit Klasse „single“). */
+const singleChips = (group, values, labels, cur) =>
+  values.filter(v => v > 0).map(v => chip(group, 'checkbox', v, labels[v], cur === v, 'single')).join('');
+
 export function renderDay() {
   const date = toStr(state.sel);
   const e = state.days.get(date) || blank(date);
   $('dayDate').value = date;
+  $('dayDate').max = toStr(todayNum() + 366);
   $('dayTitle').textContent = fmtLong(state.sel) + (state.sel === todayNum() ? ' · heute' : '');
+  $('todayBtn').hidden = state.sel === todayNum();
   $('flowChips').innerHTML = FLOW.map(v => chip('flow', 'radio', v, FLOW_LABEL[v], e.flow === v, v >= FLOW_PERIOD ? 'flow' : '')).join('');
   $('stimChips').innerHTML = STIMMUNG.map(v => chip('stim', 'checkbox', v, STIMMUNG_LABEL[v], e.stimmung.includes(v), 'stim ' + v)).join('');
-  $('moodChips').innerHTML = MOODS.map(v => chip('mood', 'checkbox', v, MOOD_LABEL[v], e.moods.includes(v))).join('');
-  $('energyChips').innerHTML = ENERGY.map(v => chip('energy', 'radio', v, ENERGY_LABEL[v], e.energy === v)).join('');
-  $('symChips').innerHTML = SYMPTOMS.map(v => chip('sym', 'checkbox', v, SYMPTOM_LABEL[v], e.symptoms.includes(v))).join('');
+  compactChips('moodChips', 'mood', MOODS, MOOD_LABEL, e.moods, 'moods');
+  $('energyChips').innerHTML = singleChips('energy', ENERGY, ENERGY_LABEL, e.energy);
+  compactChips('symChips', 'sym', SYMPTOMS, SYMPTOM_LABEL, e.symptoms, 'symptoms');
+  $('medChips').innerHTML = MEDS.map(v => chip('med', 'checkbox', v, MED_LABEL[v], e.meds.includes(v))).join('');
+  $('sexChips').innerHTML = singleChips('sex', SEX, SEX_LABEL, e.sex);
+  $('dischargeChips').innerHTML = singleChips('discharge', DISCHARGE, DISCHARGE_LABEL, e.discharge);
   $('note').value = e.note;
+  const more = moreFilled(e);
+  $('moreEntry').open = more > 0;
+  renderMoreCount(more);
   renderDayPhase();
 }
 
+/** Wie viele der weiteren Angaben (Medikamente, Sex, Ausfluss, Notiz) ausgefüllt sind */
+const moreFilled = e => [e.meds.length, e.sex, e.discharge, e.note.trim()].filter(Boolean).length;
+const renderMoreCount = n => { $('moreCount').textContent = n ? `· ${n} ausgefüllt` : ''; };
+
 export function renderDayPhase() {
-  $('dayPhase').innerHTML = phaseTags(phaseOf(state.an, state.sel));
+  $('dayPhase').innerHTML = phaseTags(phaseAt(state.sel));
 }
 
 export function readForm() {
   const f = $('dayForm');
-  return {
+  const one = name => Number((f.querySelector(`input[name=${name}]:checked`) || {}).value || 0);
+  const many = name => [...f.querySelectorAll(`input[name=${name}]:checked`)].map(i => i.value);
+  const e = {
     date: toStr(state.sel),
-    flow: Number((f.querySelector('input[name=flow]:checked') || {}).value || 0),
-    stimmung: [...f.querySelectorAll('input[name=stim]:checked')].map(i => i.value),
-    moods: [...f.querySelectorAll('input[name=mood]:checked')].map(i => i.value),
-    symptoms: [...f.querySelectorAll('input[name=sym]:checked')].map(i => i.value),
-    energy: Number((f.querySelector('input[name=energy]:checked') || {}).value || 0),
+    flow: one('flow'),
+    stimmung: many('stim'),
+    moods: many('mood'),
+    symptoms: many('sym'),
+    energy: one('energy'),
+    meds: many('med'),
+    sex: one('sex'),
+    discharge: one('discharge'),
     note: $('note').value.slice(0, NOTE_MAX),
   };
+  renderMoreCount(moreFilled(e));
+  return e;
 }
 
 // ---------- Kopf und Ausblick ----------
@@ -111,7 +154,14 @@ function renderHero() {
     $('heroLede').textContent = 'Trag den ersten Tag deiner letzten Periode ein. Ab zwei Periodenstarts siehst du Durchschnittswerte, Vorhersagen und Muster.';
     return;
   }
-  const ph = phaseOf(an, t);
+  if (state.settings.pause) {
+    $('heroArt').innerHTML = scene('none');
+    $('heroTitle').textContent = 'Pause';
+    $('heroSub').textContent = 'Vorhersagen pausiert';
+    $('heroLede').textContent = 'Du kannst weiter alles eintragen. Die App schätzt gerade keine Periode und keine fruchtbaren Tage. Wieder einschalten kannst du die Vorhersagen in den Einstellungen.';
+    return;
+  }
+  const ph = phaseAt(t);
   $('heroArt').innerHTML = scene(ph ? ph.phase : 'none');
   $('heroTitle').textContent = `Tag ${c.day}`;
   let when;
@@ -128,7 +178,12 @@ function renderHero() {
 function renderOutlook() {
   const an = state.an, c = an.current, t = todayNum();
   if (!c) { $('outlook').innerHTML = kpi('Zyklustag', '–', 'noch keine Periode eingetragen', 'big', 'moon') + kpi('Nächste Periode', '–', 'ab dem ersten Eintrag', '', 'drop'); return; }
-  const ph = phaseOf(an, t);
+  if (state.settings.pause) {
+    $('outlook').innerHTML = kpi('Letzte Periode', fmtShort(c.start), t > c.start ? `vor ${plural(t - c.start, 'Tag', 'Tagen')}` : 'heute', 'sm', 'drop') +
+      kpi('Vorhersagen', 'pausiert', 'in den Einstellungen änderbar', 'sm', 'leaf');
+    return;
+  }
+  const ph = phaseAt(t);
   const nextSub = c.overdue ? `erwartet am ${fmtShort(c.next)}, ${plural(c.overdue, 'Tag', 'Tage')} drüber` : c.next === t ? 'heute' : `in ${plural(c.next - t, 'Tag', 'Tagen')}`;
   const fertSub = c.fertileNext ? 'im nächsten Zyklus' : (t >= c.fs && t <= c.fe ? 'jetzt, Eisprung um ' + fmtShort(c.ov) : 'Eisprung um ' + fmtShort(c.ov));
   $('outlook').innerHTML =
@@ -168,7 +223,7 @@ export function renderCalendar() {
   for (let i = 0; i < lead; i++) html += '<button class="day out" tabindex="-1" aria-hidden="true"></button>';
   for (let n = first; n <= last; n++) {
     const e = state.days.get(toStr(n));
-    const ph = phaseOf(an, n);
+    const ph = phaseAt(n);
     const cls = ['day'], marks = [], aria = [fmtLong(n)];
     if (e && e.flow >= FLOW_PERIOD) { cls.push('period'); marks.push('P'); aria.push('Periode ' + FLOW_LABEL[e.flow]); }
     else if (e && e.flow === 1) { cls.push('spot'); marks.push('·'); aria.push('Schmierblutung'); }
@@ -272,7 +327,7 @@ export function renderAnalysis() {
   }
 
   // Muster: kurzer Satz, daneben vier kleine Säulen (eine je Phase)
-  const st = moodStats(an, entries(), t);
+  const st = moodStats(an, entries(), t, state.settings.pause);
   state.anaStats = st;
   const pats = findPatterns(st);
   const patRow = (p, i) => {
@@ -317,7 +372,7 @@ export function renderAnalysis() {
   $('moodMore').hidden = !used.length;
   $('moodTableAll').innerHTML = used.length ? '<table class="data ph"><thead><tr><th>Gefühl</th>' + PHASES.map(k => `<th class="num">${PHASE_SHORT[k]}</th>`).join('') + '</tr></thead><tbody>' +
     used.map(id => `<tr><td class="mood">${MOOD_LABEL[id]}</td>` + PHASES.map(k => `<td class="num">${st[k].n ? Math.round(((st[k].moods[id] || 0) / st[k].n) * 100) + ' %' : '–'}</td>`).join('') + '</tr>').join('') + '</tbody></table>' : '';
-  const now = phaseOf(an, t);
+  const now = phaseAt(t);
   if (!state.anaPhase) state.anaPhase = now ? now.phase : 'men';
   selectPhase(state.anaPhase, true);
 }
@@ -382,14 +437,12 @@ export function playAnalysis() {
 // ---------- Daten ----------
 export async function renderData() {
   const n = state.days.size;
-  let info = `<b>${plural(n, 'Tag', 'Tage')}</b> gespeichert · ${Store.ls ? 'localStorage' : 'IndexedDB'}`;
-  if (navigator.storage && navigator.storage.persisted) {
-    try { info += (await navigator.storage.persisted()) ? ' · dauerhaft geschützt' : ' · Browser darf bei Speichermangel aufräumen'; } catch { /* egal */ }
-  }
-  info += '<br>' + (state.lastBackup != null ? `Letztes Backup am ${fmt(state.lastBackup, { day: 'numeric', month: 'long', year: 'numeric' })}` : 'Noch kein Backup gemacht');
+  let info = `<b>${plural(n, 'Tag', 'Tage')}</b> gespeichert.`;
+  info += ' ' + (state.lastBackup != null ? `Letztes Backup am ${fmt(state.lastBackup, { day: 'numeric', month: 'long', year: 'numeric' })}.` : 'Noch kein Backup gemacht.');
   $('storeInfo').innerHTML = info;
   const s = state.settings;
   $('setCycle').value = s.cycleLen; $('setPeriod').value = s.periodLen; $('setLuteal').value = s.luteal; $('setTheme').value = s.theme;
+  $('setPause').checked = s.pause;
   $('demoNote').hidden = !state.demo;
 }
 
@@ -451,13 +504,22 @@ export function applyTheme() {
   $('setTheme').value = t;
 }
 
-// ---------- Schrift ----------
-export function applyFont() {
-  const f = state.settings.font;
-  if (f === 'klar') delete document.documentElement.dataset.font; else document.documentElement.dataset.font = f;
-  try { localStorage.setItem('zyklus-font', f); } catch { /* egal */ }
-  $('setFont').value = f;
+// ---------- Kurze Meldung unten ----------
+let toastTimer;
+/** Zeigt eine kurze Meldung, optional mit Knopf (z. B. „Rückgängig“). ms = 0: bleibt stehen. */
+export function toast(text, btn, onBtn, ms = 6000) {
+  clearTimeout(toastTimer);
+  // Ein offenes Blatt liegt über allem: die Meldung muss dann darin stehen, sonst ist sie nicht antippbar
+  const sheet = $('daySheet'), host = sheet.open ? sheet : document.body;
+  if ($('toast').parentElement !== host) host.appendChild($('toast'));
+  $('toastText').textContent = text;
+  $('toastBtn').hidden = !btn;
+  $('toastBtn').textContent = btn || '';
+  $('toastBtn').onclick = () => { hideToast(); if (onBtn) onBtn(); };
+  $('toast').hidden = false;
+  if (ms) toastTimer = setTimeout(hideToast, ms);
 }
+export function hideToast() { clearTimeout(toastTimer); $('toast').hidden = true; }
 
 
 // ---------- Symbole ----------

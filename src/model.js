@@ -2,7 +2,8 @@
    Keine Abhängigkeiten. Beschriftungen für die Anzeige stehen in texts.js. */
 
 export const APP_ID = 'zyklus-tracker';
-export const SCHEMA_VERSION = 1;
+/** 2: Medikamente, Sex, Ausfluss je Tag und Einstellung „pause“. Ältere Dateien werden ohne Umbau gelesen (fehlende Felder = leer). */
+export const SCHEMA_VERSION = 2;
 
 // ---------- Stammdaten (stabile IDs, nie umbenennen, nur ergänzen) ----------
 /** Blutungsstärke 0 keine, 1 Schmierblutung, 2 leicht, 3 mittel, 4 stark */
@@ -29,15 +30,22 @@ export const MOOD_TONE = {
   sensibel: 'ok', muede: 'ok', lustlos: 'ok', unruhig: 'ok',
   gereizt: 'schlecht', traurig: 'schlecht', aengstlich: 'schlecht', gestresst: 'schlecht',
 };
+/** Medikamente und Mittel des Tages */
+export const MEDS = ['schmerzmittel', 'pille', 'eisen', 'magnesium', 'andere'];
+/** Sex 0 = nicht erfasst, 1 geschützt, 2 ungeschützt */
+export const SEX = [0, 1, 2];
+/** Ausfluss 0 = nicht erfasst, 1 trocken, 2 klebrig, 3 cremig, 4 wässrig, 5 wie Eiweiß */
+export const DISCHARGE = [0, 1, 2, 3, 4, 5];
 /** Energie 0 = nicht erfasst, 1–5 sehr niedrig bis sehr hoch */
 export const ENERGY = [0, 1, 2, 3, 4, 5];
 /** Zyklusphasen: Menstruation, Follikel, Eisprung, Luteal */
 export const PHASES = ['men', 'fol', 'ovu', 'lut'];
 export const THEMES = ['auto', 'light', 'dark'];
-/** Schriftkombinationen: klassisch = Playfair + DM Sans, klar = DM Serif Display + Outfit, mix = Playfair + Outfit */
+/** Schriftkombinationen. Seit 2.6 fest „klar“ (DM Serif Display + Outfit), das Feld bleibt nur für alte Backups. */
 export const FONTS = ['klassisch', 'klar', 'mix'];
 
-export const DEFAULTS = { cycleLen: 28, periodLen: 5, luteal: 14, theme: 'auto', font: 'klar' };
+/** pause: Vorhersagen ausgeschaltet (z. B. Schwangerschaft, Stillzeit, Pille) */
+export const DEFAULTS = { cycleLen: 28, periodLen: 5, luteal: 14, theme: 'auto', font: 'klar', pause: false };
 export const NOTE_MAX = 2000;
 
 // ---------- Datum: ganze Tage seit 1970 als Zahl, zeitzonenfest ----------
@@ -49,21 +57,21 @@ export const toStr = n => new Date(n * DAY_MS).toISOString().slice(0, 10);
 
 // ---------- Tageseintrag ----------
 /**
- * @typedef {{date: string, flow: number, stimmung: string[], moods: string[], symptoms: string[], energy: number, note: string}} DayEntry
+ * @typedef {{date: string, flow: number, stimmung: string[], moods: string[], symptoms: string[], energy: number, meds: string[], sex: number, discharge: number, note: string}} DayEntry
  */
 /** @param {string} date @returns {DayEntry} */
-export const blank = date => ({ date, flow: 0, stimmung: [], moods: [], symptoms: [], energy: 0, note: '' });
-/** @param {DayEntry} e @returns {boolean} */
-export const isEmpty = e => !e.flow && !e.stimmung.length && !e.moods.length && !e.symptoms.length && !e.energy && !e.note.trim();
+export const blank = date => ({ date, flow: 0, stimmung: [], moods: [], symptoms: [], energy: 0, meds: [], sex: 0, discharge: 0, note: '' });
 /** Hat der Tag Angaben außer der Blutung? @param {DayEntry} e @returns {boolean} */
-export const hasDetail = e => !!(e.stimmung.length || e.moods.length || e.symptoms.length || e.energy || e.note.trim());
+export const hasDetail = e => !!(e.stimmung.length || e.moods.length || e.symptoms.length || e.energy || e.meds.length || e.sex || e.discharge || e.note.trim());
+/** @param {DayEntry} e @returns {boolean} */
+export const isEmpty = e => !e.flow && !hasDetail(e);
 
 const clampInt = (v, lo, hi) => Math.min(hi, Math.max(lo, Math.round(Number(v) || 0)));
 
 /** Prüft einen Eintrag aus Speicher oder Import. @returns {DayEntry|null} */
 export function sanitize(raw) {
   if (!raw || typeof raw.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(raw.date) || isNaN(toNum(raw.date))) return null;
-  const okMood = new Set(MOODS), okStim = new Set(STIMMUNG), okSym = new Set(SYMPTOMS);
+  const okMood = new Set(MOODS), okStim = new Set(STIMMUNG), okSym = new Set(SYMPTOMS), okMed = new Set(MEDS);
   const list = (v, ok) => Array.isArray(v) ? [...new Set(v.filter(x => ok.has(x)))] : [];
   return {
     date: raw.date,
@@ -72,12 +80,15 @@ export function sanitize(raw) {
     moods: list(raw.moods, okMood),
     symptoms: list(raw.symptoms, okSym),
     energy: clampInt(raw.energy, 0, 5),
+    meds: list(raw.meds, okMed),
+    sex: clampInt(raw.sex, 0, 2),
+    discharge: clampInt(raw.discharge, 0, 5),
     note: typeof raw.note === 'string' ? raw.note.slice(0, NOTE_MAX) : '',
   };
 }
 
 // ---------- Einstellungen ----------
-/** @typedef {{cycleLen: number, periodLen: number, luteal: number, theme: string, font: string}} Settings */
+/** @typedef {{cycleLen: number, periodLen: number, luteal: number, theme: string, font: string, pause: boolean}} Settings */
 /** Bringt Einstellungen in gültige Bereiche, fehlende Werte werden Standard. @returns {Settings} */
 export function sanitizeSettings(s) {
   s = s || {};
@@ -88,6 +99,7 @@ export function sanitizeSettings(s) {
     luteal: clamp(s.luteal, 8, 18, DEFAULTS.luteal),
     theme: THEMES.includes(s.theme) ? s.theme : 'auto',
     font: FONTS.includes(s.font) ? s.font : DEFAULTS.font,
+    pause: s.pause === true,
   };
 }
 
@@ -115,7 +127,8 @@ export function parseImport(data) {
   return { ok: true, days, settings: migrated.settings ? sanitizeSettings(migrated.settings) : null };
 }
 
-/** Hebt ältere Formate auf die aktuelle Schema-Version. Bisher: nackte Liste von Tagen oder Version 1. */
+/** Hebt ältere Formate auf die aktuelle Schema-Version. Bisher: nackte Liste von Tagen, Version 1 oder 2.
+    Version 1 → 2 braucht keinen Umbau: neue Felder fehlen und werden von sanitize leer gesetzt. */
 export function migrate(data) {
   if (Array.isArray(data)) return { days: data, settings: null };
   return { days: (data && Array.isArray(data.days)) ? data.days : [], settings: (data && data.settings) || null };

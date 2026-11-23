@@ -5,7 +5,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { toNum, toStr, sanitize, sanitizeSettings, parseImport, buildExport, isEmpty, blank, DEFAULTS } from '../src/model.js';
-import { analyze, phaseOf, moodStats, findPatterns, makeDemo, moodDots, backupDue, introPeriod } from '../src/logic.js';
+import { analyze, phaseOf, phaseShown, moodStats, findPatterns, makeDemo, moodDots, backupDue, introPeriod, topUsed } from '../src/logic.js';
+import { MOODS } from '../src/model.js';
 
 const dir = new URL('./fixtures/', import.meta.url);
 const load = name => JSON.parse(readFileSync(new URL(name, dir), 'utf8'));
@@ -31,10 +32,12 @@ for (const file of readdirSync(dir).filter(f => f.startsWith('analyse-'))) {
   const fx = load(file);
   test(`Analyse: ${fx.beschreibung}`, () => {
     const today = toNum(fx.input.today);
-    const an = analyze(fx.input.days, fx.input.settings, today);
+    // wie in der App und in Swift: Einträge laufen erst durch sanitize
+    const days = fx.input.days.map(sanitize).filter(Boolean), settings = sanitizeSettings(fx.input.settings);
+    const an = analyze(days, settings, today);
     near(an, fx.expected.analyze, 'analyze');
     for (const [date, ph] of Object.entries(fx.expected.phases)) near(phaseOf(an, toNum(date)), ph, `phaseOf ${date}`);
-    const st = moodStats(an, fx.input.days, today);
+    const st = moodStats(an, days, today);
     near(st, fx.expected.moodStats, 'moodStats');
     near(findPatterns(st), fx.expected.patterns, 'findPatterns');
   });
@@ -64,7 +67,8 @@ test('Export lässt sich wieder importieren', () => {
 });
 
 test('Einstellungen werden begrenzt', () => {
-  assert.deepEqual(sanitizeSettings({ cycleLen: 5, periodLen: 'x', luteal: 30, theme: 'neon', font: 'comic' }), { cycleLen: 15, periodLen: 5, luteal: 18, theme: 'auto', font: 'klar' });
+  assert.deepEqual(sanitizeSettings({ cycleLen: 5, periodLen: 'x', luteal: 30, theme: 'neon', font: 'comic', pause: 'ja' }), { cycleLen: 15, periodLen: 5, luteal: 18, theme: 'auto', font: 'klar', pause: false });
+  assert.equal(sanitizeSettings({ pause: true }).pause, true);
   assert.equal(sanitizeSettings({ font: 'mix' }).font, 'mix');
   assert.deepEqual(sanitizeSettings(null), DEFAULTS);
 });
@@ -98,4 +102,33 @@ test('Begrüßung: letzte Periode wird als „Leicht“ eingetragen, höchstens 
   assert.ok(list.every(e => e.flow === 2 && sanitize(e)));
   const an = analyze(introPeriod(toNum('2026-10-01'), 5, t), DEFAULTS, t);
   assert.equal(an.periods.length, 1);
+});
+
+test('Pause: keine Phasen nach der letzten Periode, Statistik ohne diese Tage', () => {
+  const t = toNum('2026-10-20');
+  const days = [...introPeriod(toNum('2026-09-01'), 5, t), ...introPeriod(toNum('2026-09-29'), 5, t),
+    { ...blank('2026-10-15'), moods: ['muede'] }, { ...blank('2026-09-30'), moods: ['ruhig'] }];
+  const an = analyze(days, DEFAULTS, t);
+  assert.equal(phaseShown(an, toNum('2026-10-15'), false).phase, phaseOf(an, toNum('2026-10-15')).phase);
+  assert.equal(phaseShown(an, toNum('2026-10-15'), true), null);
+  assert.equal(phaseShown(an, toNum('2026-11-30'), true), null);
+  assert.equal(phaseShown(an, toNum('2026-10-03'), true).phase, 'men');
+  assert.equal(phaseShown(an, toNum('2026-09-10'), true).phase, 'fol');
+  const on = moodStats(an, days, t), off = moodStats(an, days, t, true);
+  assert.equal(on.men.n + on.fol.n + on.ovu.n + on.lut.n, 2);
+  assert.equal(off.men.n + off.fol.n + off.ovu.n + off.lut.n, 1);
+});
+
+test('Häufigste Auswahl: nach Anzahl, sonst Reihenfolge der Stammdaten', () => {
+  const d = (moods) => ({ ...blank('2026-01-01'), moods });
+  assert.deepEqual(topUsed([], 'moods', MOODS, 3), ['gluecklich', 'ruhig', 'energiegeladen']);
+  assert.deepEqual(topUsed([d(['muede', 'gereizt']), d(['muede']), d(['ruhig', 'gereizt'])], 'moods', MOODS, 3), ['gereizt', 'muede', 'ruhig']);
+  assert.deepEqual(topUsed([d(['unruhig'])], 'moods', MOODS, 3), ['unruhig', 'gluecklich', 'ruhig']);
+});
+
+test('Neue Felder (Schema 2): Medikamente, Sex, Ausfluss', () => {
+  const e = sanitize({ date: '2026-01-01', meds: ['pille', 'x', 'pille'], sex: 7, discharge: 3 });
+  assert.deepEqual([e.meds, e.sex, e.discharge], [['pille'], 2, 3]);
+  assert.ok(!isEmpty({ ...blank('2026-01-01'), sex: 1 }));
+  assert.ok(!isEmpty({ ...blank('2026-01-01'), meds: ['eisen'] }));
 });

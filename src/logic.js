@@ -85,6 +85,30 @@ export function phaseOf(an, n) {
   return { phase, predicted, fertile: n >= ov - 5 && n <= ov + 1, ovu: n === ov, cycleDay: n - start + 1, next };
 }
 
+/**
+ * Wie phaseOf, aber bei pausierten Vorhersagen (Schwangerschaft, Stillzeit, Pille …) ohne Schätzungen:
+ * nach dem Ende der letzten eingetragenen Periode gibt es dann keine Phase.
+ * @param {Analysis} an @param {number} n @param {boolean} paused @returns {DayPhase|null}
+ */
+export function phaseShown(an, n, paused) {
+  const last = an.periods[an.periods.length - 1];
+  if (paused && last && n > last.end) return null;
+  return phaseOf(an, n);
+}
+
+/**
+ * Die am häufigsten gewählten IDs eines Listenfelds (moods, symptoms, meds), für den kompakten Eintrag.
+ * Bei Gleichstand und zum Auffüllen gilt die Reihenfolge der Stammdaten.
+ * @param {import('./model.js').DayEntry[]} entries @param {'moods'|'symptoms'|'meds'} field
+ * @param {string[]} ids Stammdaten @param {number} k @returns {string[]}
+ */
+export function topUsed(entries, field, ids, k) {
+  const count = {};
+  for (const e of entries) for (const id of e[field]) count[id] = (count[id] || 0) + 1;
+  return ids.map((id, i) => ({ id, i, c: count[id] || 0 }))
+    .sort((a, b) => (b.c - a.c) || (a.i - b.i)).slice(0, k).map(o => o.id);
+}
+
 /** Farbpunkte für den Kalender: eigene Stimmungsangabe, sonst aus den Gefühlen. @returns {string[]} STIMMUNG-IDs */
 export function moodDots(e) {
   const set = new Set(e.stimmung.length ? e.stimmung : e.moods.map(m => MOOD_TONE[m] || 'gut'));
@@ -94,14 +118,18 @@ export function moodDots(e) {
 /**
  * @typedef {{n: number, moods: Object<string, number>, syms: Object<string, number>, energy: number[]}} PhaseStats
  */
-/** Zählt Gefühle, Symptome und Energie je Phase (nur Tage bis heute mit Angaben). @returns {Object<string, PhaseStats>} */
-export function moodStats(an, entries, today) {
+/**
+ * Zählt Gefühle, Symptome und Energie je Phase (nur Tage bis heute mit Angaben).
+ * Bei pausierten Vorhersagen zählen Tage nach der letzten Periode nicht mit.
+ * @returns {Object<string, PhaseStats>}
+ */
+export function moodStats(an, entries, today, paused = false) {
   const stats = {};
   PHASES.forEach(k => { stats[k] = { n: 0, moods: {}, syms: {}, energy: [] }; });
   for (const e of entries) {
     const n = toNum(e.date);
     if (n > today || !hasDetail(e)) continue;
-    const ph = phaseOf(an, n);
+    const ph = phaseShown(an, n, paused);
     if (!ph) continue;
     const s = stats[ph.phase];
     s.n++;
@@ -185,6 +213,7 @@ export function makeDemo(today) {
         else if (n > start + len - 6) { moods = pick(['gereizt', 'traurig', 'sensibel', 'gestresst', 'muede'], 0.45); syms = pick(['brustspannen', 'heisshunger', 'blaehungen', 'unreine_haut'], 0.45); energy = 1 + Math.round(rnd() * 2); }
         else { moods = pick(['ruhig', 'muede', 'gestresst', 'gluecklich'], 0.35); syms = pick(['blaehungen'], 0.2); energy = 2 + Math.round(rnd() * 2); }
         e.moods = moods; e.symptoms = syms; e.energy = energy;
+        if (syms.includes('kraempfe')) e.meds = ['schmerzmittel']; // ohne Zufall, damit die übrigen Werte gleich bleiben
         if (rnd() < 0.25) e.stimmung = [rnd() < 0.5 ? 'abends' : 'ok'];
       }
       if (!isEmpty(e)) out.push(e);

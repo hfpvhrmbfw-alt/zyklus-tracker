@@ -17,6 +17,9 @@ export const SYMPTOM_LABEL = {
 };
 export const STIMMUNG_LABEL = { gut: 'Gut', ok: 'Ist ok', schlecht: 'Schlecht', abends: 'Nur abends' };
 export const ENERGY_LABEL = ['Nicht erfasst', 'Sehr niedrig', 'Niedrig', 'Mittel', 'Hoch', 'Sehr hoch'];
+export const MED_LABEL = { schmerzmittel: 'Schmerzmittel', pille: 'Pille', eisen: 'Eisen', magnesium: 'Magnesium', andere: 'Anderes' };
+export const SEX_LABEL = ['Nicht erfasst', 'Geschützt', 'Ungeschützt'];
+export const DISCHARGE_LABEL = ['Nicht erfasst', 'Trocken', 'Klebrig', 'Cremig', 'Wässrig', 'Wie Eiweiß'];
 export const PHASE_NAME = { men: 'Menstruation', fol: 'Follikelphase', ovu: 'Eisprungphase', lut: 'Lutealphase' };
 export const PHASE_SHORT = { men: 'Periode', fol: 'Follikel', ovu: 'Eisprung', lut: 'Luteal' };
 export const THEME_LABEL = { auto: 'System', light: 'Hell', dark: 'Dunkel' };
