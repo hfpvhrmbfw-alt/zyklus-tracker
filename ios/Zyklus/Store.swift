@@ -5,6 +5,27 @@ import Foundation
 import Observation
 import ZyklusKit
 
+/// Einstellungen nur für dieses Gerät (nicht im Backup): Sperre und Erinnerungen
+struct DevicePrefs: Codable, Equatable {
+  /// Beim Öffnen mit Face ID, Touch ID oder Code entsperren
+  var lock = false
+  /// Zwei Tage vor der erwarteten Periode erinnern
+  var remindPeriod = false
+  /// Täglich ans Eintragen erinnern
+  var remindDaily = false
+  /// Uhrzeit der täglichen Erinnerung in Minuten nach Mitternacht
+  var dailyMinute = 20 * 60
+
+  init() {}
+  init(_ raw: Any?) {
+    let o = raw as? [String: Any] ?? [:]
+    lock = (o["lock"] as? Bool) ?? false
+    remindPeriod = (o["remindPeriod"] as? Bool) ?? false
+    remindDaily = (o["remindDaily"] as? Bool) ?? false
+    dailyMinute = min(24 * 60 - 1, max(0, (o["dailyMinute"] as? Int) ?? 20 * 60))
+  }
+}
+
 @Observable
 final class EntryStore {
   private(set) var days: [String: DayEntry] = [:]
@@ -13,6 +34,10 @@ final class EntryStore {
   private(set) var demo = false
   /// Tag der letzten automatischen Sicherung
   private(set) var lastBackup: DayNum?
+  /// Sperre und Erinnerungen (nur dieses Gerät)
+  private(set) var prefs = DevicePrefs()
+  /// Konnte zuletzt nicht gespeichert werden (z. B. Speicher voll)? Die Oberfläche zeigt dann einen Hinweis.
+  var saveFailed = false
   /// Wird bei Datumswechsel neu gesetzt, damit „heute“ stimmt
   var today: DayNum = EntryStore.currentDay()
 
@@ -54,6 +79,14 @@ final class EntryStore {
     settings = Sanitize.settings(s)
     persist()
   }
+
+  func update(prefs p: DevicePrefs) {
+    prefs = p
+    persist()
+  }
+
+  /// Tag wiederherstellen (Rückgängig nach „Tag leeren“)
+  func restore(_ e: DayEntry) { save(e) }
 
   /// Begrüßung abschließen, optional mit der letzten Periode
   func finishIntro(lastPeriodStart: DayNum?, cycleLen: Int, periodLen: Int) {
@@ -136,6 +169,7 @@ final class EntryStore {
     onboarded = (obj["onboarded"] as? Bool) ?? !days.isEmpty
     demo = (obj["demo"] as? Bool) ?? false
     lastBackup = obj["lastBackup"] as? Int
+    prefs = DevicePrefs(obj["prefs"])
   }
 
   /// Gleiches Format wie die Backup-Datei, ergänzt um den Zustand der App
@@ -147,11 +181,17 @@ final class EntryStore {
     var onboarded: Bool
     var demo: Bool
     var lastBackup: DayNum?
+    var prefs: DevicePrefs
   }
 
   private func persist() {
     autoBackup()
-    let s = State(settings: settings, days: entries.sorted { $0.date < $1.date }, onboarded: onboarded, demo: demo, lastBackup: lastBackup)
-    if let data = try? JSONEncoder().encode(s) { try? data.write(to: stateURL, options: .atomic) }
+    let s = State(settings: settings, days: entries.sorted { $0.date < $1.date }, onboarded: onboarded, demo: demo, lastBackup: lastBackup, prefs: prefs)
+    do {
+      try JSONEncoder().encode(s).write(to: stateURL, options: .atomic)
+      saveFailed = false
+    } catch {
+      saveFailed = true // nicht still scheitern: RootView zeigt eine Meldung
+    }
   }
 }

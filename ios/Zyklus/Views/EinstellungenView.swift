@@ -1,6 +1,7 @@
 // Einstellungen: Sicherung, Standardwerte, Darstellung, Demodaten, alles löschen.
 
 import SwiftUI
+import UIKit
 import UniformTypeIdentifiers
 import ZyklusKit
 
@@ -12,6 +13,8 @@ struct EinstellungenView: View {
   @State private var confirmDemo = false
   @State private var confirmWipe = false
   @State private var message: String?
+  /// Mitteilungen in den iPhone-Einstellungen ausgeschaltet
+  @State private var notifDenied = false
 
   var body: some View {
     NavigationStack {
@@ -31,6 +34,33 @@ struct EinstellungenView: View {
           Stepper("Periodendauer: \(store.settings.periodLen) Tage", value: binding(\.periodLen), in: 1...12)
           Stepper("Lutealphase: \(store.settings.luteal) Tage", value: binding(\.luteal), in: 8...18)
         } header: { Text("Zyklus") } footer: { Text("Die Standardwerte gelten, solange es noch zu wenige eigene Zyklen gibt.") }
+
+        Section {
+          Toggle("Vorhersagen pausieren", isOn: binding(\.pause)).tint(Theme.sage)
+        } header: { Text("Vorhersagen") } footer: {
+          Text("Zum Beispiel in der Schwangerschaft, in der Stillzeit, mit der Pille oder in den Wechseljahren. Du kannst weiter alles eintragen, die App schätzt dann keine Periode, keine fruchtbaren Tage und keinen Eisprung.")
+        }
+
+        Section {
+          Toggle("Vor der Periode", isOn: reminder(\.remindPeriod)).tint(Theme.sage)
+          Toggle("Täglich ans Eintragen", isOn: reminder(\.remindDaily)).tint(Theme.sage)
+          if store.prefs.remindDaily {
+            DatePicker("Uhrzeit", selection: dailyTime, displayedComponents: .hourAndMinute)
+          }
+          if notifDenied {
+            Button("Mitteilungen in den iPhone-Einstellungen erlauben …") {
+              if let u = URL(string: UIApplication.openNotificationSettingsURLString) { UIApplication.shared.open(u) }
+            }
+          }
+        } header: { Text("Erinnerungen") } footer: {
+          Text("„Vor der Periode“ erinnert zwei Tage vor der erwarteten Periode um 9 Uhr. Die Erinnerungen entstehen auf dem iPhone, es wird nichts verschickt.")
+        }
+
+        Section {
+          Toggle("Mit Face ID oder Code sperren", isOn: lockBinding).tint(Theme.sage)
+        } header: { Text("Sperre") } footer: {
+          Text("Beim Öffnen fragt die App nach Face ID, Touch ID oder dem Code deines iPhones. In der App-Übersicht sind deine Einträge dann verdeckt.")
+        }
 
         Section("Darstellung") {
           Picker("Farbschema", selection: binding(\.theme)) {
@@ -86,6 +116,39 @@ struct EinstellungenView: View {
         Button("OK") { message = nil }
       }
     }
+  }
+
+  /// Erinnerung an- oder ausschalten. Beim Einschalten erst nach der Erlaubnis für Mitteilungen fragen.
+  private func reminder(_ key: WritableKeyPath<DevicePrefs, Bool>) -> Binding<Bool> {
+    Binding(get: { store.prefs[keyPath: key] }, set: { on in
+      if !on { var p = store.prefs; p[keyPath: key] = false; store.update(prefs: p); return }
+      Task {
+        let ok = await Reminders.requestPermission()
+        notifDenied = !ok
+        if ok { var p = store.prefs; p[keyPath: key] = true; store.update(prefs: p) }
+      }
+    })
+  }
+
+  /// Uhrzeit der täglichen Erinnerung
+  private var dailyTime: Binding<Date> {
+    Binding(get: {
+      Calendar.current.date(bySettingHour: store.prefs.dailyMinute / 60, minute: store.prefs.dailyMinute % 60, second: 0, of: Date()) ?? Date()
+    }, set: { d in
+      let c = Calendar.current.dateComponents([.hour, .minute], from: d)
+      var p = store.prefs; p.dailyMinute = (c.hour ?? 20) * 60 + (c.minute ?? 0); store.update(prefs: p)
+    })
+  }
+
+  /// Sperre: zum Einschalten einmal entsperren (prüft, dass Face ID oder Code eingerichtet ist und funktioniert)
+  private var lockBinding: Binding<Bool> {
+    Binding(get: { store.prefs.lock }, set: { on in
+      if !on { var p = store.prefs; p.lock = false; store.update(prefs: p); return }
+      guard AppLock.available else { message = "Bitte richte zuerst in den iPhone-Einstellungen einen Code ein (Face ID & Code)."; return }
+      Task {
+        if await AppLock.unlock(reason: "Sperre für Zyklus einschalten") { var p = store.prefs; p.lock = true; store.update(prefs: p) }
+      }
+    })
   }
 
   /// Bindung an ein Feld der Einstellungen, speichert sofort

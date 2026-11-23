@@ -55,7 +55,7 @@ struct KalenderView: View {
       ForEach(Texts.weekdayShort, id: \.self) { Text($0.uppercased()).font(.sans(11, .medium)).foregroundStyle(Theme.faint) }
       ForEach(0..<lead, id: \.self) { _ in Color.clear.frame(height: 1) }
       ForEach(first...last, id: \.self) { n in
-        DayCell(n: n, e: store.days[Day.str(n)], ph: Logic.phaseOf(an, n), today: t) { open(n) }
+        DayCell(n: n, e: store.days[Day.str(n)], ph: Logic.phaseShown(an, n, paused: store.settings.pause), today: t) { open(n) }
       }
     }
   }

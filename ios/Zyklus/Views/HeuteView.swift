@@ -48,12 +48,13 @@ struct HeuteView: View {
 
   // ---------- Zykluskarte ----------
   @ViewBuilder private func hero(_ an: Analysis, _ t: DayNum) -> some View {
-    let ph = Logic.phaseOf(an, t)
+    let ph = Logic.phaseShown(an, t, paused: store.settings.pause)
+    let paused = store.settings.pause && an.current != nil
     VStack(alignment: .leading, spacing: 12) {
       HStack(alignment: .top, spacing: 8) {
         VStack(alignment: .leading, spacing: 6) {
-          Text(heroSub(an, t, ph)).font(.sans(13)).foregroundStyle(Theme.muted)
-          Text(an.current.map { "Tag \($0.day)" } ?? "Schön, dass du da bist").font(.serif(30)).foregroundStyle(Theme.ink)
+          Text(paused ? "Vorhersagen pausiert" : heroSub(an, t, ph)).font(.sans(13)).foregroundStyle(Theme.muted)
+          Text(paused ? "Pause" : an.current.map { "Tag \($0.day)" } ?? "Schön, dass du da bist").font(.serif(30)).foregroundStyle(Theme.ink)
           Button { open(t) } label: { Text("Tag eintragen  →").lineLimit(1).fixedSize() }
             .buttonStyle(.pill).padding(.top, 6)
         }
@@ -63,7 +64,8 @@ struct HeuteView: View {
           .offset(x: 18, y: -30).padding(.bottom, -30).accessibilityHidden(true)
       }
       Divider().overlay(Theme.lineSoft)
-      Text(heroLede(an)).font(.sans(14)).foregroundStyle(Theme.muted)
+      Text(paused ? "Du kannst weiter alles eintragen. Die App schätzt gerade keine Periode und keine fruchtbaren Tage. Wieder einschalten kannst du die Vorhersagen in den Einstellungen." : heroLede(an))
+        .font(.sans(14)).foregroundStyle(Theme.muted)
     }
     .card()
     .accessibilityElement(children: .contain)
@@ -119,7 +121,10 @@ struct HeuteView: View {
   private func outlook(_ an: Analysis, _ t: DayNum) -> some View {
     let cols = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
     return LazyVGrid(columns: cols, spacing: 12) {
-      if let c = an.current {
+      if let c = an.current, store.settings.pause {
+        Tile(label: "Letzte Periode", value: Texts.short(c.start), sub: t > c.start ? "vor \(Texts.plural(t - c.start, "Tag", "Tagen"))" : "heute", small: true, art: "kachel-tropfen")
+        Tile(label: "Vorhersagen", value: "pausiert", sub: "in den Einstellungen änderbar", small: true, art: "zweig-klein")
+      } else if let c = an.current {
         let ph = Logic.phaseOf(an, t)
         Tile(label: "Zyklustag", value: "\(c.day)", sub: "seit \(Texts.short(c.start))", big: true, art: "kachel-mond")
         Tile(label: "Phase", value: ph.map { Texts.phaseName[$0.phase]! } ?? "–", sub: ph?.predicted == true ? "Schätzung" : "", small: true, art: "zweig-klein")

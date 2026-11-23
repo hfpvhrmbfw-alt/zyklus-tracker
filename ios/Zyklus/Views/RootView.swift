@@ -18,12 +18,18 @@ struct RootView: View {
     ZStack {
       page(.heute) { HeuteView(open: { editing = EditDay(n: $0) }, showMonth: { tab = .kalender }) }
       page(.kalender) { KalenderView(open: { editing = EditDay(n: $0) }) }
-      page(.analyse) { AnalyseView(open: { editing = EditDay(n: $0) }, showCalendar: { tab = .kalender }) }
+      page(.analyse) { AnalyseView(open: { editing = EditDay(n: $0) }, showCalendar: { tab = .kalender }, active: tab == .analyse) }
     }
     .safeAreaInset(edge: .bottom, spacing: 0) { TabBar(tab: $tab) }
     .sheet(item: $editing) { DayEditor(start: $0.n) }
     .sheet(isPresented: $showSettings) { EinstellungenView() }
     .fullScreenCover(isPresented: Binding(get: { !store.onboarded }, set: { _ in })) { IntroView() }
+    // Speichern fehlgeschlagen (z. B. iPhone-Speicher voll): nicht still scheitern
+    .alert("Konnte nicht speichern", isPresented: Binding(get: { store.saveFailed }, set: { if !$0 { store.saveFailed = false } })) {
+      Button("OK") { store.saveFailed = false }
+    } message: {
+      Text("Deine letzte Änderung konnte nicht gespeichert werden. Ist der Speicher deines iPhones voll? Gib etwas Platz frei und versuch es noch einmal.")
+    }
     // für Bildschirmfotos: Startargument -eintrag öffnet gleich das Eintragsblatt für heute
     .onAppear { if ProcessInfo.processInfo.arguments.contains("-eintrag") { editing = EditDay(n: store.today) } }
   }
@@ -64,37 +70,40 @@ struct RootView: View {
   }
 }
 
-/// Schwebende Leiste unten wie in der Web-App (statt der System-Leiste, die je nach iOS-Version anders aussieht)
+/// Schwebende Leiste unten wie in der Web-App: die gewählte Seite als orange Pille mit Wort, die anderen nur als Symbol
 struct TabBar: View {
   @Binding var tab: Tab
+  @Namespace private var ns
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
   private struct Item: Identifiable { let id: Tab; let label: String; let icon: LineIconKind }
   private let items = [Item(id: .heute, label: "Heute", icon: .home), Item(id: .kalender, label: "Kalender", icon: .cal), Item(id: .analyse, label: "Analyse", icon: .chart)]
 
   var body: some View {
-    HStack(spacing: 0) {
+    HStack(spacing: 2) {
       ForEach(items) { item in
         let on = tab == item.id
-        Button { tab = item.id } label: {
-          VStack(spacing: 3) {
+        Button {
+          withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.82)) { tab = item.id }
+        } label: {
+          HStack(spacing: 8) {
             LineIcon(kind: item.icon, size: 22, weight: on ? 2.1 : 1.7)
-              .frame(width: 48, height: 30)
-              .background(Capsule().fill(on ? Theme.sageTint : .clear))
-            Text(item.label).font(.sans(11, on ? .semibold : .medium))
+            if on { Text(item.label).font(.sans(14, .semibold)).lineLimit(1).fixedSize().transition(.opacity) }
           }
-          .foregroundStyle(on ? Theme.ink : Theme.muted)
-          .frame(maxWidth: .infinity, minHeight: 52)
-          .contentShape(Rectangle())
+          .foregroundStyle(on ? Theme.accentInk : Theme.muted)
+          .padding(.horizontal, 15)
+          .frame(minHeight: 48)
+          .background { if on { Capsule().fill(Theme.accent).matchedGeometryEffect(id: "pille", in: ns) } }
+          .contentShape(Capsule())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(item.label)
         .accessibilityAddTraits(on ? [.isSelected] : [])
       }
     }
     .padding(5)
-    .frame(width: 300)
-    .background(RoundedRectangle(cornerRadius: 22).fill(Theme.surface).shadow(color: .black.opacity(0.12), radius: 14, y: 6))
-    .overlay(RoundedRectangle(cornerRadius: 22).stroke(Theme.line, lineWidth: 1))
+    .background(Capsule().fill(Theme.surface).shadow(color: .black.opacity(0.12), radius: 14, y: 6))
+    .overlay(Capsule().stroke(Theme.line, lineWidth: 1))
     .padding(.bottom, 4)
-    .animation(.easeOut(duration: 0.15), value: tab)
   }
 }
 

@@ -145,6 +145,25 @@ public enum Logic {
                     cycleDay: n - start + 1, next: next)
   }
 
+  /// Wie phaseOf, aber bei pausierten Vorhersagen ohne Schätzungen: nach dem Ende der letzten Periode gibt es dann keine Phase.
+  public static func phaseShown(_ an: Analysis, _ n: DayNum, paused: Bool) -> DayPhase? {
+    if paused, let last = an.periods.last, n > last.end { return nil }
+    return phaseOf(an, n)
+  }
+
+  /// Die am häufigsten gewählten IDs eines Listenfelds (für den kompakten Eintrag).
+  /// Bei Gleichstand und zum Auffüllen gilt die Reihenfolge der Stammdaten.
+  public static func topUsed(_ entries: [DayEntry], _ field: KeyPath<DayEntry, [String]>, ids: [String], k: Int) -> [String] {
+    var count: [String: Int] = [:]
+    for e in entries { for id in e[keyPath: field] { count[id, default: 0] += 1 } }
+    return ids.enumerated()
+      .sorted { a, b in
+        let ca = count[a.element] ?? 0, cb = count[b.element] ?? 0
+        return ca != cb ? ca > cb : a.offset < b.offset
+      }
+      .prefix(k).map(\.element)
+  }
+
   /// Farbpunkte für den Kalender: eigene Stimmungsangabe, sonst aus den Gefühlen. Liefert Stimmungs-IDs.
   public static func moodDots(_ e: DayEntry) -> [String] {
     let set = Set(e.stimmung.isEmpty ? e.moods.map { Model.moodTone[$0] ?? "gut" } : e.stimmung)
@@ -152,11 +171,12 @@ public enum Logic {
   }
 
   /// Zählt Gefühle, Symptome und Energie je Phase (nur Tage bis heute mit Angaben).
-  public static func moodStats(_ an: Analysis, _ entries: [DayEntry], today: DayNum) -> [Phase: PhaseStats] {
+  /// Bei pausierten Vorhersagen zählen Tage nach der letzten Periode nicht mit.
+  public static func moodStats(_ an: Analysis, _ entries: [DayEntry], today: DayNum, paused: Bool = false) -> [Phase: PhaseStats] {
     var stats = Dictionary(uniqueKeysWithValues: Phase.allCases.map { ($0, PhaseStats()) })
     for e in entries {
       let n = e.num
-      guard n <= today, e.hasDetail, let ph = phaseOf(an, n) else { continue }
+      guard n <= today, e.hasDetail, let ph = phaseShown(an, n, paused: paused) else { continue }
       var s = stats[ph.phase]!
       s.n += 1
       e.moods.forEach { s.moods[$0, default: 0] += 1 }
@@ -277,6 +297,7 @@ public enum Logic {
             energy = 2 + Int(Sanitize.jsRound(rnd() * 2))
           }
           e.moods = moods; e.symptoms = syms; e.energy = energy
+          if syms.contains("kraempfe") { e.meds = ["schmerzmittel"] } // ohne Zufall, damit die übrigen Werte gleich bleiben
           if rnd() < 0.25 { e.stimmung = [rnd() < 0.5 ? "abends" : "ok"] }
         }
         if !e.isEmpty { out.append(e) }

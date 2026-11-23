@@ -40,17 +40,22 @@ WAS DU EINTRÄGST
 • Stimmung und Gefühle, von „zufrieden“ bis „unruhig“
 • Energie auf einer Skala von 1 bis 5
 • Körpersymptome wie Krämpfe, Kopfschmerzen oder Brustspannen
+• auf Wunsch Medikamente, Sex und Ausfluss
 • eine Notiz für alles andere
+Kompakt: Zuerst siehst du, was du am häufigsten wählst, alles andere ist einen Tipp entfernt.
 
 WAS DIR ZYKLUS ZEIGT
 • Heute: in welcher Phase du gerade bist, wann die nächste Periode zu erwarten ist und wie deine Woche war
 • Kalender: Perioden, erwartete Periode, fruchtbares Fenster und Eisprung auf einen Blick
-• Analyse: deine durchschnittliche Zykluslänge und Periodendauer, die Schwankung und deine stärksten Muster, zum Beispiel in welcher Phase deine Energie am niedrigsten ist oder welche Gefühle und Beschwerden in welcher Phase gehäuft vorkommen
+• Analyse: deine durchschnittliche Zykluslänge und Periodendauer, wie regelmäßig dein Zyklus ist und deine stärksten Muster, zum Beispiel in welcher Phase deine Energie am niedrigsten ist oder welche Gefühle und Beschwerden in welcher Phase gehäuft vorkommen
+• Erinnerungen vor der Periode und auf Wunsch täglich ans Eintragen
+• Vorhersagen pausieren, etwa in der Schwangerschaft, Stillzeit oder mit der Pille
 
 DEINE DATEN BLEIBEN BEI DIR
 • Kein Konto, keine Anmeldung, kein Server
 • Keine Werbung, keine Analyse-Werkzeuge, kein Tracking
 • Alle Einträge liegen nur auf deinem iPhone
+• Auf Wunsch mit Face ID oder Code gesperrt
 • Automatische Sicherung in der Dateien-App unter „Auf meinem iPhone › Zyklus“
 • Sicherung jederzeit in iCloud Drive oder an einem anderen Ort ablegen und wieder einlesen
 
