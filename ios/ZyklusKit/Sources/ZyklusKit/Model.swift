@@ -5,7 +5,8 @@ import Foundation
 
 public enum Model {
   public static let appID = "zyklus-tracker"
-  public static let schemaVersion = 1
+  /// 2: Medikamente, Sex, Ausfluss je Tag und Einstellung „pause“. Version 1 wird ohne Umbau gelesen.
+  public static let schemaVersion = 2
 
   // ---------- Stammdaten (stabile IDs, nie umbenennen, nur ergänzen) ----------
   /// Blutungsstärke 0 keine, 1 Schmierblutung, 2 leicht, 3 mittel, 4 stark
@@ -32,6 +33,12 @@ public enum Model {
     "sensibel": "ok", "muede": "ok", "lustlos": "ok", "unruhig": "ok",
     "gereizt": "schlecht", "traurig": "schlecht", "aengstlich": "schlecht", "gestresst": "schlecht",
   ]
+  /// Medikamente und Mittel des Tages
+  public static let meds = ["schmerzmittel", "pille", "eisen", "magnesium", "andere"]
+  /// Sex 0 = nicht erfasst, 1 geschützt, 2 ungeschützt
+  public static let sex = [0, 1, 2]
+  /// Ausfluss 0 = nicht erfasst, 1 trocken, 2 klebrig, 3 cremig, 4 wässrig, 5 wie Eiweiß
+  public static let discharge = [0, 1, 2, 3, 4, 5]
   /// Energie 0 = nicht erfasst, 1–5 sehr niedrig bis sehr hoch
   public static let energy = [0, 1, 2, 3, 4, 5]
   public static let themes = ["auto", "light", "dark"]
@@ -103,25 +110,26 @@ public struct DayEntry: Codable, Equatable, Hashable, Sendable {
   public var moods: [String]
   public var symptoms: [String]
   public var energy: Int
+  public var meds: [String]
+  public var sex: Int
+  public var discharge: Int
   public var note: String
 
-  public init(date: String, flow: Int = 0, stimmung: [String] = [], moods: [String] = [], symptoms: [String] = [], energy: Int = 0, note: String = "") {
+  public init(date: String, flow: Int = 0, stimmung: [String] = [], moods: [String] = [], symptoms: [String] = [], energy: Int = 0,
+              meds: [String] = [], sex: Int = 0, discharge: Int = 0, note: String = "") {
     self.date = date; self.flow = flow; self.stimmung = stimmung; self.moods = moods
-    self.symptoms = symptoms; self.energy = energy; self.note = note
+    self.symptoms = symptoms; self.energy = energy; self.meds = meds; self.sex = sex; self.discharge = discharge; self.note = note
   }
 
   public static func blank(_ date: String) -> DayEntry { DayEntry(date: date) }
 
   public var num: DayNum { Day.num(date) }
 
-  public var isEmpty: Bool {
-    flow == 0 && stimmung.isEmpty && moods.isEmpty && symptoms.isEmpty && energy == 0
-      && note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-  }
+  public var isEmpty: Bool { flow == 0 && !hasDetail }
 
   /// Hat der Tag Angaben außer der Blutung?
   public var hasDetail: Bool {
-    !stimmung.isEmpty || !moods.isEmpty || !symptoms.isEmpty || energy != 0
+    !stimmung.isEmpty || !moods.isEmpty || !symptoms.isEmpty || energy != 0 || !meds.isEmpty || sex != 0 || discharge != 0
       || !note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
   }
 }
@@ -132,10 +140,13 @@ public struct Settings: Codable, Equatable, Sendable {
   public var periodLen: Int
   public var luteal: Int
   public var theme: String
+  /// Nur noch für alte Backups, die App nutzt fest „klar“
   public var font: String
+  /// Vorhersagen ausgeschaltet (z. B. Schwangerschaft, Stillzeit, Pille)
+  public var pause: Bool
 
-  public init(cycleLen: Int = 28, periodLen: Int = 5, luteal: Int = 14, theme: String = "auto", font: String = "klar") {
-    self.cycleLen = cycleLen; self.periodLen = periodLen; self.luteal = luteal; self.theme = theme; self.font = font
+  public init(cycleLen: Int = 28, periodLen: Int = 5, luteal: Int = 14, theme: String = "auto", font: String = "klar", pause: Bool = false) {
+    self.cycleLen = cycleLen; self.periodLen = periodLen; self.luteal = luteal; self.theme = theme; self.font = font; self.pause = pause
   }
 
   public static let defaults = Settings()
@@ -162,6 +173,9 @@ public enum Sanitize {
       moods: list(o["moods"], Model.moods),
       symptoms: list(o["symptoms"], Model.symptoms),
       energy: clampInt(o["energy"], 0, 5),
+      meds: list(o["meds"], Model.meds),
+      sex: clampInt(o["sex"], 0, 2),
+      discharge: clampInt(o["discharge"], 0, 5),
       note: note
     )
   }
@@ -180,13 +194,14 @@ public enum Sanitize {
       periodLen: clamp(s["periodLen"], 1, 12, d.periodLen),
       luteal: clamp(s["luteal"], 8, 18, d.luteal),
       theme: theme.map { Model.themes.contains($0) } == true ? theme! : "auto",
-      font: font.map { Model.fonts.contains($0) } == true ? font! : d.font
+      font: font.map { Model.fonts.contains($0) } == true ? font! : d.font,
+      pause: (s["pause"] as? Bool) ?? false
     )
   }
 
   /// Begrenzt bereits typisierte Einstellungen (aus der Oberfläche)
   public static func settings(_ s: Settings) -> Settings {
-    settings(["cycleLen": s.cycleLen, "periodLen": s.periodLen, "luteal": s.luteal, "theme": s.theme, "font": s.font] as [String: Any])
+    settings(["cycleLen": s.cycleLen, "periodLen": s.periodLen, "luteal": s.luteal, "theme": s.theme, "font": s.font, "pause": s.pause] as [String: Any])
   }
 
   /// Wie JavaScript: Math.min(hi, Math.max(lo, Math.round(Number(v) || 0)))
@@ -263,7 +278,8 @@ public enum Backup {
     return .success((days, m.settings.map(Sanitize.settings)))
   }
 
-  /// Hebt ältere Formate auf die aktuelle Schema-Version. Bisher: nackte Liste von Tagen oder Version 1.
+  /// Hebt ältere Formate auf die aktuelle Schema-Version. Bisher: nackte Liste von Tagen, Version 1 oder 2.
+  /// Version 1 → 2 braucht keinen Umbau: neue Felder fehlen und werden beim Prüfen leer gesetzt.
   static func migrate(_ data: Any?) -> (days: [Any], settings: Any?) {
     if let a = data as? [Any] { return (a, nil) }
     let o = data as? [String: Any]

@@ -7,7 +7,7 @@ import { Store } from './storage.js';
 import { IMPORT_ERROR } from './texts.js';
 import {
   $, state, entries, todayNum, plural, readForm,
-  renderDay, renderCalendar, renderData, renderBackup, recompute, showTab, showCycle, selectPhase, applyTheme, applyFont, renderIcons, THEME_NEXT,
+  renderDay, renderCalendar, renderData, renderBackup, recompute, showTab, showCycle, selectPhase, applyTheme, renderIcons, toast, THEME_NEXT,
 } from './ui.js';
 import { scene } from './art.js';
 
@@ -17,8 +17,15 @@ async function saveDay(immediate) {
   clearTimeout(saveTimer);
   const run = async () => {
     const e = readForm();
-    if (isEmpty(e)) { state.days.delete(e.date); await Store.delDay(e.date); }
-    else { state.days.set(e.date, e); await Store.putDay(e); }
+    try {
+      if (isEmpty(e)) { await Store.delDay(e.date); state.days.delete(e.date); }
+      else { await Store.putDay(e); state.days.set(e.date, e); }
+    } catch {
+      // z. B. Speicher voll: nicht still scheitern
+      $('saveState').textContent = 'Konnte nicht gespeichert werden';
+      toast('Dein Eintrag konnte nicht gespeichert werden. Ist der Speicher des Geräts voll?', 'Nochmal', () => saveDay(true), 0);
+      return;
+    }
     $('saveState').textContent = 'Gespeichert ' + new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
     askPersist();
     recompute(false);
@@ -37,9 +44,9 @@ function askPersist() {
 
 // ---------- Einstellungen ----------
 async function saveSettings(s) {
-  state.settings = sanitizeSettings(s);
+  state.settings = sanitizeSettings({ ...s, font: DEFAULTS.font });
   await Store.setMeta('settings', state.settings);
-  applyTheme(); applyFont();
+  applyTheme();
 }
 
 // ---------- Export / Import ----------
@@ -86,6 +93,20 @@ async function importData(file) {
   alert('Import abgeschlossen.');
 }
 
+// ---------- Tag eintragen (Blatt von unten) ----------
+async function openDay(n) {
+  await saveDay(true);
+  state.sel = n; renderDay();
+  const dlg = $('daySheet');
+  if (!dlg.open) { if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', ''); }
+  dlg.querySelector('.sheet-in').scrollTop = 0;
+}
+async function closeDay() {
+  await saveDay(true);
+  const dlg = $('daySheet');
+  if (dlg.open) dlg.close(); else dlg.removeAttribute('open');
+}
+
 async function loadDemo() {
   await Store.clearDays(); state.days.clear();
   const list = makeDemo(todayNum());
@@ -129,7 +150,24 @@ function openIntro() {
 
 // ---------- Ereignisse ----------
 function bind() {
-  $('dayForm').addEventListener('change', e => saveDay(e.target.type !== 'textarea'));
+  $('dayForm').addEventListener('change', e => {
+    // Einzelauswahl: nur ein Wert je Gruppe, nochmal tippen hebt auf
+    if (e.target.closest('.single') && e.target.checked) {
+      $('dayForm').querySelectorAll(`input[name=${e.target.name}]`).forEach(i => { if (i !== e.target) i.checked = false; });
+    }
+    saveDay(e.target.type !== 'textarea');
+  });
+  // „+ N weitere“ klappt die übrigen Möglichkeiten einer Liste auf
+  $('dayForm').addEventListener('click', e => {
+    const b = e.target.closest('.chipmore');
+    if (!b) return;
+    const open = b.parentElement.classList.toggle('open');
+    b.setAttribute('aria-expanded', open);
+    b.textContent = open ? 'Weniger' : `+ ${b.dataset.n} weitere`;
+  });
+  $('sheetDone').onclick = closeDay;
+  $('daySheet').addEventListener('cancel', e => { e.preventDefault(); closeDay(); });
+  $('daySheet').addEventListener('click', e => { if (e.target === $('daySheet')) closeDay(); }); // Tipp neben das Blatt
   $('note').addEventListener('input', () => { $('saveState').textContent = 'Wird gespeichert …'; saveDay(false); });
   $('note').addEventListener('blur', () => saveDay(true));
   const go = async n => { await saveDay(true); state.sel = n; renderDay(); };
@@ -138,10 +176,16 @@ function bind() {
   $('todayBtn').onclick = () => go(todayNum());
   $('dayDate').addEventListener('change', e => { if (e.target.value) go(toNum(e.target.value)); });
   $('clearDay').onclick = async () => {
-    if (!state.days.has(toStr(state.sel))) return;
-    if (!confirm('Alle Angaben für diesen Tag löschen?')) return;
-    state.days.delete(toStr(state.sel)); await Store.delDay(toStr(state.sel));
+    await saveDay(true);
+    const date = toStr(state.sel), old = state.days.get(date);
+    if (!old) return;
+    state.days.delete(date); await Store.delDay(date);
     $('saveState').textContent = 'Tag geleert'; recompute();
+    // statt Rückfrage: kurz rückgängig machen können
+    toast('Tag geleert.', 'Rückgängig', async () => {
+      state.days.set(date, old); await Store.putDay(old);
+      $('saveState').textContent = 'Wiederhergestellt'; recompute();
+    });
   };
 
   const tabs = [...document.querySelectorAll('[role=tab]')];
@@ -157,12 +201,7 @@ function bind() {
 
   $('prevMonth').onclick = () => { const [y, m] = state.month; state.month = m ? [y, m - 1] : [y - 1, 11]; renderCalendar(); };
   $('nextMonth').onclick = () => { const [y, m] = state.month; state.month = m === 11 ? [y + 1, 0] : [y, m + 1]; renderCalendar(); };
-  // Tag aus Kalender oder Wochenleiste öffnen: zum Formular springen
-  const openDay = async n => {
-    await saveDay(true);
-    state.sel = n; renderDay(); showTab('heute');
-    $('entry').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  // Tag aus Kalender oder Wochenleiste öffnen: Blatt zum Eintragen
   $('cal').addEventListener('click', e => {
     const b = e.target.closest('button.day[data-n]');
     if (b) openDay(Number(b.dataset.n));
@@ -198,8 +237,8 @@ function bind() {
   $('exportBtn').onclick = exportData;
   $('importBtn').onclick = () => $('importFile').click();
   $('importFile').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) importData(f); };
-  ['setCycle', 'setPeriod', 'setLuteal', 'setTheme', 'setFont'].forEach(id => $(id).addEventListener('change', async () => {
-    await saveSettings({ cycleLen: $('setCycle').value, periodLen: $('setPeriod').value, luteal: $('setLuteal').value, theme: $('setTheme').value, font: $('setFont').value });
+  ['setCycle', 'setPeriod', 'setLuteal', 'setTheme', 'setPause'].forEach(id => $(id).addEventListener('change', async () => {
+    await saveSettings({ cycleLen: $('setCycle').value, periodLen: $('setPeriod').value, luteal: $('setLuteal').value, theme: $('setTheme').value, pause: $('setPause').checked });
     recompute(); renderData();
   }));
   $('demoBtn').onclick = async () => {
@@ -215,6 +254,7 @@ function bind() {
 
   let deferred;
   window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; $('installBtn').hidden = false; });
+  $('installOk').onclick = async () => { $('installNote').hidden = true; await Store.setMeta('installHint', true); };
   $('installBtn').onclick = async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; $('installBtn').hidden = true; };
 
   // Mitternacht / Rückkehr in die App: "heute" neu berechnen
@@ -224,20 +264,23 @@ function bind() {
 // ---------- Start ----------
 (async function init() {
   await Store.open();
-  const [list, settings, demo, lastBackup, backupSnooze, onboarded] = await Promise.all([Store.allDays(),
-    Store.getMeta('settings'), Store.getMeta('demo'), Store.getMeta('lastBackup'), Store.getMeta('backupSnooze'), Store.getMeta('onboarded')]);
+  const [list, settings, demo, lastBackup, backupSnooze, onboarded, installHint] = await Promise.all([Store.allDays(),
+    Store.getMeta('settings'), Store.getMeta('demo'), Store.getMeta('lastBackup'), Store.getMeta('backupSnooze'), Store.getMeta('onboarded'), Store.getMeta('installHint')]);
   list.map(sanitize).filter(Boolean).forEach(e => state.days.set(e.date, e));
-  state.settings = { ...DEFAULTS, ...(settings || {}) };
+  state.settings = sanitizeSettings({ ...(settings || {}), font: DEFAULTS.font });
+  try { localStorage.removeItem('zyklus-font'); } catch { /* egal */ }
   state.demo = !!demo;
   state.lastBackup = Number.isFinite(lastBackup) ? lastBackup : null;
   state.backupSnooze = Number.isFinite(backupSnooze) ? backupSnooze : null;
   renderIcons();
   applyTheme();
-  applyFont();
   const d = new Date(); state.month = [d.getFullYear(), d.getMonth()];
   bind();
   recompute();
   $('demoNote').hidden = !state.demo;
+  // iPhone/iPad in Safari, noch nicht als App installiert: Safari darf Daten selten besuchter Seiten löschen
+  const iOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  $('installNote').hidden = !(iOS && navigator.standalone === false && !installHint);
   let tab = 'heute';
   try { tab = localStorage.getItem('zyklus-tab') || 'heute'; } catch { /* egal */ }
   showTab(['heute', 'kal', 'ana', 'daten'].includes(tab) ? tab : 'heute');
@@ -247,10 +290,11 @@ function bind() {
     else { showTab('heute'); openIntro(); }
   }
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-    // Neue Version übernommen → einmal neu laden, damit alle Dateien zusammenpassen
+    // Neue Version übernommen → Hinweis statt ungefragtem Neuladen (sonst ginge z. B. eine halb getippte Notiz verloren)
     const hadController = !!navigator.serviceWorker.controller;
-    let reloaded = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController && !reloaded) { reloaded = true; location.reload(); } });
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (hadController) toast('Eine neue Version ist da.', 'Neu laden', async () => { await saveDay(true); location.reload(); }, 0);
+    });
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
 })();

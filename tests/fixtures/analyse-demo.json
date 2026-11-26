@@ -22,6 +22,9 @@
     ],
     "symptoms": [],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -31,6 +34,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -47,6 +53,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -60,6 +69,11 @@
      "kopfschmerzen"
     ],
     "energy": 3,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -72,6 +86,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -85,6 +102,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -97,6 +117,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -108,6 +131,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -120,6 +146,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -132,6 +161,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -143,6 +175,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -154,6 +189,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -166,6 +204,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -177,6 +218,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -188,6 +232,9 @@
      "blaehungen"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -201,6 +248,9 @@
      "blaehungen"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -213,6 +263,9 @@
     ],
     "symptoms": [],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -225,6 +278,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -236,6 +292,9 @@
     ],
     "symptoms": [],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -245,6 +304,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -258,6 +320,9 @@
      "blaehungen"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -272,6 +337,9 @@
      "blaehungen"
     ],
     "energy": 1,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -286,6 +354,9 @@
      "unreine_haut"
     ],
     "energy": 1,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -302,6 +373,9 @@
      "blaehungen"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -311,6 +385,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -327,6 +404,9 @@
      "kopfschmerzen"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -341,6 +421,11 @@
      "kopfschmerzen"
     ],
     "energy": 2,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -350,6 +435,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -365,6 +453,11 @@
      "rueckenschmerzen"
     ],
     "energy": 3,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -377,6 +470,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -388,6 +484,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -399,6 +498,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -410,6 +512,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -421,6 +526,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -430,6 +538,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -443,6 +554,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -452,6 +566,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -464,6 +581,9 @@
     ],
     "symptoms": [],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -477,6 +597,9 @@
     ],
     "symptoms": [],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -497,6 +620,9 @@
      "blaehungen"
     ],
     "energy": 1,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -511,6 +637,9 @@
      "blaehungen"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -525,6 +654,9 @@
      "heisshunger"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -540,6 +672,9 @@
      "unreine_haut"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -549,6 +684,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -563,6 +701,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -577,6 +718,11 @@
      "rueckenschmerzen"
     ],
     "energy": 2,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -586,6 +732,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -598,6 +747,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -611,6 +763,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -623,6 +778,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -635,6 +793,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -649,6 +810,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -661,6 +825,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -674,6 +841,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -685,6 +855,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -698,6 +871,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -709,6 +885,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -720,6 +899,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -734,6 +916,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -746,6 +931,9 @@
     ],
     "symptoms": [],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -757,6 +945,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -766,6 +957,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -782,6 +976,9 @@
      "unreine_haut"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -798,6 +995,9 @@
      "unreine_haut"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -813,6 +1013,9 @@
      "unreine_haut"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -832,6 +1035,11 @@
      "kopfschmerzen"
     ],
     "energy": 3,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -848,6 +1056,11 @@
      "rueckenschmerzen"
     ],
     "energy": 2,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -857,6 +1070,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -873,6 +1089,11 @@
      "kopfschmerzen"
     ],
     "energy": 2,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -885,6 +1106,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -898,6 +1122,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -910,6 +1137,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -922,6 +1152,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -935,6 +1168,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -946,6 +1182,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -959,6 +1198,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -972,6 +1214,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -983,6 +1228,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -996,6 +1244,9 @@
     ],
     "symptoms": [],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1013,6 +1264,9 @@
      "unreine_haut"
     ],
     "energy": 1,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1026,6 +1280,9 @@
      "rueckenschmerzen"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1041,6 +1298,9 @@
      "rueckenschmerzen"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1050,6 +1310,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1064,6 +1327,9 @@
      "kopfschmerzen"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1081,6 +1347,11 @@
      "kopfschmerzen"
     ],
     "energy": 2,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1093,6 +1364,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1106,6 +1380,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1118,6 +1395,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1131,6 +1411,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1143,6 +1426,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1156,6 +1442,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1167,6 +1456,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1178,6 +1470,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1190,6 +1485,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1203,6 +1501,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1216,6 +1517,9 @@
      "blaehungen"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1229,6 +1533,9 @@
     ],
     "symptoms": [],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1242,6 +1549,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1254,6 +1564,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1269,6 +1582,9 @@
      "blaehungen"
     ],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1287,6 +1603,9 @@
      "unreine_haut"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1303,6 +1622,9 @@
      "blaehungen"
     ],
     "energy": 1,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1322,6 +1644,9 @@
      "unreine_haut"
     ],
     "energy": 1,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1339,6 +1664,9 @@
      "kopfschmerzen"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1356,6 +1684,11 @@
      "kopfschmerzen"
     ],
     "energy": 2,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1373,6 +1706,9 @@
      "kopfschmerzen"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1388,6 +1724,9 @@
      "kopfschmerzen"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1403,6 +1742,9 @@
      "kopfschmerzen"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1412,6 +1754,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1425,6 +1770,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1440,6 +1788,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1452,6 +1803,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1463,6 +1817,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1477,6 +1834,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1486,6 +1846,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1498,6 +1861,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1512,6 +1878,9 @@
     ],
     "symptoms": [],
     "energy": 5,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1527,6 +1896,9 @@
     ],
     "symptoms": [],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1541,6 +1913,9 @@
     ],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1550,6 +1925,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1561,6 +1939,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1573,6 +1954,9 @@
     ],
     "symptoms": [],
     "energy": 4,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1594,6 +1978,9 @@
      "unreine_haut"
     ],
     "energy": 3,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1609,6 +1996,9 @@
      "blaehungen"
     ],
     "energy": 1,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1626,6 +2016,9 @@
      "unreine_haut"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1644,6 +2037,9 @@
      "unreine_haut"
     ],
     "energy": 2,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1660,6 +2056,11 @@
      "kopfschmerzen"
     ],
     "energy": 3,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1675,6 +2076,11 @@
      "kopfschmerzen"
     ],
     "energy": 2,
+    "meds": [
+     "schmerzmittel"
+    ],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1684,6 +2090,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    },
    {
@@ -1693,6 +2102,9 @@
     "moods": [],
     "symptoms": [],
     "energy": 0,
+    "meds": [],
+    "sex": 0,
+    "discharge": 0,
     "note": ""
    }
   ]

@@ -96,8 +96,9 @@ final class ZyklusKitTests: XCTestCase {
   }
 
   func testEinstellungenWerdenBegrenzt() {
-    XCTAssertEqual(Sanitize.settings(["cycleLen": 5, "periodLen": "x", "luteal": 30, "theme": "neon", "font": "comic"] as [String: Any]),
-                   Settings(cycleLen: 15, periodLen: 5, luteal: 18, theme: "auto", font: "klar"))
+    XCTAssertEqual(Sanitize.settings(["cycleLen": 5, "periodLen": "x", "luteal": 30, "theme": "neon", "font": "comic", "pause": "ja"] as [String: Any]),
+                   Settings(cycleLen: 15, periodLen: 5, luteal: 18, theme: "auto", font: "klar", pause: false))
+    XCTAssertTrue(Sanitize.settings(["pause": true] as [String: Any]).pause)
     XCTAssertEqual(Sanitize.settings(["font": "mix"] as [String: Any]).font, "mix")
     XCTAssertEqual(Sanitize.settings(nil), .defaults)
   }
@@ -134,5 +135,35 @@ final class ZyklusKitTests: XCTestCase {
     XCTAssertTrue(list.allSatisfy { $0.flow == 2 })
     let an = Logic.analyze(Logic.introPeriod(start: Day.num("2026-10-01"), periodLen: 5, today: t), settings: .defaults, today: t)
     XCTAssertEqual(an.periods.count, 1)
+  }
+
+  func testPause() {
+    let t = Day.num("2026-10-20")
+    let days = Logic.introPeriod(start: Day.num("2026-09-01"), periodLen: 5, today: t)
+      + Logic.introPeriod(start: Day.num("2026-09-29"), periodLen: 5, today: t)
+      + [DayEntry(date: "2026-10-15", moods: ["muede"]), DayEntry(date: "2026-09-30", moods: ["ruhig"])]
+    let an = Logic.analyze(days, settings: .defaults, today: t)
+    XCTAssertEqual(Logic.phaseShown(an, Day.num("2026-10-15"), paused: false)?.phase, Logic.phaseOf(an, Day.num("2026-10-15"))?.phase)
+    XCTAssertNil(Logic.phaseShown(an, Day.num("2026-10-15"), paused: true))
+    XCTAssertNil(Logic.phaseShown(an, Day.num("2026-11-30"), paused: true))
+    XCTAssertEqual(Logic.phaseShown(an, Day.num("2026-10-03"), paused: true)?.phase, .men)
+    XCTAssertEqual(Logic.phaseShown(an, Day.num("2026-09-10"), paused: true)?.phase, .fol)
+    let on = Logic.moodStats(an, days, today: t), off = Logic.moodStats(an, days, today: t, paused: true)
+    XCTAssertEqual(on.values.reduce(0) { $0 + $1.n }, 2)
+    XCTAssertEqual(off.values.reduce(0) { $0 + $1.n }, 1)
+  }
+
+  func testTopUsed() {
+    func d(_ m: [String]) -> DayEntry { DayEntry(date: "2026-01-01", moods: m) }
+    XCTAssertEqual(Logic.topUsed([], \.moods, ids: Model.moods, k: 3), ["gluecklich", "ruhig", "energiegeladen"])
+    XCTAssertEqual(Logic.topUsed([d(["muede", "gereizt"]), d(["muede"]), d(["ruhig", "gereizt"])], \.moods, ids: Model.moods, k: 3), ["gereizt", "muede", "ruhig"])
+    XCTAssertEqual(Logic.topUsed([d(["unruhig"])], \.moods, ids: Model.moods, k: 3), ["unruhig", "gluecklich", "ruhig"])
+  }
+
+  func testNeueFelder() {
+    let e = Sanitize.entry(["date": "2026-01-01", "meds": ["pille", "x", "pille"], "sex": 7, "discharge": 3] as [String: Any])!
+    XCTAssertEqual(e.meds, ["pille"]); XCTAssertEqual(e.sex, 2); XCTAssertEqual(e.discharge, 3)
+    XCTAssertFalse(DayEntry(date: "2026-01-01", sex: 1).isEmpty)
+    XCTAssertFalse(DayEntry(date: "2026-01-01", meds: ["eisen"]).isEmpty)
   }
 }

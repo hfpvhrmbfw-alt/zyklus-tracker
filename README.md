@@ -3,20 +3,23 @@
 Reine Frontend-PWA ohne Backend und ohne Build-Schritt. Alle Einträge liegen nur im Browser (IndexedDB, Fallback localStorage).
 
 ## Funktionen
-- **Eintrag:** pro Tag Blutung (keine bis stark), Gefühle, Energie (1–5), Körpersymptome, Notiz. Speichert automatisch.
+- **Eintrag:** als Blatt, das von unten hochfährt (Knopf „Tag eintragen“, Tag in Woche oder Kalender antippen). Pro Tag Blutung, Stimmung, Gefühle, Energie (1–5), Körpersymptome; unter „Weitere Angaben“ Medikamente, Sex, Ausfluss und Notiz. Gefühle und Körper zeigen zuerst die drei meistgenutzten (logic.topUsed), der Rest liegt hinter „+ N weitere“. Einzelauswahl (Energie, Sex, Ausfluss) hebt sich durch nochmaliges Tippen auf. Speichert automatisch, „Tag leeren“ lässt sich rückgängig machen.
+- **Vorhersagen pausieren** (Einstellungen): z. B. Schwangerschaft, Stillzeit, Pille. Dann keine Schätzungen nach der letzten Periode (logic.phaseShown), Startseite zeigt „Pause“.
 - **Heute:** Zykluskarte mit Bild je Phase, Stimmungswoche (Sonne, Wolke, Regen, Mond), Ausblick-Kacheln.
 - **Kalender:** eingetragene Perioden (P), Schmierblutung (·), erwartete Periode (p), fruchtbares Fenster (F) und Eisprung (E) als Schätzung.
 - **Analyse:** Ø Zykluslänge groß, darunter Periodendauer, Spanne, Schwankung (letzte 6 plausiblen Zyklen, 15–60 Tage); die stärksten Muster zuerst, Balken je Zyklus, je Phase Tage, Energie, häufigstes Körpersymptom und die fünf häufigsten Gefühle (Rest aufklappbar).
 - **Erster Start:** Begrüßung in drei Schritten (was die App kann, Daten bleiben lokal, letzte Periode und übliche Längen). Die letzte Periode wird als „Leicht“ eingetragen. Alternativ gleich mit Demodaten starten.
 - **Backup-Erinnerung:** ab fünf Einträgen auf der Startseite, wenn das letzte Backup (oder ohne Backup der erste Eintrag) 30 Tage her ist; „Später“ schiebt um 7 Tage. Am Handy öffnet „Backup exportieren“ das Teilen-Menü (In Dateien sichern, iCloud).
 - **Leerzustände:** Kalender und Analyse zeigen ohne Daten ein Bild, einen kurzen Text und einen Knopf zum Eintragen.
-- **Einstellungen** (Symbol oben rechts, nicht in der Leiste): Backup exportieren/importieren (Datei „Zyklus-Backup TT.MM.JJJJ“), Standardwerte (Zykluslänge, Periodendauer, Lutealphase), Hell/Dunkel, Demodaten, alles löschen.
+- **Einstellungen** (Symbol oben rechts, nicht in der Leiste): Backup exportieren/importieren (Datei „Zyklus-Backup TT.MM.JJJJ“), Standardwerte (Zykluslänge, Periodendauer, Lutealphase), Hell/Dunkel, Vorhersagen pausieren, Demodaten, alles löschen.
+- **iPhone-Hinweis:** In Safari (nicht installiert) erscheint einmal der Tipp „Zum Home-Bildschirm“, weil Safari Daten selten besuchter Seiten löschen darf.
+- **Neue Version:** Statt ungefragt neu zu laden, erscheint unten „Eine neue Version ist da · Neu laden“.
 
 ## Bilder
 Illustrationen sind meist Inline-SVG in `src/art.js`. Gemalte Bilder liegen als PNG mit echter Transparenz in `img/` (Zweige oben, kleiner Zweig auf den Kacheln). Neue PNGs dort ablegen und in `sw.js` unter `SHELL` eintragen.
 
 ## Schriften
-Liegen in `fonts/` (variable WOFF2, Zeichensatz latin, SIL Open Font License) und werden nicht bei Google geladen. Neue Schriftdateien in `sw.js` unter `SHELL` eintragen.
+DM Serif Display (Überschriften) und Outfit (Text). Liegen in `fonts/` (variable WOFF2, Zeichensatz latin, SIL Open Font License) und werden nicht bei Google geladen. Neue Schriftdateien in `sw.js` unter `SHELL` eintragen.
 
 ## Wie gerechnet wird
 - Periodenstart = erster Tag mit Blutung ab „Leicht“; Lücken bis 1 Tag gehören zur selben Periode.

@@ -20,6 +20,9 @@ enum Texts {
   ]
   static let stimmung: [String: String] = ["gut": "Gut", "ok": "Ist ok", "schlecht": "Schlecht", "abends": "Nur abends"]
   static let energy = ["Nicht erfasst", "Sehr niedrig", "Niedrig", "Mittel", "Hoch", "Sehr hoch"]
+  static let med: [String: String] = ["schmerzmittel": "Schmerzmittel", "pille": "Pille", "eisen": "Eisen", "magnesium": "Magnesium", "andere": "Anderes"]
+  static let sex = ["Nicht erfasst", "Geschützt", "Ungeschützt"]
+  static let discharge = ["Nicht erfasst", "Trocken", "Klebrig", "Cremig", "Wässrig", "Wie Eiweiß"]
   static let phaseName: [Phase: String] = [.men: "Menstruation", .fol: "Follikelphase", .ovu: "Eisprungphase", .lut: "Lutealphase"]
   static let phaseShort: [Phase: String] = [.men: "Periode", .fol: "Follikel", .ovu: "Eisprung", .lut: "Luteal"]
   static let theme: [String: String] = ["auto": "System", "light": "Hell", "dark": "Dunkel"]
@@ -48,6 +51,8 @@ enum Texts {
 
   // ---------- Datum ----------
   static func plural(_ n: Int, _ one: String, _ many: String) -> String { "\(n) \(n == 1 ? one : many)" }
+  /// 23.10.2026
+  static func date(_ n: DayNum) -> String { let (y, m, d) = Day.ymd(n); return String(format: "%02d.%02d.%04d", d, m, y) }
   /// 23.10.
   static func short(_ n: DayNum) -> String { let (_, m, d) = Day.ymd(n); return String(format: "%02d.%02d.", d, m) }
   /// Freitag, 23. Oktober 2026
@@ -60,15 +65,15 @@ enum Texts {
     return s.hasSuffix(",0") ? String(s.dropLast(2)) : s
   }
 
-  /// Formuliert ein Muster als Satz (wie patternText in ui.js)
+  /// Formuliert ein Muster als Satz mit **fett** (wie patternText in ui.js)
   static func pattern(_ p: Pattern) -> String {
     switch p {
     case let .energy(high, low):
-      return "Deine Energie ist in der \(phaseName[high.phase]!) am höchsten (Ø \(dec(high.avg)) von 5) und in der \(phaseName[low.phase]!) am niedrigsten (Ø \(dec(low.avg)))."
-    case let .frequency(kind, id, phase, share, otherShare):
+      return "Deine **Energie** ist in der **\(phaseName[high.phase]!)** am höchsten (Ø \(dec(high.avg)) von 5), in der **\(phaseName[low.phase]!)** am niedrigsten (Ø \(dec(low.avg)))."
+    case let .frequency(kind, id, phase, share, _):
       let label = (kind == .mood ? mood[id] : symptom[id]) ?? id
-      let verb = kind == .mood ? "trägst du" : "notierst du"
-      return "\(label) \(verb) in der \(phaseName[phase]!) an \(Int((share * 100).rounded())) % der Tage, in den übrigen Phasen an \(Int((otherShare * 100).rounded())) %."
+      let verb = kind == .mood ? "fühlst du dich" : "hast du"
+      return "**\(label)** \(verb) vor allem in der **\(phaseName[phase]!)**, an \(Int((share * 100).rounded())) % der Tage."
     }
   }
 }

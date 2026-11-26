@@ -37,6 +37,8 @@ targets:
           - Outfit-Medium.ttf
           - Outfit-SemiBold.ttf
         ITSAppUsesNonExemptEncryption: false
+        # App-Sperre (Einstellungen › Sperre)
+        NSFaceIDUsageDescription: Damit nur du deine Einträge öffnen kannst.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.annagramm.zyklus

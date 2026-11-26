@@ -14,9 +14,6 @@
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:44px;
   --r:20px; --maxw:520px; --gutter:20px; color-scheme:light;
 }
-/* Schriftwahl in den Einstellungen (ohne Attribut gilt „klar“) */
-[data-font="klassisch"] { --serif:"Playfair Display",Georgia,serif; --serif-w:600; --sans:"DM Sans",system-ui,sans-serif; }
-[data-font="mix"] { --serif:"Playfair Display",Georgia,serif; --serif-w:600; }
 [data-theme="dark"] {
   --bg:#1C1B1A; --surface:#252321; --sunken:#302D2A; --line:#4E4943; --line-soft:#3A3632;
   --ink:#EFE6D6; --muted:#B6AB9B; --faint:#80776C;
@@ -75,7 +72,7 @@ main { position:relative; z-index:1; }
 .section.first { margin-top:var(--s6); }
 .sechead { display:flex; justify-content:space-between; align-items:baseline; gap:var(--s3); margin-bottom:var(--s4); }
 .sechead h2 { font-size:24px; line-height:1.2; margin:0; }
-.more { border:0; background:none; color:var(--muted); font:500 13px var(--sans); cursor:pointer; padding:8px 0; min-height:36px; }
+.more { border:0; background:none; color:var(--muted); font:500 13px var(--sans); cursor:pointer; padding:8px 0; min-height:44px; }
 .more:hover { color:var(--ink); text-decoration:underline; }
 .card { background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:20px; }
 
@@ -156,8 +153,48 @@ fieldset.group legend { float:left; width:100%; padding:0; margin:0 0 12px; font
 .chip.stim input:checked + span::before { content:""; margin-right:8px; box-shadow:0 0 0 2px var(--surface); }
 .chip.gut { --dc:var(--m-gut); } .chip.ok { --dc:var(--m-ok); } .chip.schlecht { --dc:var(--m-schlecht); } .chip.abends { --dc:var(--m-abends); }
 
-.notecard { margin:0 0 10px; padding:16px 18px 18px; }
-.notecard label { font:var(--serif-w) 19px/1.2 var(--serif); color:var(--ink); margin-bottom:6px; }
+/* Lange Listen kompakt: erst die drei häufigsten, Rest hinter „+ N weitere“ */
+.chips:not(.open) .chip.extra { display:none; }
+.chipmore { min-height:40px; border:1px dashed var(--line); background:none; color:var(--accent-text); font:500 14px/1 var(--sans); padding:9px 15px; border-radius:999px; cursor:pointer; }
+.chipmore:hover { background:var(--sunken); }
+/* Weitere Angaben: aufklappbar */
+details.moreentry { margin:0 0 10px; padding:0 18px; }
+details.moreentry > summary { min-height:56px; padding:14px 0; font:var(--serif-w) 19px/1.2 var(--serif); }
+details.moreentry > summary .small { font-family:var(--sans); }
+details.moreentry[open] { padding-bottom:18px; }
+fieldset.sub { border:0; margin:0; padding:var(--s3) 0 var(--s4); border-top:1px solid var(--line-soft); min-width:0; }
+fieldset.sub legend { float:left; width:100%; padding:0; margin:0 0 10px; font:500 14px/1.2 var(--sans); color:var(--muted); }
+div.sub { padding-top:var(--s3); border-top:1px solid var(--line-soft); }
+
+/* ---------- Blatt „Tag eintragen“ (fährt von unten hoch) ---------- */
+dialog.sheet { position:fixed; inset:auto 0 0; width:100%; max-width:var(--maxw); max-height:92dvh; margin:0 auto; padding:0; border:0;
+  border-radius:28px 28px 0 0; background:var(--bg); color:var(--ink); box-shadow:var(--shadow); overflow:hidden; }
+dialog.sheet[open] { display:flex; flex-direction:column; animation:sheetUp .35s var(--ease, ease-out) both; }
+dialog.sheet::backdrop { background:rgba(20,15,10,.45); }
+.sheet-in { overflow-y:auto; overscroll-behavior:contain; padding:0 var(--gutter) calc(env(safe-area-inset-bottom) + 24px); }
+.sheet-head { position:sticky; top:0; z-index:2; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s3); align-items:center;
+  padding:18px 0 12px; background:var(--bg); }
+.sheet-head::before { content:""; position:absolute; top:7px; left:50%; width:40px; height:5px; margin-left:-20px; border-radius:9px; background:var(--line-soft); }
+.sheet .daytitle { margin-top:var(--s2); }
+#todayBtn { margin-bottom:var(--s4); }
+@keyframes sheetUp { from { transform:translateY(100%); } }
+
+/* ---------- Schalter ---------- */
+.switch { display:grid; grid-template-columns:52px 1fr; gap:var(--s3); align-items:start; cursor:pointer; position:relative; }
+.switch input { position:absolute; opacity:0; width:1px; height:1px; }
+.sw-track { width:52px; height:32px; border-radius:99px; background:var(--line); position:relative; transition:background .2s; margin-top:2px; }
+.sw-track::after { content:""; position:absolute; top:3px; left:3px; width:26px; height:26px; border-radius:50%; background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.25); transition:transform .2s; }
+.switch input:checked + .sw-track { background:var(--sage); }
+.switch input:checked + .sw-track::after { transform:translateX(20px); }
+.switch input:focus-visible + .sw-track { outline:2px solid var(--accent); outline-offset:2px; }
+.sw-text { display:grid; gap:4px; }
+
+/* ---------- Kurze Meldung unten ---------- */
+.toast { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(96px + env(safe-area-inset-bottom)); z-index:50; width:min(calc(100% - 32px), 488px);
+  display:flex; align-items:center; justify-content:space-between; gap:var(--s3); padding:10px 12px 10px 18px; border-radius:16px;
+  background:var(--ink); color:var(--bg); font-size:14px; box-shadow:var(--shadow); }
+.toast .more { color:var(--accent); font-weight:600; font-size:14px; min-height:44px; padding:0 8px; }
+dialog.sheet .toast { bottom:calc(16px + env(safe-area-inset-bottom)); }
 .saverow { display:flex; justify-content:space-between; align-items:center; gap:var(--s3); flex-wrap:wrap; padding:6px 4px 0; }
 
 /* ---------- Felder ---------- */
@@ -249,7 +286,7 @@ fieldset.group legend { float:left; width:100%; padding:0; margin:0 0 12px; font
 .strips { --lab:50px; --g:10px; position:relative; display:flex; flex-direction:column; gap:10px; }
 .strips .band { position:absolute; top:-6px; bottom:-6px; left:calc(var(--lab) + var(--g) + (100% - var(--lab) - var(--g)) * var(--a));
   width:calc((100% - var(--lab) - var(--g)) * var(--w)); min-width:6px; background:var(--sage-tint); opacity:.6; border-radius:6px; pointer-events:none; }
-.strip { position:relative; width:100%; display:grid; grid-template-columns:var(--lab) 1fr; gap:var(--g); align-items:center; border:0; background:none; padding:0; text-align:left; cursor:pointer; color:var(--ink); }
+.strip { position:relative; width:100%; min-height:44px; margin:-9px 0; display:grid; grid-template-columns:var(--lab) 1fr; gap:var(--g); align-items:center; border:0; background:none; padding:0; text-align:left; cursor:pointer; color:var(--ink); }
 .strip .d { font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
 .strip .track { position:relative; height:26px; }
 .sbar { position:absolute; inset:0 auto 0 0; display:flex; border-radius:999px; overflow:hidden; transform-origin:left center; }
@@ -342,7 +379,7 @@ details > div { padding:var(--s3) 0 0; }
 .settings { display:grid; gap:var(--s4); grid-template-columns:repeat(2,minmax(0,1fr)); margin:var(--s4) 0 0; }
 #storeInfo { margin:0; }
 .foot { text-align:center; margin:var(--s7) 0 0; }
-.foot a { color:inherit; }
+.foot a { color:inherit; display:inline-block; padding:12px 4px; }
 
 /* ---------- Backup-Erinnerung ---------- */
 .note.remind { margin:var(--s5) 0 0; }
